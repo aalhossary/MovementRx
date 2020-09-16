@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="images">
+    <file>../../../../res/_legSelected.png</file>
+    <file>../../../../res/LT_legSelected.png</file>
+    <file>../../../../res/RT_legSelected.png</file>
+    <file>../../../../res/RTLT_legSelected.png</file>
+  </qresource>
+</RCC>
