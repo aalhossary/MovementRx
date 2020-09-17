@@ -25,14 +25,12 @@ def load_full_folder(root_path: Union[Path, str]) -> Dict:
     ret_dict = dict()
     if isinstance(root_path, str):
         root_path = Path(root_path)
-    for i, measurment in enumerate(consts.measurement_folder):
+    for _, measurment in enumerate(consts.measurement_folder):
         folder = root_path / measurment
         if folder.exists():
             print('folder exists')
             generator = folder.iterdir()  # glob(str(kinematic_filename_mask))
             for f in generator:
-                # print(f)
-                # s = ret_dict.setdefault(measurment, dict())
                 matched = any_filename_mask.fullmatch(f.name)
                 # print(matched)
                 s = matched.group(1)
@@ -49,4 +47,3 @@ def load_full_folder(root_path: Union[Path, str]) -> Dict:
                 joint_dict[dim] = load_file(f)
 
     return ret_dict
-

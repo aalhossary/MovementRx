@@ -68,23 +68,14 @@ class RoundCirclePushButton(QPushButton):
         ring_map.setMask(mask)
         return ring_map
 
-    # def mousePressEvent(self, e: QtGui.QMouseEvent) -> None:
-    #     super().mousePressEvent(e)
-    #     print("pressed")
-
-    # def mouseMoveEvent(self, e: QtGui.QMouseEvent) -> None:
-    #     if e.type() == QMouseEvent.MouseMove:
-    #         print("MouseMove", e.pos().x(), e.pos().y())
-    #         self.update()
-
-    def enterEvent(self, a0: QtCore.QEvent) -> None:
+    def enterEvent(self, _: QtCore.QEvent) -> None:
         # print("Enter", a0.type())
         if self.isChecked():
             self.setIcon(self._checked_icon)
         else:
             self.setIcon(self._unchecked_icon)
 
-    def leaveEvent(self, a0: QtCore.QEvent) -> None:
+    def leaveEvent(self, _: QtCore.QEvent) -> None:
         # print("leave", a0.type())
         if self.isChecked():
             self.setIcon(self._checked_icon)

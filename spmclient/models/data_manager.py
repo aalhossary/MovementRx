@@ -37,7 +37,6 @@ class DataManager:
         # ------------------------- TEST CODE END -----------------------
 
         DataManager.merge_subject(cls._raw_data, data_renamed_subject)
-        # cls._raw_data = data_renamed_subject
         cls._data_available_flags[subject] = True
 
     @classmethod
@@ -79,15 +78,6 @@ class DataManager:
     @classmethod
     def get_multiples(cls, data: Dict = None, path: Dict = None, satisfy_missing_path_with_any: bool = False) \
             -> Union[np.ndarray, None]:
-        # measurement: str = path.get(consts.MEASUREMENT, consts.measurement_folder[0])
-        # measurement: Dict = data[measurement]
-        # subject: str = path.get(consts.SUBJECT, consts.subject[0])
-        # subject: Dict = measurement[subject]
-        # side: str = path.get(consts.SIDE, consts.side_as_dict[0])
-        # side_as_dict: Dict = subject[side]
-        # joint_str: str = path.get(consts.JOINT, consts.joint_as_dict[0])
-        # joint_as_dict: Dict = side_as_dict[joint_str]
-        # dim_str: str = path.get(consts.DIMENSION, consts.dimension[0])
         if not data:
             data = cls._raw_data
         try:
@@ -136,8 +126,7 @@ class DataManager:
             if len(subjects_dict) > 1:
                 raise RuntimeError("I don't know how to handle data with more than one subject (person)\n"
                                    f"measurement = {measurement}, subjects = {list(subjects_dict.keys())}")
-            new_subject_dict = data_renamed_subject[measurement] = dict()
-            for subject_key, subject_val in subjects_dict.items():  # only one item, TODO look for a better method
-                new_subject_dict[subject_new_name] = subject_val
+            new_subject_dict = data_renamed_subject[measurement] = dict()            
+            new_subject_dict[subject_new_name] = next(iter(subjects_dict.values()))
         return data_renamed_subject
 

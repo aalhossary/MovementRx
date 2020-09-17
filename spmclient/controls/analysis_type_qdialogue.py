@@ -8,7 +8,6 @@ from spmclient.ui.gui.xml.ui_analysis_type_dialogue import Ui_Dialog
 
 # from spmclient import consts
 # class AnalysisTypeQDialogueMeta(QDialog, Ui_Analysis_type_qdialogue):
-#     pass
 class AnalysisTypeQDialogue(QDialog, Ui_Dialog):  #, ui_analysis_type_dialogue, metaclass=AnalysisTypeQDialogueMeta):
 
     def __init__(self):

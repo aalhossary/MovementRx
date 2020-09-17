@@ -1,15 +1,12 @@
 from typing import cast
 
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
-import matplotlib
 from matplotlib.axes._axes import Axes
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
 
 class MplCanvas(QWidget):  # FigureCanvasQTAgg):
-
-    # ax: plt.axes.Axes
 
     def __init__(self, parent=None, *args, **kwargs):
         # def __init__(self, *args):
@@ -27,9 +24,3 @@ class MplCanvas(QWidget):  # FigureCanvasQTAgg):
         self.setLayout(layout)
         ax = self.figure.add_subplot(111)
         self.ax: Axes = cast(Axes, ax)
-
-        # print(self.figure, self.figure.axes)
-
-        # self.ax.plot(np.random.randn(10))
-        # self.canvas.draw()
-        # self.update()

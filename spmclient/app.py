@@ -56,18 +56,19 @@ class App(Controller):
         # self._display_manager.analysis_started()
         detailed_analysis_data = dict()
         # do the detailed test
-        for i_meas, meas in enumerate(consts.measurement_folder):
+        for _, meas in enumerate(consts.measurement_folder):
             measurement_detailed_dict = detailed_analysis_data.setdefault(meas, dict())
-            for i_s, s in enumerate(consts.side):
+            for _, s in enumerate(consts.side):
                 side_detailed_dict = measurement_detailed_dict.setdefault(s, dict())
-                for i_j, j in enumerate(consts.joint):
+                for _, j in enumerate(consts.joint):
                     joint_detailed_dict = side_detailed_dict.setdefault(j, dict())
                     for i_d, d in enumerate(consts.dim):
                         # dimension_detailed_dict = joint_detailed_dict.setdefault(d, dict())
                         temp_display_data_list = []
                         temp_display_fmat_list = []
                         for current_round in test_params:
-                            subject_a, subject_b, display_subject = current_round[0], current_round[1], current_round[2]
+#                             subject_a, subject_b, display_subject = current_round[0], current_round[1], current_round[2]
+                            subject_a, subject_b, display_subject = current_round
                             task_ya: Dict = {
                                 consts.MEASUREMENT: meas,
                                 consts.SUBJECT: subject_a,
@@ -85,12 +86,9 @@ class App(Controller):
                             }
                             data_yb = DataManager.get_multiples(path=task_yb)
                             if data_ya is not None and data_yb is not None:
-                                t2 = do_spm_test(data_ya, data_yb)
-                                t2i, lst = infer_z(t2, alpha)
-                                # lst represents the infered array of deviation between postoperative and ref
-                                # per joint in this dimension
-                                # temp_display_data_list.append(lst)
-                                temp_display_data_list.append(t2i)
+                                spm_t = do_spm_test(data_ya, data_yb)
+                                spmi_t, _ = infer_z(spm_t, alpha)
+                                temp_display_data_list.append(spmi_t)
                                 temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
                             # set the results in the DataManager, along with its DisplayFormat
                             joint_detailed_dict[d] = (temp_display_data_list, temp_display_fmat_list)
@@ -98,11 +96,11 @@ class App(Controller):
 
         # do the compact test
         compact_analysis_data = dict()
-        for i_meas, meas in enumerate(consts.measurement_folder):
+        for _, meas in enumerate(consts.measurement_folder):
             measurement_compact_dict = compact_analysis_data.setdefault(meas, dict())
-            for i_s, s in enumerate(consts.side):
+            for _, s in enumerate(consts.side):
                 side_compact_dict = measurement_compact_dict.setdefault(s, dict())
-                for i_j, j in enumerate(consts.joint):
+                for _, j in enumerate(consts.joint):
                     # joint_compact_dict = side_compact_dict.setdefault(j, dict())
                     temp_display_data_list = []
                     temp_display_fmat_list = []
@@ -140,10 +138,9 @@ class App(Controller):
                             data_yb[:, :, i_d] = temp_joint_dimension_multiple
 
                         if data_ya is not None and data_yb is not None:
-                            t2 = do_spm_test(data_ya, data_yb)
-                            t2i, lst = infer_z(t2, alpha)
-                            # temp_display_data_list.append(lst)
-                            temp_display_data_list.append(t2i)
+                            spm_t = do_spm_test(data_ya, data_yb)
+                            spmi_t, _ = infer_z(spm_t, alpha)
+                            temp_display_data_list.append(spmi_t)
                             temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
                     # set the results in the DataManager, along with its DisplayFormat
                     side_compact_dict[j] = (temp_display_data_list, temp_display_fmat_list)
