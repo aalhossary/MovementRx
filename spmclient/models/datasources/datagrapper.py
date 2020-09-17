@@ -1,10 +1,10 @@
 from pathlib import Path
+from re import compile
 from typing import Dict, Union
-from re import Pattern, compile
 
 import numpy as np
+from spmclient import consts
 
-from src import consts
 
 commonPattern = f'({consts.side[0]}|{consts.side[1]})_'\
                 f'({consts.joint[0]}|{consts.joint[1]}|{consts.joint[2]})'\

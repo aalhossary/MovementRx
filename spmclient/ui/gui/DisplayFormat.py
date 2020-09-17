@@ -1,4 +1,4 @@
-from src import consts
+from spmclient import consts
 
 
 class DisplayFormat:

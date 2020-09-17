@@ -1503,13 +1503,13 @@
   <customwidget>
    <class>MplCanvas</class>
    <extends>QWidget</extends>
-   <header location="global">src.ui.gui.xml.mplcanvas.h</header>
+   <header location="global">spmclient.ui.gui.xml.mplcanvas.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>RoundCirclePushButton</class>
    <extends>QPushButton</extends>
-   <header location="global">src.ui.gui.xml.roundcirclepushbutton.h</header>
+   <header location="global">spmclient.ui.gui.xml.roundcirclepushbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources>

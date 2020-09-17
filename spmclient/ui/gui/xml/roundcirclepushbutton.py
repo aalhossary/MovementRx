@@ -1,10 +1,8 @@
-from typing import cast
 
-from PyQt5 import QtGui, QtCore
+from PyQt5 import QtCore
 from PyQt5.QtCore import QSize, QPointF, Qt
-from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QMouseEvent, QBitmap
+from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QBitmap
 from PyQt5.QtWidgets import QPushButton
-from numpy import ufunc
 
 
 class RoundCirclePushButton(QPushButton):

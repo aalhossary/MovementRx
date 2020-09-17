@@ -1,26 +1,25 @@
 from __future__ import annotations
+
 import sys
-from typing import Dict, cast, Tuple, List
+from typing import Dict, Tuple
 
-from matplotlib import cm
-import matplotlib.pyplot as plt
-import numpy as np
 from PyQt5.QtWidgets import QApplication
-
 import spm1d
-from src import consts
-from src.controls.controller import Controller
-from src.controls.analysis_type_qdialogue import AnalysisTypeQDialogue
-from src.controls.gait_analysis_window import GaitAnalysisWindow
-from src.models.data_manager import DataManager
-from src.ui.displaymanager import DisplayManager
-from src.ui.gui.DisplayFormat import DisplayFormat
-from src.ui.gui.xml.mplcanvas import MplCanvas
+
+import numpy as np
+from spmclient import consts
+import spmclient
+from spmclient.controls.analysis_type_qdialogue import AnalysisTypeQDialogue
+from spmclient.controls.controller import Controller
+from spmclient.controls.gait_analysis_window import GaitAnalysisWindow
+from spmclient.models.data_manager import DataManager
+from spmclient.ui.displaymanager import DisplayManager
+from spmclient.ui.gui.DisplayFormat import DisplayFormat
 
 
 class App(Controller):
 
-    _instance: App = None
+    _instance: spmclient.app.App = None
     _display_manager: DisplayManager = None
 
     def __new__(cls, *args, **kwargs):

@@ -4,13 +4,13 @@ from builtins import classmethod
 from typing import Dict, Union, cast
 
 import numpy as np
-
-from src import consts
+from spmclient import consts
+import spmclient.models
 
 
 class DataManager:
 
-    _instance: DataManager = None
+    _instance: spmclient.models.data_manager.DataManager = None
     # empty_dict = dict()
     _raw_data = dict()
     _analysis_data = dict()

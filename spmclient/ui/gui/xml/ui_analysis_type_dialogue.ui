@@ -41,9 +41,9 @@
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>20</x>
      <y>30</y>
-     <width>541</width>
+     <width>561</width>
      <height>181</height>
     </rect>
    </property>
@@ -105,7 +105,7 @@
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>0</x>
          <y>29</y>
          <width>131</width>
          <height>68</height>
@@ -192,6 +192,9 @@
         </item>
         <item>
          <widget class="QRadioButton" name="kinematics_radioButton_2">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Spatiotemporal</string>
           </property>

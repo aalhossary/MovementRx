@@ -2,21 +2,21 @@ from __future__ import annotations
 
 from typing import Dict, cast, List
 
-import matplotlib.pyplot as plt
-import numpy as np
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup
 from matplotlib import cm
 from matplotlib.axes import Axes
-
 import spm1d
-from src import consts
-from src.controls.controller import Controller
-from src.models.data_manager import DataManager
-from src.models.datasources.datagrapper import load_full_folder
-from src.ui.displaymanager import DisplayManager
-from src.ui.gui.DisplayFormat import DisplayFormat
-from src.ui.gui.xml.mplcanvas import MplCanvas
-from src.ui.gui.xml.ui_gait_analysis_window import Ui_ui_GaitAnalysisWindow
+
+import matplotlib.pyplot as plt
+import numpy as np
+from spmclient import consts
+from spmclient.controls.controller import Controller
+from spmclient.models.data_manager import DataManager
+from spmclient.models.datasources.datagrapper import load_full_folder
+from spmclient.ui.displaymanager import DisplayManager
+from spmclient.ui.gui.DisplayFormat import DisplayFormat
+from spmclient.ui.gui.xml.mplcanvas import MplCanvas
+from spmclient.ui.gui.xml.ui_gait_analysis_window import Ui_ui_GaitAnalysisWindow
 
 
 class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
