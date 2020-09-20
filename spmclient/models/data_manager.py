@@ -130,3 +130,13 @@ class DataManager:
             new_subject_dict[subject_new_name] = next(iter(subjects_dict.values()))
         return data_renamed_subject
 
+    @classmethod
+    def clear_data(cls):
+        cls._raw_data.clear()
+        cls._data_available_flags.clear()
+
+    @classmethod
+    def clear_analysis_results(cls):
+        cls._analysis_data.clear()
+        cls._analysis_data_compact.clear()
+

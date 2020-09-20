@@ -35,21 +35,29 @@ class App(Controller):
         self._display_manager.show_raw_data()
 
     def analyse(self, analysis: str, alpha: float):
+        TTEST_2 = 'ttest2'
+        TTEST_PAIRED = 'ttest_paired'
+        HOTELLINGS_2 = 'hotellings2'
+        HOTELLINGS_PAIRED = 'hotellings_paired'
         # switch on the test type
-        # The test_params are a list of triplets in the form of [(YA, YB, format)]
+        # The test_params are a list of triplets in the form of [(ya, yb, format)]
+        # The test names are a list of the form [2D test, 3D test]
         if analysis == consts.PRE_VS_REF:
             test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4)]
+            test_names = [TTEST_2, HOTELLINGS_2]
         elif analysis == consts.POST_VS_REF:
             test_params = [(consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
+            test_names = [TTEST_2, HOTELLINGS_2]
         elif analysis == consts.PRE_AND_POST_VS_REF:
             test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4),
                            (consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
+            test_names = [TTEST_2, HOTELLINGS_2]
         elif analysis == consts.PRE_VS_POST_PAIRED:
             test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
-            test_name = 'paired'
+            test_names = [TTEST_PAIRED, HOTELLINGS_PAIRED]
         elif analysis == consts.PRE_VS_POST_TWO_SAMPLE:
             test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
-            test_name = 'Two_test'
+            test_names = [TTEST_2, HOTELLINGS_2]
         else:
             raise RuntimeError(f'Unknown analysis type ({analysis})!')
 
@@ -67,7 +75,6 @@ class App(Controller):
                         temp_display_data_list = []
                         temp_display_fmat_list = []
                         for current_round in test_params:
-#                             subject_a, subject_b, display_subject = current_round[0], current_round[1], current_round[2]
                             subject_a, subject_b, display_subject = current_round
                             task_ya: Dict = {
                                 consts.MEASUREMENT: meas,
@@ -86,7 +93,7 @@ class App(Controller):
                             }
                             data_yb = DataManager.get_multiples(path=task_yb)
                             if data_ya is not None and data_yb is not None:
-                                spm_t = do_spm_test(data_ya, data_yb)
+                                spm_t = do_spm_test(data_ya, data_yb, test_names[0])
                                 spmi_t, _ = infer_z(spm_t, alpha)
                                 temp_display_data_list.append(spmi_t)
                                 temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
@@ -106,7 +113,7 @@ class App(Controller):
                     temp_display_fmat_list = []
                     for current_round in test_params:
                         subject_a, subject_b, display_subject = current_round[0], current_round[1], current_round[2]
-                        # get the data of X,Y,Z and consider them as YA then YB respectively
+                        # get the data of X,Y,Z and consider them as ya then yb respectively
                         data_ya, data_yb = None, None
                         for i_d, d in enumerate(consts.dim):
                             task_ya: Dict = {
@@ -138,7 +145,7 @@ class App(Controller):
                             data_yb[:, :, i_d] = temp_joint_dimension_multiple
 
                         if data_ya is not None and data_yb is not None:
-                            spm_t = do_spm_test(data_ya, data_yb)
+                            spm_t = do_spm_test(data_ya, data_yb, test_names[1])
                             spmi_t, _ = infer_z(spm_t, alpha)
                             temp_display_data_list.append(spmi_t)
                             temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
@@ -149,6 +156,19 @@ class App(Controller):
         self._display_manager.analysis_done()
 
         self._display_manager.show_analysis_result()
+
+    def delete_data(self):
+        self.delete_analysis()
+        DataManager.clear_data()
+        self._display_manager.show_raw_data()
+
+    def delete_analysis(self):
+        DataManager.clear_analysis_results()
+        self._display_manager.show_analysis_result()
+
+    def update_graphs(self, data: Dict = None, tasks: Dict = None):
+        # TODO implement
+        pass
 
     def __init__(self):
         self.params: Dict = None
@@ -169,16 +189,15 @@ class App(Controller):
         sys.exit(app.exec())
 
 
-def do_spm_test(YA: np.ndarray, YB: np.ndarray) -> spm1d.stats._spm.SPM_T:
-    if YA.ndim == 2 and YB.ndim == 2:
-        # YA = YA[:, :, np.newaxis]
-        # YB = YB[:, :, np.newaxis]
-        spm_t = spm1d.stats.ttest2(YA, YB)
-    elif YA.ndim == 3 and YB.ndim == 3:
-        spm_t = spm1d.stats.hotellings2(YA, YB)
-    else:
-        raise RuntimeError(f'I do not know how to deal with array dimensions ({YA.shape}), ({YB.shape})')
-
+def do_spm_test(ya: np.ndarray, yb: np.ndarray, test_name: str) -> spm1d.stats._spm.SPM_T:
+    # if ya.ndim == 2 and yb.ndim == 2:
+    #     spm_t = spm1d.stats.ttest2(ya, yb)
+    # elif ya.ndim == 3 and yb.ndim == 3:
+    #     spm_t = spm1d.stats.hotellings2(ya, yb)
+    # else:
+    #     raise RuntimeError(f'I do not know how to deal with array dimensions ({ya.shape}), ({yb.shape})')
+    test = eval('spm1d.stats.' + test_name)
+    spm_t = test(ya, yb)
     return spm_t
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './ui_gait_analysis_window.ui'
+# Form implementation generated from reading ui file '.\ui_gait_analysis_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
@@ -12,7 +12,7 @@ class Ui_ui_GaitAnalysisWindow(object):
     def setupUi(self, ui_GaitAnalysisWindow):
         ui_GaitAnalysisWindow.setObjectName("ui_GaitAnalysisWindow")
         ui_GaitAnalysisWindow.setWindowModality(QtCore.Qt.WindowModal)
-        ui_GaitAnalysisWindow.resize(1336, 760)
+        ui_GaitAnalysisWindow.resize(1336, 777)
         ui_GaitAnalysisWindow.setProperty("visible_hip", False)
         ui_GaitAnalysisWindow.setProperty("visible_knee", False)
         ui_GaitAnalysisWindow.setProperty("visible_ankle", False)
@@ -22,7 +22,7 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.skeletonlabel = QtWidgets.QLabel(self.centralwidget)
         self.skeletonlabel.setGeometry(QtCore.QRect(570, 0, 191, 681))
         self.skeletonlabel.setText("")
-        self.skeletonlabel.setPixmap(QtGui.QPixmap(":/images/res/_legSelected.png"))
+        self.skeletonlabel.setPixmap(QtGui.QPixmap(":/images/res/RTLT_legSelected.png"))
         self.skeletonlabel.setScaledContents(True)
         self.skeletonlabel.setObjectName("skeletonlabel")
         self.pushButton = RoundCirclePushButton(self.centralwidget)
@@ -711,9 +711,9 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.joint2R.setObjectName("joint2R")
         self.horizontalLayout_4.addWidget(self.joint2R)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
+        self.skeletonlabel.raise_()
         self.frameR.raise_()
         self.frameL.raise_()
-        self.skeletonlabel.raise_()
         self.pushButton.raise_()
         self.pushButton_2.raise_()
         self.pushButton_3.raise_()
@@ -723,7 +723,7 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.label.raise_()
         ui_GaitAnalysisWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ui_GaitAnalysisWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1336, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1336, 21))
         self.menubar.setObjectName("menubar")
         self.menu_File = QtWidgets.QMenu(self.menubar)
         self.menu_File.setObjectName("menu_File")
@@ -733,6 +733,8 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.menuPre_vs_post.setObjectName("menuPre_vs_post")
         self.menuView = QtWidgets.QMenu(self.menubar)
         self.menuView.setObjectName("menuView")
+        self.menuClear = QtWidgets.QMenu(self.menuView)
+        self.menuClear.setObjectName("menuClear")
         ui_GaitAnalysisWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(ui_GaitAnalysisWindow)
         self.statusbar.setObjectName("statusbar")
@@ -770,10 +772,12 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.actionPost_vs_Ref.setObjectName("actionPost_vs_Ref")
         self.actionNextView = QtWidgets.QAction(ui_GaitAnalysisWindow)
         self.actionNextView.setObjectName("actionNextView")
-        self.actionclear = QtWidgets.QAction(ui_GaitAnalysisWindow)
-        self.actionclear.setObjectName("actionclear")
         self.actionPre_and_Post_Vs_Ref = QtWidgets.QAction(ui_GaitAnalysisWindow)
         self.actionPre_and_Post_Vs_Ref.setObjectName("actionPre_and_Post_Vs_Ref")
+        self.action_clear_all = QtWidgets.QAction(ui_GaitAnalysisWindow)
+        self.action_clear_all.setObjectName("action_clear_all")
+        self.action_clear_analysis = QtWidgets.QAction(ui_GaitAnalysisWindow)
+        self.action_clear_analysis.setObjectName("action_clear_analysis")
         self.menu_File.addAction(self.action_specify_normal_standard)
         self.menu_File.addSeparator()
         self.menu_File.addAction(self.action_open_before_intervension)
@@ -787,7 +791,8 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.menuAnalysis.addAction(self.actionPost_vs_Ref)
         self.menuAnalysis.addAction(self.actionPre_and_Post_Vs_Ref)
         self.menuAnalysis.addSeparator()
-        self.menuAnalysis.addAction(self.actionclear)
+        self.menuClear.addAction(self.action_clear_all)
+        self.menuClear.addAction(self.action_clear_analysis)
         self.menuView.addAction(self.actionKinematics)
         self.menuView.addAction(self.actionMoments)
         self.menuView.addSeparator()
@@ -795,6 +800,7 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.menuView.addAction(self.actionLeft_Side)
         self.menuView.addSeparator()
         self.menuView.addAction(self.actionNextView)
+        self.menuView.addAction(self.menuClear.menuAction())
         self.menubar.addAction(self.menu_File.menuAction())
         self.menubar.addAction(self.menuAnalysis.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
@@ -835,6 +841,7 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.menuAnalysis.setTitle(_translate("ui_GaitAnalysisWindow", "&Analysis"))
         self.menuPre_vs_post.setTitle(_translate("ui_GaitAnalysisWindow", "Pre vs. post"))
         self.menuView.setTitle(_translate("ui_GaitAnalysisWindow", "View"))
+        self.menuClear.setTitle(_translate("ui_GaitAnalysisWindow", "Clear"))
         self.toolBar.setWindowTitle(_translate("ui_GaitAnalysisWindow", "toolBar"))
         self.action_open_before_intervension.setText(_translate("ui_GaitAnalysisWindow", "&Open Before surgery data..."))
         self.action_open_after_surgery_data.setText(_translate("ui_GaitAnalysisWindow", "Open &After surgery data..."))
@@ -848,10 +855,13 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.actionTwo_Sample.setText(_translate("ui_GaitAnalysisWindow", "Two Sample"))
         self.actionPre_vs_Reference.setText(_translate("ui_GaitAnalysisWindow", "Pre vs. Ref..."))
         self.actionPost_vs_Ref.setText(_translate("ui_GaitAnalysisWindow", "Post vs. Ref..."))
-        self.actionNextView.setText(_translate("ui_GaitAnalysisWindow", "NextView"))
+        self.actionNextView.setText(_translate("ui_GaitAnalysisWindow", "Plot / Heat map"))
         self.actionNextView.setToolTip(_translate("ui_GaitAnalysisWindow", "NextView (SPM1d, MoSE)"))
-        self.actionclear.setText(_translate("ui_GaitAnalysisWindow", "Clear"))
         self.actionPre_and_Post_Vs_Ref.setText(_translate("ui_GaitAnalysisWindow", "Pre and Post Vs. Ref"))
+        self.action_clear_all.setText(_translate("ui_GaitAnalysisWindow", "All"))
+        self.action_clear_all.setToolTip(_translate("ui_GaitAnalysisWindow", "Clear both data and analysis result"))
+        self.action_clear_analysis.setText(_translate("ui_GaitAnalysisWindow", "Analysis"))
+        self.action_clear_analysis.setToolTip(_translate("ui_GaitAnalysisWindow", "Clear the analysis results"))
 
 from spmclient.ui.gui.xml.mplcanvas import MplCanvas
 from spmclient.ui.gui.xml.roundcirclepushbutton import RoundCirclePushButton

@@ -11,3 +11,9 @@ class Controller(metaclass=ABCMeta):
 
     def analyse(self, analysis: str, alpha: float):
         raise NotImplementedError()
+
+    def delete_data(self):
+        raise NotImplementedError()
+
+    def delete_analysis(self):
+        raise NotImplementedError()

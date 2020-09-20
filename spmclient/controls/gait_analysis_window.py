@@ -51,6 +51,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.action_specify_normal_standard.triggered.connect(self.load_reference)
         self.action_open_before_intervension.triggered.connect(self.load_before_intervention)
         self.action_open_after_surgery_data.triggered.connect(self.load_after_intervention)
+        self.action_clear_all.triggered.connect(self.clear_all)
+        self.action_clear_analysis.triggered.connect(self.clear_analysis)
         self.actionNextView.triggered.connect(self.show_next_view)
 
         plt.rcParams['figure.constrained_layout.use'] = True
@@ -253,6 +255,13 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         mose_canvas = cast(MplCanvas, mose_canvas)
         return mose_canvas
 
+    def clear_analysis(self):
+        self.controller.delete_analysis()
+        print('clear_analysis')
+
+    def clear_all(self):
+        self.controller.delete_data()
+        print('clear_all')
 
 def draw_mean_std(current_data, ax: Axes, format: DisplayFormat):
     current_data_mean = current_data.mean(axis=0)

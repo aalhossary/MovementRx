@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1336</width>
-    <height>760</height>
+    <height>777</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="res.qrc">:/images/res/_legSelected.png</pixmap>
+     <pixmap resource="res.qrc">:/images/res/RTLT_legSelected.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -1326,9 +1326,9 @@
      </layout>
     </widget>
    </widget>
+   <zorder>skeletonlabel</zorder>
    <zorder>frameR</zorder>
    <zorder>frameL</zorder>
-   <zorder>skeletonlabel</zorder>
    <zorder>pushButton</zorder>
    <zorder>pushButton_2</zorder>
    <zorder>pushButton_3</zorder>
@@ -1343,7 +1343,7 @@
      <x>0</x>
      <y>0</y>
      <width>1336</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -1373,12 +1373,18 @@
     <addaction name="actionPost_vs_Ref"/>
     <addaction name="actionPre_and_Post_Vs_Ref"/>
     <addaction name="separator"/>
-    <addaction name="actionclear"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
     </property>
+    <widget class="QMenu" name="menuClear">
+     <property name="title">
+      <string>Clear</string>
+     </property>
+     <addaction name="action_clear_all"/>
+     <addaction name="action_clear_analysis"/>
+    </widget>
     <addaction name="actionKinematics"/>
     <addaction name="actionMoments"/>
     <addaction name="separator"/>
@@ -1386,6 +1392,7 @@
     <addaction name="actionLeft_Side"/>
     <addaction name="separator"/>
     <addaction name="actionNextView"/>
+    <addaction name="menuClear"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menuAnalysis"/>
@@ -1482,20 +1489,31 @@
   </action>
   <action name="actionNextView">
    <property name="text">
-    <string>NextView</string>
+    <string>Plot / Heat map</string>
    </property>
    <property name="toolTip">
     <string>NextView (SPM1d, MoSE)</string>
    </property>
   </action>
-  <action name="actionclear">
-   <property name="text">
-    <string>Clear</string>
-   </property>
-  </action>
   <action name="actionPre_and_Post_Vs_Ref">
    <property name="text">
     <string>Pre and Post Vs. Ref</string>
+   </property>
+  </action>
+  <action name="action_clear_all">
+   <property name="text">
+    <string>All</string>
+   </property>
+   <property name="toolTip">
+    <string>Clear both data and analysis result</string>
+   </property>
+  </action>
+  <action name="action_clear_analysis">
+   <property name="text">
+    <string>Analysis</string>
+   </property>
+   <property name="toolTip">
+    <string>Clear the analysis results</string>
    </property>
   </action>
  </widget>
