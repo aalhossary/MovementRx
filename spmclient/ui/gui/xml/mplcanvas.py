@@ -17,10 +17,13 @@ class MplCanvas(QWidget):  # FigureCanvasQTAgg):
         # plt.rcParams['figure.constrained_layout.use'] = True
         self.figure = Figure()
         self.canvas = FigureCanvasQTAgg(self.figure)
+        # ax = self.figure.add_subplot(111)
+        gridspec = self.figure.add_gridspec(nrows=1, ncols=1, top=0.99, bottom=0.01, right=0.99)
+        ax = self.figure.add_subplot(gridspec[0, 0])
+        self.ax: Axes = cast(Axes, ax)
+        self.ax.xaxis.set_visible(False)
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.canvas)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
-        ax = self.figure.add_subplot(111)
-        self.ax: Axes = cast(Axes, ax)

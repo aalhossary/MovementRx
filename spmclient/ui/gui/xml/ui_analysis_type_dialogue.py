@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './ui_analysis_type_dialogue.ui'
+# Form implementation generated from reading ui file '.\ui_analysis_type_dialogue.ui'
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
@@ -47,7 +47,7 @@ class Ui_Dialog(object):
         self.alpha_comboBox.addItem("")
         self.alpha_comboBox.setItemText(3, "0.1")
         self.layoutWidget = QtWidgets.QWidget(self.analysisGroupBox)
-        self.layoutWidget.setGeometry(QtCore.QRect(0, 29, 131, 68))
+        self.layoutWidget.setGeometry(QtCore.QRect(10, 29, 131, 68))
         self.layoutWidget.setObjectName("layoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)

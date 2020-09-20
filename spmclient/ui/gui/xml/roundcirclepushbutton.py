@@ -1,8 +1,9 @@
+import typing
 
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import QSize, QPointF, Qt
 from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QBitmap
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QWidget
 
 
 class RoundCirclePushButton(QPushButton):
@@ -22,7 +23,7 @@ class RoundCirclePushButton(QPushButton):
         self.setStyleSheet('background-color:transparent;')
         # self.setAttribute(Qt.WA_OpaquePaintEvent, True)
         # self.setAttribute(Qt.WA_TranslucentBackground, True)  # For Translucent Window
-        # TODO Try to clear QWidget::DrawWindowBackground if you call render()
+        # TODO Try to clear QWidget::DrawWindowBackground if you call/ override render()
         # self.setIcon(self.ring_icon)
         self.setIcon(self.__class__._empty_icon)
         self.setIconSize(QSize(100, 100))
@@ -33,12 +34,16 @@ class RoundCirclePushButton(QPushButton):
         self.clicked['bool'].connect(self.setChecked)
         self.setMouseTracking(True)
 
+    # def render(self, target: QtGui.QPaintDevice, targetOffset: QtCore.QPoint = ..., sourceRegion: QtGui.QRegion = ...,
+    #            flags: typing.Union['QWidget.RenderFlags', 'QWidget.RenderFlag'] = ...) -> None:
+    #     flags = flags & ~ QWidget.DrawWindowBackground
+    #     super(RoundCirclePushButton, self).render(target, targetOffset, sourceRegion, flags)
 
     @classmethod
     def get_icons(cls):
         if not cls._unchecked_icon:
-            unchecked_pixmap = cls.create_ring_Pixmap(ring_color='yellow')
-            checked_pixmap = cls.create_ring_Pixmap(ring_color='green')
+            unchecked_pixmap = cls.create_ring_pixmap(ring_color='yellow')
+            checked_pixmap = cls.create_ring_pixmap(ring_color='green')
 
             cls._unchecked_icon = QIcon(unchecked_pixmap)
             cls._checked_icon = QIcon(checked_pixmap)
@@ -52,7 +57,7 @@ class RoundCirclePushButton(QPushButton):
         return cls._unchecked_icon, cls._checked_icon, cls._empty_icon
 
     @staticmethod
-    def create_ring_Pixmap(ring_color) -> QPixmap:
+    def create_ring_pixmap(ring_color) -> QPixmap:
         ring_map = QPixmap(101, 101)
         ring_map.fill(QColor('red'))  # Any dummy color just to see
         color = QColor(ring_color)
