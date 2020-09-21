@@ -83,7 +83,7 @@ class App(Controller):
                                 consts.JOINT: j,
                                 consts.DIMENSION: d
                             }
-                            data_ya = DataManager.get_multiples(path=task_ya)
+                            data_ya = DataManager.get_multiples_from_data(path=task_ya)
                             task_yb: Dict = {
                                 consts.MEASUREMENT: meas,
                                 consts.SUBJECT: subject_b,
@@ -91,7 +91,7 @@ class App(Controller):
                                 consts.JOINT: j,
                                 consts.DIMENSION: d
                             }
-                            data_yb = DataManager.get_multiples(path=task_yb)
+                            data_yb = DataManager.get_multiples_from_data(path=task_yb)
                             if data_ya is not None and data_yb is not None:
                                 spm_t = do_spm_test(data_ya, data_yb, test_names[0])
                                 spmi_t, _ = infer_z(spm_t, alpha)
@@ -123,7 +123,7 @@ class App(Controller):
                                 consts.JOINT: j,
                                 consts.DIMENSION: d
                             }
-                            temp_joint_dimension_multiple = DataManager.get_multiples(path=task_ya)
+                            temp_joint_dimension_multiple = DataManager.get_multiples_from_data(path=task_ya)
                             if temp_joint_dimension_multiple is None:
                                 continue
                             if i_d == 0:
@@ -137,7 +137,7 @@ class App(Controller):
                                 consts.JOINT: j,
                                 consts.DIMENSION: d
                             }
-                            temp_joint_dimension_multiple = DataManager.get_multiples(path=task_yb)
+                            temp_joint_dimension_multiple = DataManager.get_multiples_from_data(path=task_yb)
                             if temp_joint_dimension_multiple is None:
                                 continue
                             if i_d == 0:

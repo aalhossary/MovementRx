@@ -13,9 +13,9 @@ class DataManager:
     _instance: spmclient.models.data_manager.DataManager = None
     # empty_dict = dict()
     _raw_data = dict()
+    _data_available_flags = dict()
     _analysis_data = dict()
     _analysis_data_compact = dict()
-    _data_available_flags = dict()
 
     def __new__(cls, *args, **kwargs):
         """Implement the Singleton design pattern."""
@@ -62,34 +62,53 @@ class DataManager:
         return cls._data_available_flags.get(subject, False)
 
     @classmethod
-    def get_average(cls, data: Dict = None, path: Dict = None) -> np.ndarray:
-        if not data:
-            data = cls._raw_data
-        data2d = DataManager.get_multiples(data, path)
+    def get_average(cls, data: Dict, path: Dict = None) -> np.ndarray:
+#         if not data:
+#             data = cls._raw_data
+        data2d = DataManager._get_multiples(data, path)
         return np.average(data2d, axis=0)
 
     @classmethod
-    def get_std(cls, data: Dict = None, path: Dict = None) -> np.ndarray:
-        if not data:
-            data = cls._raw_data
-        data2d = DataManager.get_multiples(data, path)
+    def get_std(cls, data: Dict, path: Dict = None) -> np.ndarray:
+#         if not data:
+#             data = cls._raw_data
+        data2d = DataManager._get_multiples(data, path)
         return np.std(data2d, axis=0)
 
     @classmethod
-    def get_multiples(cls, data: Dict = None, path: Dict = None, satisfy_missing_path_with_any: bool = False) \
+    def get_multiples_from_data(cls, path: Dict = None, satisfy_missing_path_with_any: bool = False) \
             -> Union[np.ndarray, None]:
-        if not data:
-            data = cls._raw_data
+        return cls._get_multiples(cls._raw_data, path, satisfy_missing_path_with_any)
+    
+    @classmethod
+    def get_multiples_from_analysis_data(cls, path: Dict = None) \
+            -> Union[np.ndarray, None]:
+        return cls._get_multiples(cls._analysis_data, path, has_subject=False)
+    
+    @classmethod
+    def get_multiples_from_analysis_data_compact(cls, path: Dict = None) \
+            -> Union[np.ndarray, None]:
+        return cls._get_multiples(cls._analysis_data_compact, path, has_subject=False, has_dimension=False)
+    
+    @classmethod
+    def _get_multiples(cls, data: Dict = None, path: Dict = None, satisfy_missing_path_with_any: bool = False, has_subject = True, has_dimension = True) \
+            -> Union[np.ndarray, None]:
+#         if not data:
+#             data = cls._raw_data
         try:
             measurement: str = path.get(consts.MEASUREMENT, None)
             if satisfy_missing_path_with_any and not measurement:
                 measurement = next(iter(data.keys()))
             measurement_as_dict: Dict = data[measurement]
 
-            subject: str = path.get(consts.SUBJECT, None)
-            if satisfy_missing_path_with_any and not subject:
-                subject = next(iter(measurement_as_dict.keys()))
-            subject_as_dict: Dict = measurement_as_dict[subject]
+            if has_subject:  # TODO This way is bad. Change it
+                subject: str = path.get(consts.SUBJECT, None)
+                if satisfy_missing_path_with_any and not subject:
+                    subject = next(iter(measurement_as_dict.keys()))
+                subject_as_dict: Dict = measurement_as_dict[subject]
+            else:
+                subject_as_dict: Dict = measurement_as_dict
+                
 
             side: str = path.get(consts.SIDE, None)
             if satisfy_missing_path_with_any and not side:
@@ -99,14 +118,17 @@ class DataManager:
             joint_str: str = path.get(consts.JOINT, None)
             if satisfy_missing_path_with_any and not joint_str:
                 joint_str = next(iter(side_as_dict.keys()))
-            joint_as_dict: Dict = side_as_dict[joint_str]
 
-            dim_str: str = path.get(consts.DIMENSION, None)
-            if satisfy_missing_path_with_any and not dim_str:
-                dim_str = next(iter(joint_as_dict.keys()))
-            dimension: np.ndarray = joint_as_dict[dim_str]
+            if has_dimension:
+                joint_as_dict: Dict = side_as_dict[joint_str]
+                dim_str: str = path.get(consts.DIMENSION, None)
+                if satisfy_missing_path_with_any and not dim_str:
+                    dim_str = next(iter(joint_as_dict.keys()))
+                dimension: np.ndarray = joint_as_dict[dim_str]
+                return dimension
+            else:
+                return side_as_dict[joint_str]
 
-            return dimension
         except LookupError:  # KeyError:
             return None
 

@@ -66,14 +66,14 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
     # TODO merge load_reference, load_before_intervention, load_after_intervention
     def load_reference(self):
         file_dialog = QFileDialog(self)
-        dir_name = file_dialog.getExistingDirectory(self, caption="Select reference data root folder", directory='../')
+        dir_name = file_dialog.getExistingDirectory(self, caption="Select reference data root folder", directory='./')
         # print("selected", dir_name)
         loaded_data = load_full_folder(dir_name)
         self.controller.set_data(loaded_data, consts.SUBJECT_REF)
 
     def load_before_intervention(self):
         file_dialog = QFileDialog(self)
-        dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of preoperative data", directory='../')
+        dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of preoperative data", directory='./')
         # print("selected", dir_name)
         loaded_data = load_full_folder(dir_name)
         self.controller.set_data(loaded_data, consts.SUBJECT_B4)
@@ -81,7 +81,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
     def load_after_intervention(self):
         file_dialog = QFileDialog(self)
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of postoperative data",
-                                                    directory='../')
+                                                    directory='./')
         # print("selected", dir_name)
         loaded_data = load_full_folder(dir_name)
         self.controller.set_data(loaded_data, consts.SUBJECT_AFTER)
@@ -116,12 +116,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         }
 
         # Draw the raw data
-        for i_meas, meas in enumerate(tasks[consts.MEASUREMENT]):
+        for _, meas in enumerate(tasks[consts.MEASUREMENT]):
             if meas == consts.MEASUREMENT_KINEMATICS and not self.actionKinematics.isChecked():
                 continue
             if meas == consts.MEASUREMENT_MOMENTS and not self.actionMoments.isChecked():
                 continue
-            for i_s, s in enumerate(tasks[consts.SIDE]):
+            for _, s in enumerate(tasks[consts.SIDE]):
                 for i_j, j in enumerate(tasks[consts.JOINT]):
                     for i_d, d in enumerate(tasks[consts.DIMENSION]):
                         data_canvas = self.get_target_canvas('data', i_j, i_d, s)
@@ -129,7 +129,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                         # clear it first
                         # data_canvas.figure.clear()
                         data_canvas.ax.clear()
-                        for i_subj, subj in enumerate(tasks[consts.SUBJECT]):
+                        for _, subj in enumerate(tasks[consts.SUBJECT]):
                             data_format = DisplayFormat(subj, s)
                             current_task: Dict = {
                                 consts.MEASUREMENT: meas,
@@ -138,7 +138,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                 consts.JOINT: j,
                                 consts.DIMENSION: d
                             }
-                            current_data = DataManager.get_multiples(path=current_task)
+                            current_data = DataManager.get_multiples_from_data(path=current_task)
                             if current_data is not None:
                                 ax: Axes = cast(Axes, data_canvas.ax)
                                 draw_mean_std(current_data, ax, data_format)
@@ -169,26 +169,32 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
     def show_analysis_result(self):
 
         # first show the detailed analysis
-        detailed_analysis_data = DataManager._analysis_data
-        if detailed_analysis_data:
-            for i_meas, meas in enumerate(consts.measurement_folder):
-                # filter
-                if meas == consts.MEASUREMENT_KINEMATICS and not self.actionKinematics.isChecked():
-                    continue
-                if meas == consts.MEASUREMENT_MOMENTS and not self.actionMoments.isChecked():
-                    continue
-                measurement_detailed_dict = detailed_analysis_data.get(meas, None)
-                for i_s, s in enumerate(consts.side):
-                    side_detailed_dict = measurement_detailed_dict.get(s, None)
-                    for i_j, j in enumerate(consts.joint):
-                        joint_detailed_dict = side_detailed_dict.setdefault(j, dict())
-                        for i_d, d in enumerate(joint_detailed_dict):
-                            dimension = joint_detailed_dict[d]
-                            temp_display_data_list, temp_display_fmat_list = dimension[0], dimension[1]
-                            # get the canvas
-                            spm_canvas = self.get_target_canvas('spm1d', i_j, i_d, side=s)
-                            # clear it first
-                            spm_canvas.ax.clear()
+        for s in consts.side:
+            for i_j, j in enumerate(consts.joint):
+                for i_d, d in enumerate(consts.dim):
+                    # get the canvases
+                    spm_canvas = self.get_target_canvas('spm1d', i_j, i_d, side=s)
+                    mose_canvas = self.get_target_canvas('mose', i_j, i_d, side=s)
+                    # clear them first
+                    spm_canvas.ax.clear()
+                    mose_canvas.ax.clear()
+
+                    for meas in consts.measurement_folder:
+                        # filter
+                        if meas == consts.MEASUREMENT_KINEMATICS and not self.actionKinematics.isChecked():
+                            continue
+                        if meas == consts.MEASUREMENT_MOMENTS and not self.actionMoments.isChecked():
+                            continue
+                        current_task: Dict = {
+                            consts.MEASUREMENT: meas,
+                            consts.SIDE: s,
+                            consts.JOINT: j,
+                            consts.DIMENSION: d
+                        }
+                        dimension = DataManager.get_multiples_from_analysis_data(path=current_task)
+                        if dimension:
+                            temp_display_data_list, temp_display_fmat_list = dimension
+    
                             # draw each of the data / format pair on the canvas
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
                                 draw_inference_plot(spm_canvas, t2i, data_format=fmt)
@@ -197,31 +203,33 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                 cast(spm1d.stats._spm.SPMi_T, t2i)
                                 z_values = t2i.z / t2i.zstar
                                 temp_display_data.append(z_values)
-                            mose_canvas = self.get_target_canvas('mose', i_j, i_d, side=s)
-                            # clear it first
-                            mose_canvas.ax.clear()  # is it necessary to clear the heatmap canvas before drawing on it?
                             draw_heatmap(mose_canvas, temp_display_data)
-
+                        spm_canvas.canvas.draw()
+                        mose_canvas.canvas.draw()
+    
+    
         # Then show the compact analysis
-        compact_analysis_data = DataManager._analysis_data_compact
-        if compact_analysis_data:
-            for i_meas, meas in enumerate(consts.measurement_folder):
-                # filter
-                if meas == consts.MEASUREMENT_KINEMATICS and not self.actionKinematics.isChecked():
-                    continue
-                if meas == consts.MEASUREMENT_MOMENTS and not self.actionMoments.isChecked():
-                    continue
-                measurement_compact_dict = compact_analysis_data.get(meas, None)
-                for i_s, s in enumerate(consts.side):
-                    side_compact_dict = measurement_compact_dict.get(s, None)
-                    for i_j, j in enumerate(consts.joint):
-                        joint_compact = side_compact_dict.setdefault(j, dict())
-                        temp_display_data_list, temp_display_fmat_list = joint_compact[0], joint_compact[1]
-                        # get the canvas
-                        joint_canvas = self.findChild(MplCanvas, name=f'joint{i_j}{s}')
-                        joint_canvas = cast(MplCanvas, joint_canvas)
-                        # clear it first
-                        joint_canvas.ax.clear()
+        for s in consts.side:
+            for i_j, j in enumerate(consts.joint):
+                # get the canvas
+                joint_canvas = self.findChild(MplCanvas, name=f'joint{i_j}{s}')
+                joint_canvas = cast(MplCanvas, joint_canvas)
+                # clear it first
+                joint_canvas.ax.clear()
+                for meas in consts.measurement_folder:
+                    # filter
+                    if meas == consts.MEASUREMENT_KINEMATICS and not self.actionKinematics.isChecked():
+                        continue
+                    if meas == consts.MEASUREMENT_MOMENTS and not self.actionMoments.isChecked():
+                        continue
+                    current_task: Dict = {
+                        consts.MEASUREMENT: meas,
+                        consts.SIDE: s,
+                        consts.JOINT: j,
+                    }
+                    dimension = DataManager.get_multiples_from_analysis_data_compact(path=current_task)
+                    if dimension:
+                        temp_display_data_list, temp_display_fmat_list = dimension
                         # draw each of the data / format pair on the canvas
                         temp_display_data = []
                         for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
@@ -229,6 +237,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             z_values = t2i.z / t2i.zstar
                             temp_display_data.append(z_values)
                         draw_heatmap(joint_canvas, temp_display_data)
+                joint_canvas.canvas.draw()
+
 
     def display_options_changed(self, action: QAction):
         # TODO This method needs redesign, checks, and maybe moved to controller
@@ -249,9 +259,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                         index = 0
                     widget.setCurrentIndex(index)
 
-    def get_target_canvas(self, type: str, i_j: int, i_d: int, side: str) -> MplCanvas:
+    def get_target_canvas(self, canvas_type: str, i_j: int, i_d: int, side: str) -> MplCanvas:
         # names are datacanvas00R, mosecanvas01R and spm1dcavcas01R
-        mose_canvas = self.findChild(MplCanvas, name=f'{type}canvas{i_j}{i_d}{side}')
+        mose_canvas = self.findChild(MplCanvas, name=f'{canvas_type}canvas{i_j}{i_d}{side}')
         mose_canvas = cast(MplCanvas, mose_canvas)
         return mose_canvas
 
@@ -263,17 +273,17 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.controller.delete_data()
         print('clear_all')
 
-def draw_mean_std(current_data, ax: Axes, format: DisplayFormat):
+def draw_mean_std(current_data, ax: Axes, display_format: DisplayFormat):
     current_data_mean = current_data.mean(axis=0)
     err = current_data.std(axis=0)
     print(current_data.shape, current_data_mean.shape, err.shape)
     x = list(range(len(current_data_mean)))
-    ax.plot(x, current_data_mean, format.line_and_marks(),
+    ax.plot(x, current_data_mean, display_format.line_and_marks(),
             # label=f'{consts.joint[joint]}_{consts.dim[dim]}',
-            color=format.color())
+            color=display_format.color())
     y1 = current_data_mean + err
     y2 = current_data_mean - err
-    ax.fill_between(x, y1, y2, alpha=0.2, color=format.color())
+    ax.fill_between(x, y1, y2, alpha=0.2, color=display_format.color())
     print(current_data_mean.shape, ax.lines)
     ax.autoscale(enable=True, axis='both', tight=True)
     # ax.tight_layout()  # AttributeError: 'AxesSubplot' object has no attribute 'tight_layout'
@@ -286,7 +296,7 @@ def draw_inference_plot(spm_canvas: MplCanvas, t2i: spm1d.stats._spm.SPMi_T, dat
         # t2i.plot(ax=ax, color=data_format.color())
     else:
         t2i.plot(ax=ax)
-    spm_canvas.canvas.draw()
+#     spm_canvas.canvas.draw()
 
 
 def draw_heatmap(target_canvas: MplCanvas, temp_list: List) -> None:  # List of what?
@@ -299,11 +309,11 @@ def draw_heatmap(target_canvas: MplCanvas, temp_list: List) -> None:  # List of 
     if len(temp_list) == 2:
         ax.set_yticks([0, 1])
         ax.set_yticklabels(['Pre', 'Post'])
-    im = ax.imshow(z_array, interpolation='nearest', cmap=cmap, aspect='auto', vmax=4, vmin=1)  # , norm=norm)
+    _ = ax.imshow(z_array, interpolation='nearest', cmap=cmap, aspect='auto', vmax=4, vmin=1)  # , norm=norm)
 
     # cbar = ax.figure.colorbar(im, ax=ax, orientation="horizontal",
     #                           ticks=[0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5],
     #                           pad=0.2)  # set where to put the tick marks
     ax.autoscale(enable=True, axis='both', tight=True)
-    target_canvas.canvas.draw()
+#     target_canvas.canvas.draw()
 
