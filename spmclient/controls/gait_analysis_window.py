@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import Dict, cast, List
 
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup, QGridLayout
 from matplotlib import cm
 from matplotlib.axes import Axes
 import spm1d
@@ -27,6 +28,20 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.controller = controller
         self.setupUi(self)
 
+        layout = QGridLayout(self.skeletonlabel)
+        self.skeletonlabel.setLayout(layout)  # Must be called before adding items to the grid layout
+#         layout.setRowStretch(0,0)
+        layout.setRowMinimumHeight(0,250)
+#         layout.setRowStretch(1,2)
+        layout.addWidget(self.pushButton, 1, 0, 1, 1)
+        layout.addWidget(self.pushButton_4, 1, 1, 1, 1)
+#         layout.setRowStretch(2,3)
+        layout.addWidget(self.pushButton_2, 2, 0, 1, 1)
+        layout.addWidget(self.pushButton_5, 2, 1, 1, 1)
+#         layout.setRowStretch(3,2)
+        layout.addWidget(self.pushButton_3, 3, 0, 1, 1)
+        layout.addWidget(self.pushButton_6, 3, 1, 1, 1)
+
         self.analyse_action_group = QActionGroup(self)
         self.analyse_action_group.setExclusive(False)
         self.analyse_action_group.addAction(self.actionPre_vs_Reference)
@@ -44,8 +59,14 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.actionMoments.setChecked(params.get(consts.MOMENTS_CHECKED, False))
         self.measurement_action_group.triggered[QAction].connect(self.display_options_changed)
 
+        self.sides_action_group = QActionGroup(self)
+        self.sides_action_group.addAction(self.actionRight_Side)
+        self.sides_action_group.addAction(self.actionLeft_Side)
+        self.sides_action_group.setExclusive(False)
         self.actionRight_Side.setChecked(params.get(consts.RT_SIDE_CHECKED, False))
         self.actionLeft_Side.setChecked(params.get(consts.LT_SIDE_CHECKED, False))
+        self.sides_action_group.triggered[QAction].connect(self.visible_sides_changed)
+
         self.alpha = params.get(consts.ALPHA)
 
         self.action_specify_normal_standard.triggered.connect(self.load_reference)
@@ -206,8 +227,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             draw_heatmap(mose_canvas, temp_display_data)
                         spm_canvas.canvas.draw()
                         mose_canvas.canvas.draw()
-    
-    
+
         # Then show the compact analysis
         for s in consts.side:
             for i_j, j in enumerate(consts.joint):
@@ -245,6 +265,23 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         print("Full Redraw requested")
         self.show_raw_data()
         self.show_analysis_result()
+
+    def visible_sides_changed(self):
+        icon_name_list = [':/images/res/']
+        if self.rt_side_checked():
+            icon_name_list.append('RT')
+        if self.lt_side_checked():
+            icon_name_list.append('LT')
+        icon_name_list.append('_legSelected.png')
+        # self.skeletonlabel.setPixmap(QtGui.QPixmap(":/images/res/RTLT_legSelected.png"))
+        self.skeletonlabel.setPixmap(QtGui.QPixmap(''.join(icon_name_list)))
+
+        self.pushButton.setVisible(self.rt_side_checked())
+        self.pushButton_2.setVisible(self.rt_side_checked())
+        self.pushButton_3.setVisible(self.rt_side_checked())
+        self.pushButton_4.setVisible(self.lt_side_checked())
+        self.pushButton_5.setVisible(self.lt_side_checked())
+        self.pushButton_6.setVisible(self.lt_side_checked())
 
     def show_next_view(self):
         for side in consts.side:

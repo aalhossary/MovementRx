@@ -38,9 +38,6 @@
       <height>681</height>
      </rect>
     </property>
-    <property name="text">
-     <string/>
-    </property>
     <property name="pixmap">
      <pixmap resource="res.qrc">:/images/res/RTLT_legSelected.png</pixmap>
     </property>
@@ -171,12 +168,6 @@
       <height>711</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
     <widget class="QWidget" name="verticalLayoutWidget_5">
      <property name="geometry">
       <rect>
@@ -213,7 +204,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas00L" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -229,7 +220,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget00L">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -237,7 +228,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -254,7 +245,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas01L" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -270,7 +261,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget01L">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -278,7 +269,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -295,7 +286,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas02L" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -311,7 +302,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget02L">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -319,7 +310,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -395,7 +386,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas10L" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -403,7 +394,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -411,7 +402,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget10L">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -419,7 +410,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -436,7 +427,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas11L" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -444,7 +435,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -452,7 +443,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget11L">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -460,7 +451,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -477,7 +468,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas12L" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -485,7 +476,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -493,7 +484,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget12L">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -501,7 +492,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -574,7 +565,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas20L" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -582,7 +573,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -590,7 +581,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget20L">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -598,7 +589,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -615,7 +606,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas21L" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -623,7 +614,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -631,7 +622,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget21L">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -639,7 +630,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -656,7 +647,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas22L" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -664,7 +655,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -672,7 +663,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget22L">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -680,7 +671,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -764,12 +755,6 @@
       <height>711</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
     <widget class="QWidget" name="verticalLayoutWidget_4">
      <property name="geometry">
       <rect>
@@ -790,7 +775,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas00R" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -798,7 +783,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -806,7 +791,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget00R">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -814,7 +799,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -831,7 +816,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas01R" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -839,7 +824,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -847,7 +832,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget01R">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -855,7 +840,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -872,7 +857,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas02R" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -880,7 +865,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -888,7 +873,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget02R">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -896,7 +881,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -972,7 +957,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas10R" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -980,7 +965,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -988,7 +973,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget10R">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -996,7 +981,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -1013,7 +998,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas11R" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1021,7 +1006,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -1029,7 +1014,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget11R">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1037,7 +1022,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -1054,7 +1039,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas12R" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1062,7 +1047,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -1070,7 +1055,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget12R">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1078,7 +1063,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -1151,7 +1136,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas20R" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1159,7 +1144,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -1167,7 +1152,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget20R">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1175,7 +1160,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -1192,7 +1177,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas21R" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1200,7 +1185,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -1208,7 +1193,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget21R">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1216,7 +1201,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -1233,7 +1218,7 @@
           <item>
            <widget class="MplCanvas" name="datacanvas22R" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1241,7 +1226,7 @@
             <property name="minimumSize">
              <size>
               <width>100</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
            </widget>
@@ -1249,7 +1234,7 @@
           <item>
            <widget class="QStackedWidget" name="stackedWidget22R">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1257,7 +1242,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>80</height>
+              <height>75</height>
              </size>
             </property>
             <property name="currentIndex">
@@ -1343,7 +1328,7 @@
      <x>0</x>
      <y>0</y>
      <width>1336</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
