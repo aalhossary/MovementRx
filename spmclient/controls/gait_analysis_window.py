@@ -28,19 +28,19 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.controller = controller
         self.setupUi(self)
 
-        layout = QGridLayout(self.skeletonlabel)
-        self.skeletonlabel.setLayout(layout)  # Must be called before adding items to the grid layout
-#         layout.setRowStretch(0,0)
-        layout.setRowMinimumHeight(0,250)
-#         layout.setRowStretch(1,2)
-        layout.addWidget(self.pushButton, 1, 0, 1, 1)
-        layout.addWidget(self.pushButton_4, 1, 1, 1, 1)
-#         layout.setRowStretch(2,3)
-        layout.addWidget(self.pushButton_2, 2, 0, 1, 1)
-        layout.addWidget(self.pushButton_5, 2, 1, 1, 1)
-#         layout.setRowStretch(3,2)
-        layout.addWidget(self.pushButton_3, 3, 0, 1, 1)
-        layout.addWidget(self.pushButton_6, 3, 1, 1, 1)
+#         layout = QGridLayout(self.skeletonlabel)
+#         self.skeletonlabel.setLayout(layout)  # Must be called before adding items to the grid layout
+# #         layout.setRowStretch(0,0)
+#         layout.setRowMinimumHeight(0,250)
+# #         layout.setRowStretch(1,2)
+#         layout.addWidget(self.pushButton_1, 1, 0, 1, 1)
+#         layout.addWidget(self.pushButton_4, 1, 1, 1, 1)
+# #         layout.setRowStretch(2,3)
+#         layout.addWidget(self.pushButton_2, 2, 0, 1, 1)
+#         layout.addWidget(self.pushButton_5, 2, 1, 1, 1)
+# #         layout.setRowStretch(3,2)
+#         layout.addWidget(self.pushButton_3, 3, 0, 1, 1)
+#         layout.addWidget(self.pushButton_6, 3, 1, 1, 1)
 
         self.analyse_action_group = QActionGroup(self)
         self.analyse_action_group.setExclusive(False)
@@ -276,7 +276,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # self.skeletonlabel.setPixmap(QtGui.QPixmap(":/images/res/RTLT_legSelected.png"))
         self.skeletonlabel.setPixmap(QtGui.QPixmap(''.join(icon_name_list)))
 
-        self.pushButton.setVisible(self.rt_side_checked())
+        self.pushButton_1.setVisible(self.rt_side_checked())
         self.pushButton_2.setVisible(self.rt_side_checked())
         self.pushButton_3.setVisible(self.rt_side_checked())
         self.pushButton_4.setVisible(self.lt_side_checked())
