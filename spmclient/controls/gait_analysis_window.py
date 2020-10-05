@@ -18,6 +18,7 @@ from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
 from spmclient.ui.gui.xml.mplcanvas import MplCanvas
 from spmclient.ui.gui.xml.ui_gait_analysis_window import Ui_ui_GaitAnalysisWindow
+from matplotlib.lines import Line2D
 
 
 class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
@@ -28,19 +29,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.controller = controller
         self.setupUi(self)
 
-#         layout = QGridLayout(self.skeletonlabel)
-#         self.skeletonlabel.setLayout(layout)  # Must be called before adding items to the grid layout
-# #         layout.setRowStretch(0,0)
-#         layout.setRowMinimumHeight(0,250)
-# #         layout.setRowStretch(1,2)
-#         layout.addWidget(self.pushButton_1, 1, 0, 1, 1)
-#         layout.addWidget(self.pushButton_4, 1, 1, 1, 1)
-# #         layout.setRowStretch(2,3)
-#         layout.addWidget(self.pushButton_2, 2, 0, 1, 1)
-#         layout.addWidget(self.pushButton_5, 2, 1, 1, 1)
-# #         layout.setRowStretch(3,2)
-#         layout.addWidget(self.pushButton_3, 3, 0, 1, 1)
-#         layout.addWidget(self.pushButton_6, 3, 1, 1, 1)
+        self.data_ligand = dict()
+        self.analysis_ligand = dict()
 
         self.analyse_action_group = QActionGroup(self)
         self.analyse_action_group.setExclusive(False)
@@ -111,7 +101,14 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # TODO tell that on status bar
         pass
 
+
+    def add_line_to_ligand(self, current_task: Dict, data_format: DisplayFormat):
+        title = f'{current_task[consts.SUBJECT]} {current_task[consts.SIDE]}'
+        self.data_ligand[title] = Line2D([0], [0], color=data_format.color(), label=title)
+    
+    
     def show_raw_data(self):
+        self.data_ligand.clear()
         # We can bypass all this section and start with the nested for loops directly
         measurements_to_update = consts.measurement_folder
 
@@ -123,11 +120,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         if DataManager.is_data_available(consts.SUBJECT_AFTER):
             subjects_to_update.append(consts.SUBJECT_AFTER)
 
-        sides_to_update = []
-        if self.rt_side_checked():
-            sides_to_update.append(consts.SIDE_RIGHT)
-        if self.lt_side_checked():
-            sides_to_update.append(consts.SIDE_LEFT)
+#         sides_to_update = []
+#         if self.rt_side_checked():
+#             sides_to_update.append(consts.SIDE_RIGHT)
+#         if self.lt_side_checked():
+#             sides_to_update.append(consts.SIDE_LEFT)
+        sides_to_update = consts.side
         tasks = {
             consts.MEASUREMENT: measurements_to_update,
             consts.SUBJECT: subjects_to_update,
@@ -137,12 +135,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         }
 
         # Draw the raw data
-        for _, meas in enumerate(tasks[consts.MEASUREMENT]):
+        for meas in tasks[consts.MEASUREMENT]:
             if meas == consts.MEASUREMENT_KINEMATICS and not self.actionKinematics.isChecked():
                 continue
             if meas == consts.MEASUREMENT_MOMENTS and not self.actionMoments.isChecked():
                 continue
-            for _, s in enumerate(tasks[consts.SIDE]):
+            for s in tasks[consts.SIDE]:
                 for i_j, j in enumerate(tasks[consts.JOINT]):
                     for i_d, d in enumerate(tasks[consts.DIMENSION]):
                         data_canvas = self.get_target_canvas('data', i_j, i_d, s)
@@ -150,7 +148,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                         # clear it first
                         # data_canvas.figure.clear()
                         data_canvas.ax.clear()
-                        for _, subj in enumerate(tasks[consts.SUBJECT]):
+                        for subj in tasks[consts.SUBJECT]:
                             data_format = DisplayFormat(subj, s)
                             current_task: Dict = {
                                 consts.MEASUREMENT: meas,
@@ -163,7 +161,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             if current_data is not None:
                                 ax: Axes = cast(Axes, data_canvas.ax)
                                 draw_mean_std(current_data, ax, data_format)
+                                self.add_line_to_ligand(current_task, data_format)
                         data_canvas.canvas.draw()
+                        ax = self.legend_data_panel.ax
+                        ax.legend(handles=self.data_ligand.values(), frameon=False, loc='center')
+                        ax.set_axis_off()
+                        self.legend_data_panel.canvas.draw()
 
     def analyse(self, action: QAction):
         print(action.text())
