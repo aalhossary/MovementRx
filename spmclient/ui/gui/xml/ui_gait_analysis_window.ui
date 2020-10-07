@@ -456,7 +456,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLabel" name="label_2">
+            <widget class="QLabel" name="label_addL">
              <property name="text">
               <string>Add. / Abduction</string>
              </property>
@@ -466,7 +466,7 @@
             </widget>
            </item>
            <item row="0" column="2">
-            <widget class="QLabel" name="label_3">
+            <widget class="QLabel" name="label_rotL">
              <property name="text">
               <string>Int. / Ext. rotation</string>
              </property>
@@ -476,7 +476,7 @@
             </widget>
            </item>
            <item row="0" column="0">
-            <widget class="QLabel" name="label_4">
+            <widget class="QLabel" name="label_flexL">
              <property name="text">
               <string>Flex. / Extension</string>
              </property>
@@ -566,16 +566,6 @@
              </property>
              <widget class="MplCanvas" name="mosecanvas12R"/>
              <widget class="MplCanvas" name="spm1dcanvas12R"/>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>Int. / Ext. rotation</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
             </widget>
            </item>
            <item row="2" column="2">
@@ -737,26 +727,6 @@
              </property>
              <widget class="MplCanvas" name="mosecanvas10R"/>
              <widget class="MplCanvas" name="spm1dcanvas10R"/>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Flex. / Extension</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>Add. / Abduction</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
             </widget>
            </item>
            <item row="7" column="1" colspan="2">
@@ -951,6 +921,36 @@
                <width>100</width>
                <height>75</height>
               </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_flexR">
+             <property name="text">
+              <string>Flex. / Extension</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_addR">
+             <property name="text">
+              <string>Add. / Abduction</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_rotR">
+             <property name="text">
+              <string>Int. / Ext. rotation</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
