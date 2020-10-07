@@ -3,9 +3,10 @@ from __future__ import annotations
 from typing import Dict, cast, List
 
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup, QGridLayout
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup
 from matplotlib import cm
 from matplotlib.axes import Axes
+from matplotlib import colorbar
 import spm1d
 
 import matplotlib.pyplot as plt
@@ -19,6 +20,7 @@ from spmclient.ui.gui.DisplayFormat import DisplayFormat
 from spmclient.ui.gui.xml.mplcanvas import MplCanvas
 from spmclient.ui.gui.xml.ui_gait_analysis_window import Ui_ui_GaitAnalysisWindow
 from matplotlib.lines import Line2D
+from matplotlib.image import AxesImage
 
 
 class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
@@ -30,7 +32,6 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.setupUi(self)
 
         self.data_ligand = dict()
-        self.analysis_ligand = dict()
 
         self.analyse_action_group = QActionGroup(self)
         self.analyse_action_group.setExclusive(False)
@@ -101,12 +102,48 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # TODO tell that on status bar
         pass
 
-
     def add_line_to_ligand(self, current_task: Dict, data_format: DisplayFormat):
         title = f'{current_task[consts.SUBJECT]} {current_task[consts.SIDE]}'
-        self.data_ligand[title] = Line2D([0], [0], color=data_format.color(), label=title)
-    
-    
+        self.data_ligand[title] = Line2D([0], [0], linestyle=data_format.line_and_marks(), color=data_format.color(), label=title)
+
+    def add_colorbar_to_legend(self, axes_image):
+        print(f'add_colorbar_to_legend({axes_image})')
+        ax = self.legend_heatmap_panel.ax
+        
+        print("current geometry =", ax.get_geometry())
+        if ax.get_geometry() == (1,1,1):
+            ax.change_geometry(1, 3, 2)
+        
+        
+        ax.clear()
+        
+        figure = self.legend_heatmap_panel.figure
+        figure.gca().set_axis_off()
+        if ax is not figure.gca():
+            print('=======', ax, figure.gca())
+
+        if axes_image:
+            print('Add legend')
+#             print(figure.axes)
+            colorbar = figure.colorbar(axes_image,
+                                               orientation="vertical",
+                                               cax=ax,
+                                               use_gridspec=True,
+                                               fraction=1.0, shrink=1.0,
+#                                                anchor = (0.0, 0.5), panchor = (0.0, 0.5),
+                                               ticks=np.arange(10) + 0.5, 
+#                                                drawedges=True,
+#                                                pad=0.2
+                                               )
+#             print(figure.axes)
+#             colorbar.ax.set_yticklabels(['low', '', '', '', 'mid', '', '', '', 'High', ''])
+            colorbar.ax.set_yticklabels(['low', 'mid', 'High'])
+#             colorbar.ax.get_yaxis().set_ticks([])
+            for j, lab in enumerate(['No effect','Min','Moderate','High']):
+#                 colorbar.ax.text(.5, (4 * j + 2) / 4.0, lab, ha='center', va='center')
+                colorbar.ax.text(2., ((4 * j) / 4.0) + 1., lab, ha='center', va='center')
+        self.legend_heatmap_panel.canvas.draw()
+
     def show_raw_data(self):
         self.data_ligand.clear()
         # We can bypass all this section and start with the nested for loops directly
@@ -120,11 +157,6 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         if DataManager.is_data_available(consts.SUBJECT_AFTER):
             subjects_to_update.append(consts.SUBJECT_AFTER)
 
-#         sides_to_update = []
-#         if self.rt_side_checked():
-#             sides_to_update.append(consts.SIDE_RIGHT)
-#         if self.lt_side_checked():
-#             sides_to_update.append(consts.SIDE_LEFT)
         sides_to_update = consts.side
         tasks = {
             consts.MEASUREMENT: measurements_to_update,
@@ -184,14 +216,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
         self.controller.analyse(analysis, self.alpha)
 
-
-
     def analysis_done(self):
         # TODO show that on status bar, and remove any waiting signs
         pass
 
     def show_analysis_result(self):
-
+        analysis_legend_image = None
         # first show the detailed analysis
         for s in consts.side:
             for i_j, j in enumerate(consts.joint):
@@ -227,7 +257,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                 cast(spm1d.stats._spm.SPMi_T, t2i)
                                 z_values = t2i.z / t2i.zstar
                                 temp_display_data.append(z_values)
-                            draw_heatmap(mose_canvas, temp_display_data)
+                            analysis_legend_image = draw_heatmap(mose_canvas, temp_display_data)
                         spm_canvas.canvas.draw()
                         mose_canvas.canvas.draw()
 
@@ -259,8 +289,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             cast(spm1d.stats._spm.SPMi_T, t2i)
                             z_values = t2i.z / t2i.zstar
                             temp_display_data.append(z_values)
-                        draw_heatmap(joint_canvas, temp_display_data)
+                        analysis_legend_image = draw_heatmap(joint_canvas, temp_display_data)
                 joint_canvas.canvas.draw()
+        self.add_colorbar_to_legend(analysis_legend_image)
 
 
     def display_options_changed(self, action: QAction):
@@ -306,12 +337,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         return mose_canvas
 
     def clear_analysis(self):
-        self.controller.delete_analysis()
         print('clear_analysis')
+        self.controller.delete_analysis()
 
     def clear_all(self):
-        self.controller.delete_data()
         print('clear_all')
+        self.controller.delete_data()
 
 def draw_mean_std(current_data, ax: Axes, display_format: DisplayFormat):
     current_data_mean = current_data.mean(axis=0)
@@ -324,7 +355,7 @@ def draw_mean_std(current_data, ax: Axes, display_format: DisplayFormat):
     y1 = current_data_mean + err
     y2 = current_data_mean - err
     ax.fill_between(x, y1, y2, alpha=0.2, color=display_format.color())
-    print(current_data_mean.shape, ax.lines)
+#     print(current_data_mean.shape, ax.lines)
     ax.autoscale(enable=True, axis='both', tight=True)
     # ax.tight_layout()  # AttributeError: 'AxesSubplot' object has no attribute 'tight_layout'
 
@@ -339,7 +370,7 @@ def draw_inference_plot(spm_canvas: MplCanvas, t2i: spm1d.stats._spm.SPMi_T, dat
 #     spm_canvas.canvas.draw()
 
 
-def draw_heatmap(target_canvas: MplCanvas, temp_list: List) -> None:  # List of what?
+def draw_heatmap(target_canvas: MplCanvas, temp_list: List) -> AxesImage:  # List of what?
     z_array = np.array(temp_list)
     z_array = np.abs(z_array)
     ax: Axes = cast(Axes, target_canvas.ax)
@@ -349,11 +380,12 @@ def draw_heatmap(target_canvas: MplCanvas, temp_list: List) -> None:  # List of 
     if len(temp_list) == 2:
         ax.set_yticks([0, 1])
         ax.set_yticklabels(['Pre', 'Post'])
-    _ = ax.imshow(z_array, interpolation='nearest', cmap=cmap, aspect='auto', vmax=4, vmin=1)  # , norm=norm)
+    ret = ax.imshow(z_array, interpolation='nearest', cmap=cmap, aspect='auto', vmax=4, vmin=1)  # , norm=norm)
 
-    # cbar = ax.figure.colorbar(im, ax=ax, orientation="horizontal",
+    # colorbar = ax.figure.colorbar(im, ax=ax, orientation="horizontal",
     #                           ticks=[0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5],
     #                           pad=0.2)  # set where to put the tick marks
     ax.autoscale(enable=True, axis='both', tight=True)
 #     target_canvas.canvas.draw()
+    return ret
 
