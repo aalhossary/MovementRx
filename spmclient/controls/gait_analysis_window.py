@@ -139,9 +139,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 #             colorbar.ax.set_yticklabels(['low', '', '', '', 'mid', '', '', '', 'High', ''])
             colorbar.ax.set_yticklabels(['low', 'mid', 'High'])
 #             colorbar.ax.get_yaxis().set_ticks([])
-            for j, lab in enumerate(['No effect','Min','Moderate','High']):
+            for j, lab in enumerate(['No effect', '', '', 'Min', '', '', 'Moderate', '', '', '', 'High',]):
 #                 colorbar.ax.text(.5, (4 * j + 2) / 4.0, lab, ha='center', va='center')
-                colorbar.ax.text(2., ((4 * j) / 4.0) + 1., lab, ha='center', va='center')
+                colorbar.ax.text(2.5, ((2.9 * j) / 11) + 1.15, lab, ha='center', va='center')
         self.legend_heatmap_panel.canvas.draw()
 
     def show_raw_data(self):
@@ -374,7 +374,7 @@ def draw_heatmap(target_canvas: MplCanvas, temp_list: List) -> AxesImage:  # Lis
     z_array = np.array(temp_list)
     z_array = np.abs(z_array)
     ax: Axes = cast(Axes, target_canvas.ax)
-    cmap = cm.get_cmap('jet', 11)
+    cmap = cm.get_cmap('coolwarm', 11)
     # norm = colors.BoundaryNorm(np.linspace(0, 10, 11), cmap.N)
     ax.grid(False)
     if len(temp_list) == 2:
