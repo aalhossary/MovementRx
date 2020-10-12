@@ -194,6 +194,11 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                 ax: Axes = cast(Axes, data_canvas.ax)
                                 draw_mean_std(current_data, ax, data_format)
                                 self.add_line_to_ligand(current_task, data_format)
+                                # add vertical line in data
+                                # ---------------
+                                if self.actionKinematics.isChecked():
+                                    data_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
+                                # ---------------
                         data_canvas.canvas.draw()
                         ax = self.legend_data_panel.ax
                         ax.legend(handles=self.data_ligand.values(), frameon=False, loc='center')
@@ -252,12 +257,22 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             # draw each of the data / format pair on the canvas
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
                                 draw_inference_plot(spm_canvas, t2i, data_format=fmt)
+                            # ---------------
+                            if self.actionKinematics.isChecked():
+                                spm_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
+                            # ---------------
+
+                            
                             temp_display_data = []
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
                                 cast(spm1d.stats._spm.SPMi_T, t2i)
                                 z_values = t2i.z / t2i.zstar
                                 temp_display_data.append(z_values)
                             analysis_legend_image = draw_heatmap(mose_canvas, temp_display_data)
+                            # ---------------
+                            if self.actionKinematics.isChecked():
+                                mose_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
+                            # ---------------
                         spm_canvas.canvas.draw()
                         mose_canvas.canvas.draw()
 
@@ -290,6 +305,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             z_values = t2i.z / t2i.zstar
                             temp_display_data.append(z_values)
                         analysis_legend_image = draw_heatmap(joint_canvas, temp_display_data)
+                        # ---------------
+                        if self.actionKinematics.isChecked():
+                            joint_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
+                        # ---------------
                 joint_canvas.canvas.draw()
         self.add_colorbar_to_legend(analysis_legend_image)
 
