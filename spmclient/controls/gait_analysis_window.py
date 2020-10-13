@@ -21,6 +21,8 @@ from spmclient.ui.gui.xml.mplcanvas import MplCanvas
 from spmclient.ui.gui.xml.ui_gait_analysis_window import Ui_ui_GaitAnalysisWindow
 from matplotlib.lines import Line2D
 from matplotlib.image import AxesImage
+from PyQt5.Qt import QRegExp
+from PyQt5.QtCore import QObject
 
 
 class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
@@ -68,6 +70,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.actionNextView.triggered.connect(self.show_next_view)
 
         plt.rcParams['figure.constrained_layout.use'] = True
+        
+        self.show_study_name()
 
     def rt_side_checked(self):
         return self.actionRight_Side.isChecked()
@@ -220,10 +224,17 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             analysis = consts.PRE_VS_POST_TWO_SAMPLE
 
         self.controller.analyse(analysis, self.alpha)
+        
+        self.label_analysis.analysis_name = action.toolTip()
 
     def analysis_done(self):
         # TODO show that on status bar, and remove any waiting signs
         pass
+
+
+    def update_legend_selected_panel_name(self):
+        names = ['Color Bar', 'SPM']
+        self.label_analysis.set_selected_widget_name(names[self.stackedWidget00R.currentIndex()])
 
     def show_analysis_result(self):
         analysis_legend_image = None
@@ -310,18 +321,24 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             joint_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
                         # ---------------
                 joint_canvas.canvas.draw()
+                
+        self.update_legend_selected_panel_name()
         self.add_colorbar_to_legend(analysis_legend_image)
+        self.legend_heatmap_groupbox.setVisible(True)
 
+
+    def show_study_name(self):
+        if self.actionKinematics.isChecked():
+            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Kinematics</span> (deg)</p></body></html>')
+        else:
+            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Moments</span> (Nm/kg)</p></body></html>')
 
     def display_options_changed(self, action: QAction):
         # TODO This method needs redesign, checks, and maybe moved to controller
         print("Full Redraw requested")
         self.show_raw_data()
         self.show_analysis_result()
-        if self.actionKinematics.isChecked():
-            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Kinematics</span> (deg)</p></body></html>')
-        else:
-            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Moments</span> (Nm/kg)</p></body></html>')
+        self.show_study_name()
 
     def visible_sides_changed(self):
         icon_name_list = [':/images/res/']
@@ -341,17 +358,17 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.pushButton_6.setVisible(self.lt_side_checked())
 
     def show_next_view(self):
-        for side in consts.side:
-            for joint in range(3):
-                for dim in range(3):
-                    widget = self.findChild(QStackedWidget, name=f'stackedWidget{joint}{dim}{side}')
-                    widget = cast(QStackedWidget, widget)
+        re = QRegExp('stackedWidget[012][012][RL]')
+        qlist: List[QObject] = self.findChildren(QStackedWidget, re)
+        for widget in qlist:
+            widget = cast(QStackedWidget, widget)
 
-                    index = widget.currentIndex()
-                    index += 1
-                    if index >= widget.count():
-                        index = 0
-                    widget.setCurrentIndex(index)
+            index = widget.currentIndex()
+            index += 1
+            if index >= widget.count():
+                index = 0
+            widget.setCurrentIndex(index)
+        self.update_legend_selected_panel_name()
 
     def get_target_canvas(self, canvas_type: str, i_j: int, i_d: int, side: str) -> MplCanvas:
         # names are datacanvas00R, mosecanvas01R and spm1dcavcas01R
