@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>963</width>
+    <width>1080</width>
     <height>771</height>
    </rect>
   </property>
@@ -1153,7 +1153,7 @@
       <item row="0" column="1" alignment="Qt::AlignHCenter">
        <widget class="QLabel" name="label_study">
         <property name="text">
-         <string>Kinematics (deg) / moments (Nm/kg)</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kinematics&lt;/span&gt; (deg) / &lt;span style=&quot; font-weight:600;&quot;&gt;Moments&lt;/span&gt; (Nm/kg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -1166,7 +1166,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>963</width>
+     <width>1080</width>
      <height>22</height>
     </rect>
    </property>
@@ -1243,7 +1243,7 @@
   </widget>
   <widget class="QDockWidget" name="legend_dock_widget">
    <property name="floating">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="features">
     <set>QDockWidget::AllDockWidgetFeatures</set>
@@ -1258,7 +1258,14 @@
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="legend_widget_contents_layout">
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;X&lt;/span&gt;, &lt;span style=&quot; font-weight:600;&quot;&gt;Y&lt;/span&gt;, &lt;span style=&quot; font-weight:600;&quot;&gt;Z&lt;/span&gt; components&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;SPM{T}&lt;/span&gt; / &lt;span style=&quot; font-weight:600;&quot;&gt;Colorbar {T}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Colorbar{T&lt;/span&gt;&lt;span style=&quot; font-weight:600; vertical-align:super;&quot;&gt;2&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;}&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QGroupBox" name="legend_data_groupbox">
        <property name="title">

@@ -318,6 +318,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         print("Full Redraw requested")
         self.show_raw_data()
         self.show_analysis_result()
+        if self.actionKinematics.isChecked():
+            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Kinematics</span> (deg)</p></body></html>')
+        else:
+            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Moments</span> (Nm/kg)</p></body></html>')
 
     def visible_sides_changed(self):
         icon_name_list = [':/images/res/']
