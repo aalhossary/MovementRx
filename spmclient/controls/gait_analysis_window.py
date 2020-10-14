@@ -24,6 +24,8 @@ from matplotlib.lines import Line2D
 from matplotlib.image import AxesImage
 from PyQt5.Qt import QRegExp
 from PyQt5.QtCore import QObject
+import os
+from pathlib import Path
 
 
 class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
@@ -62,14 +64,13 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.sides_action_group.triggered[QAction].connect(self.visible_sides_changed)
         
         self.show_hide_joint_button_group = QButtonGroup(self)
+        self.show_hide_joint_button_group.setExclusive(False) #  Must be set before adding any buttons
         self.show_hide_joint_button_group.addButton(self.pushButton_0R)
         self.show_hide_joint_button_group.addButton(self.pushButton_1R)
         self.show_hide_joint_button_group.addButton(self.pushButton_2R)
         self.show_hide_joint_button_group.addButton(self.pushButton_0L)
         self.show_hide_joint_button_group.addButton(self.pushButton_1L)
         self.show_hide_joint_button_group.addButton(self.pushButton_2L)
-        # TODO add more
-        self.show_hide_joint_button_group.setExclusive(False)
         self.show_hide_joint_button_group.buttonClicked.connect(self.joint_button_clicked)
 
         
@@ -85,13 +86,27 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
         plt.rcParams['figure.constrained_layout.use'] = True
         
+        self.set_analysis_visible(False)
+        
         self.show_study_name()
+
+    def set_analysis_visible(self, show: bool):
+        re = QRegExp('joint[012][RL]')
+        qlist: List[QObject] = self.findChildren(MplCanvas, re)
+        for widget in qlist:
+#             print('set', widget.objectName(), 'visibility to', show)
+            widget.setVisible(show)
+        
+        re = QRegExp('stackedWidget[012][012][RL]')
+        qlist: List[QObject] = self.findChildren(QStackedWidget, re)
+        for widget in qlist:
+#             print('set', widget.objectName(), 'visibility to', show)
+            widget.setVisible(show)
+
 
     def joint_button_clicked(self, button: QAbstractButton):
         suffix = button.objectName()[-3:]
-        print(suffix)
         widget = self.findChild(QWidget, 'widget'+suffix)
-        print(str(widget))
         widget.setVisible(button.isChecked())
         
     def rt_side_checked(self):
@@ -103,23 +118,22 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
     # TODO merge load_reference, load_before_intervention, load_after_intervention
     def load_reference(self):
         file_dialog = QFileDialog(self)
-        dir_name = file_dialog.getExistingDirectory(self, caption="Select reference data root folder", directory='./')
-        # print("selected", dir_name)
+        d = Path(__file__).parents[2] / 'res/RefData'
+        dir_name = file_dialog.getExistingDirectory(self, caption="Select reference data root folder", directory=str(d))
         loaded_data = load_full_folder(dir_name)
         self.controller.set_data(loaded_data, consts.SUBJECT_REF)
 
     def load_before_intervention(self):
         file_dialog = QFileDialog(self)
-        dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of preoperative data", directory='./')
-        # print("selected", dir_name)
+        d = Path(__file__).parents[2] / 'res/cases/Lam'
+        dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of preintervension data", directory=str(d))
         loaded_data = load_full_folder(dir_name)
         self.controller.set_data(loaded_data, consts.SUBJECT_B4)
 
     def load_after_intervention(self):
         file_dialog = QFileDialog(self)
-        dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of postoperative data",
-                                                    directory='./')
-        # print("selected", dir_name)
+        d = Path(__file__).parents[2] / 'res/cases/Lam'
+        dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of postintervension data", directory=str(d))
         loaded_data = load_full_folder(dir_name)
         self.controller.set_data(loaded_data, consts.SUBJECT_AFTER)
 
@@ -220,10 +234,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                 draw_mean_std(current_data, ax, data_format)
                                 self.add_line_to_ligand(current_task, data_format)
                                 # add vertical line in data
-                                # ---------------
                                 if self.actionKinematics.isChecked():
                                     data_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
-                                # ---------------
                         data_canvas.canvas.draw()
                         ax = self.legend_data_panel.ax
                         ax.legend(handles=self.data_ligand.values(), frameon=False, loc='center')
@@ -250,7 +262,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
     def analysis_done(self):
         # TODO show that on status bar, and remove any waiting signs
-        pass
+        self.set_analysis_visible(True)
 
 
     def update_legend_selected_panel_name(self):
@@ -289,11 +301,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             # draw each of the data / format pair on the canvas
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
                                 draw_inference_plot(spm_canvas, t2i, data_format=fmt)
-                            # ---------------
+                            # Add vertical line
                             if self.actionKinematics.isChecked():
                                 spm_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
-                            # ---------------
-
                             
                             temp_display_data = []
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
@@ -301,10 +311,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                 z_values = t2i.z / t2i.zstar
                                 temp_display_data.append(z_values)
                             analysis_legend_image = draw_heatmap(mose_canvas, temp_display_data)
-                            # ---------------
+                            # Add vertical line
                             if self.actionKinematics.isChecked():
                                 mose_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
-                            # ---------------
                         spm_canvas.canvas.draw()
                         mose_canvas.canvas.draw()
 
@@ -337,10 +346,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             z_values = t2i.z / t2i.zstar
                             temp_display_data.append(z_values)
                         analysis_legend_image = draw_heatmap(joint_canvas, temp_display_data)
-                        # ---------------
+                        # Add vertical line
                         if self.actionKinematics.isChecked():
                             joint_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
-                        # ---------------
                 joint_canvas.canvas.draw()
                 
         self.update_legend_selected_panel_name()
@@ -371,12 +379,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # self.skeletonlabel.setPixmap(QtGui.QPixmap(":/images/res/RTLT_legSelected.png"))
         self.skeletonlabel.setPixmap(QtGui.QPixmap(''.join(icon_name_list)))
 
-        self.pushButton_1.setVisible(self.rt_side_checked())
-        self.pushButton_2.setVisible(self.rt_side_checked())
-        self.pushButton_3.setVisible(self.rt_side_checked())
-        self.pushButton_4.setVisible(self.lt_side_checked())
-        self.pushButton_5.setVisible(self.lt_side_checked())
-        self.pushButton_6.setVisible(self.lt_side_checked())
+        self.pushButton_0R.setVisible(self.rt_side_checked())
+        self.pushButton_1R.setVisible(self.rt_side_checked())
+        self.pushButton_2R.setVisible(self.rt_side_checked())
+        self.pushButton_0L.setVisible(self.lt_side_checked())
+        self.pushButton_1L.setVisible(self.lt_side_checked())
+        self.pushButton_2L.setVisible(self.lt_side_checked())
 
     def show_next_view(self):
         re = QRegExp('stackedWidget[012][012][RL]')
@@ -399,6 +407,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
     def clear_analysis(self):
         print('clear_analysis')
+        self.set_analysis_visible(False)
         self.controller.delete_analysis()
 
     def clear_all(self):
