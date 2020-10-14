@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1080</width>
+    <width>1489</width>
     <height>771</height>
    </rect>
   </property>
@@ -1032,7 +1032,7 @@
             <number>0</number>
            </property>
            <item row="2" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_2">
+            <widget class="RoundCirclePushButton" name="pushButton_1R">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1051,7 +1051,7 @@
             </widget>
            </item>
            <item row="3" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_3">
+            <widget class="RoundCirclePushButton" name="pushButton_2R">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1070,7 +1070,7 @@
             </widget>
            </item>
            <item row="3" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_6">
+            <widget class="RoundCirclePushButton" name="pushButton_2L">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1089,7 +1089,7 @@
             </widget>
            </item>
            <item row="2" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_5">
+            <widget class="RoundCirclePushButton" name="pushButton_1L">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1108,7 +1108,7 @@
             </widget>
            </item>
            <item row="1" column="0" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_1">
+            <widget class="RoundCirclePushButton" name="pushButton_0R">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1127,7 +1127,7 @@
             </widget>
            </item>
            <item row="1" column="1" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_4">
+            <widget class="RoundCirclePushButton" name="pushButton_0L">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1166,8 +1166,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1080</width>
-     <height>22</height>
+     <width>1489</width>
+     <height>36</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
