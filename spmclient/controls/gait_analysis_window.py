@@ -3,7 +3,8 @@ from __future__ import annotations
 from typing import Dict, cast, List
 
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup,\
+    QButtonGroup, QAbstractButton, QWidget
 from matplotlib import cm
 from matplotlib.axes import Axes
 from matplotlib import colorbar
@@ -59,6 +60,19 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.actionRight_Side.setChecked(params.get(consts.RT_SIDE_CHECKED, False))
         self.actionLeft_Side.setChecked(params.get(consts.LT_SIDE_CHECKED, False))
         self.sides_action_group.triggered[QAction].connect(self.visible_sides_changed)
+        
+        self.show_hide_joint_button_group = QButtonGroup(self)
+        self.show_hide_joint_button_group.addButton(self.pushButton_0R)
+        self.show_hide_joint_button_group.addButton(self.pushButton_1R)
+        self.show_hide_joint_button_group.addButton(self.pushButton_2R)
+        self.show_hide_joint_button_group.addButton(self.pushButton_0L)
+        self.show_hide_joint_button_group.addButton(self.pushButton_1L)
+        self.show_hide_joint_button_group.addButton(self.pushButton_2L)
+        # TODO add more
+        self.show_hide_joint_button_group.setExclusive(False)
+        self.show_hide_joint_button_group.buttonClicked.connect(self.joint_button_clicked)
+
+        
 
         self.alpha = params.get(consts.ALPHA)
 
@@ -73,6 +87,13 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         
         self.show_study_name()
 
+    def joint_button_clicked(self, button: QAbstractButton):
+        suffix = button.objectName()[-3:]
+        print(suffix)
+        widget = self.findChild(QWidget, 'widget'+suffix)
+        print(str(widget))
+        widget.setVisible(button.isChecked())
+        
     def rt_side_checked(self):
         return self.actionRight_Side.isChecked()
 
@@ -139,10 +160,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 #                                                drawedges=True,
 #                                                pad=0.2
                                                )
-#             print(figure.axes)
-#             colorbar.ax.set_yticklabels(['low', '', '', '', 'mid', '', '', '', 'High', ''])
-            colorbar.ax.set_yticklabels(['low', 'mid', 'High'])
-#             colorbar.ax.get_yaxis().set_ticks([])
+# #             print(figure.axes)
+# #             colorbar.ax.set_yticklabels(['low', '', '', '', 'mid', '', '', '', 'High', ''])
+#             colorbar.ax.set_yticklabels(['low', 'mid', 'High'])
+# #             colorbar.ax.get_yaxis().set_ticks([])
             for j, lab in enumerate(['No effect', '', '', 'Min', '', '', 'Moderate', '', '', '', 'High',]):
 #                 colorbar.ax.text(.5, (4 * j + 2) / 4.0, lab, ha='center', va='center')
                 colorbar.ax.text(2.5, ((2.9 * j) / 11) + 1.15, lab, ha='center', va='center')

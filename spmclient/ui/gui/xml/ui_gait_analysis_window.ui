@@ -522,405 +522,17 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <layout class="QGridLayout" name="gridLayout_5" rowstretch="0,3,3,1,0,3,3,1,0,3,3,1">
+          <layout class="QGridLayout" name="gridLayout_5" rowstretch="0,7,0,7,0,7">
            <property name="spacing">
             <number>0</number>
            </property>
-           <item row="2" column="0">
-            <widget class="QStackedWidget" name="stackedWidget00R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="MplCanvas" name="mosecanvas00R"/>
-             <widget class="MplCanvas" name="spm1dcanvas00R"/>
-            </widget>
-           </item>
-           <item row="6" column="2">
-            <widget class="QStackedWidget" name="stackedWidget12R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>3</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="MplCanvas" name="mosecanvas12R"/>
-             <widget class="MplCanvas" name="spm1dcanvas12R"/>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QStackedWidget" name="stackedWidget02R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>3</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="MplCanvas" name="mosecanvas02R"/>
-             <widget class="MplCanvas" name="spm1dcanvas02R"/>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_5">
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_addR">
              <property name="text">
-              <string/>
+              <string>Add. / Abduction</string>
              </property>
-            </widget>
-           </item>
-           <item row="10" column="2">
-            <widget class="QStackedWidget" name="stackedWidget22R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>3</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="MplCanvas" name="mosecanvas22R"/>
-             <widget class="MplCanvas" name="spm1dcanvas22R"/>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="QStackedWidget" name="stackedWidget11R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="MplCanvas" name="mosecanvas11R"/>
-             <widget class="MplCanvas" name="spm1dcanvas11R"/>
-            </widget>
-           </item>
-           <item row="10" column="1">
-            <widget class="QStackedWidget" name="stackedWidget21R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="MplCanvas" name="mosecanvas21R"/>
-             <widget class="MplCanvas" name="spm1dcanvas21R"/>
-            </widget>
-           </item>
-           <item row="10" column="0">
-            <widget class="QStackedWidget" name="stackedWidget20R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="MplCanvas" name="mosecanvas20R"/>
-             <widget class="MplCanvas" name="spm1dcanvas20R"/>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QStackedWidget" name="stackedWidget01R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="MplCanvas" name="mosecanvas01R"/>
-             <widget class="MplCanvas" name="spm1dcanvas01R"/>
-            </widget>
-           </item>
-           <item row="8" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0">
-            <widget class="QStackedWidget" name="stackedWidget10R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="MplCanvas" name="mosecanvas10R"/>
-             <widget class="MplCanvas" name="spm1dcanvas10R"/>
-            </widget>
-           </item>
-           <item row="7" column="1" colspan="2">
-            <widget class="MplCanvas" name="joint1R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>130</width>
-               <height>30</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="11" column="1" colspan="2">
-            <widget class="MplCanvas" name="joint2R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>130</width>
-               <height>30</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="2">
-            <widget class="MplCanvas" name="datacanvas12R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>3</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="MplCanvas" name="datacanvas01R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="MplCanvas" name="datacanvas00R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="MplCanvas" name="datacanvas11R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="MplCanvas" name="datacanvas02R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>3</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="2">
-            <widget class="MplCanvas" name="datacanvas22R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>3</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="MplCanvas" name="datacanvas10R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1" colspan="2">
-            <widget class="MplCanvas" name="joint0R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>130</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="autoFillBackground">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="0">
-            <widget class="MplCanvas" name="datacanvas20R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="1">
-            <widget class="MplCanvas" name="datacanvas21R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>75</height>
-              </size>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -928,16 +540,6 @@
             <widget class="QLabel" name="label_flexR">
              <property name="text">
               <string>Flex. / Extension</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_addR">
-             <property name="text">
-              <string>Add. / Abduction</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -952,6 +554,422 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="3">
+            <widget class="QWidget" name="widget_1R" native="true">
+             <layout class="QGridLayout" name="gridLayout_10" rowstretch="3,3,1">
+              <item row="1" column="0">
+               <widget class="QStackedWidget" name="stackedWidget10R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas10R"/>
+                <widget class="MplCanvas" name="spm1dcanvas10R"/>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QStackedWidget" name="stackedWidget12R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas12R"/>
+                <widget class="MplCanvas" name="spm1dcanvas12R"/>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QStackedWidget" name="stackedWidget11R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas11R"/>
+                <widget class="MplCanvas" name="spm1dcanvas11R"/>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="MplCanvas" name="datacanvas10R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1" colspan="2">
+               <widget class="MplCanvas" name="joint1R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>130</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="MplCanvas" name="datacanvas12R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="MplCanvas" name="datacanvas11R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="3">
+            <widget class="QWidget" name="widget_2R" native="true">
+             <layout class="QGridLayout" name="gridLayout_6" rowstretch="3,3,1">
+              <item row="0" column="0">
+               <widget class="MplCanvas" name="datacanvas20R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="MplCanvas" name="datacanvas21R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="MplCanvas" name="datacanvas22R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QStackedWidget" name="stackedWidget20R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas20R"/>
+                <widget class="MplCanvas" name="spm1dcanvas20R"/>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QStackedWidget" name="stackedWidget21R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas21R"/>
+                <widget class="MplCanvas" name="spm1dcanvas21R"/>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QStackedWidget" name="stackedWidget22R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas22R"/>
+                <widget class="MplCanvas" name="spm1dcanvas22R"/>
+               </widget>
+              </item>
+              <item row="2" column="1" colspan="2">
+               <widget class="MplCanvas" name="joint2R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>130</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="3">
+            <widget class="QWidget" name="widget_0R" native="true">
+             <layout class="QGridLayout" name="gridLayout_2" rowstretch="3,3,1">
+              <item row="1" column="0">
+               <widget class="QStackedWidget" name="stackedWidget00R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas00R"/>
+                <widget class="MplCanvas" name="spm1dcanvas00R"/>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QStackedWidget" name="stackedWidget02R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas02R"/>
+                <widget class="MplCanvas" name="spm1dcanvas02R"/>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QStackedWidget" name="stackedWidget01R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas01R"/>
+                <widget class="MplCanvas" name="spm1dcanvas01R"/>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="MplCanvas" name="datacanvas01R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="MplCanvas" name="datacanvas00R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1" colspan="2">
+               <widget class="MplCanvas" name="joint0R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>130</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="MplCanvas" name="datacanvas02R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
