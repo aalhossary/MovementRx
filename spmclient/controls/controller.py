@@ -9,7 +9,7 @@ class Controller(metaclass=ABCMeta):
     def update_graphs(self, data: Dict = None, tasks: Dict = None):
         raise NotImplementedError()
 
-    def analyse(self, analysis: str, alpha: float):
+    def analyse(self, analysis: str, alpha: float, ankle_x_only):
         raise NotImplementedError()
 
     def delete_data(self):

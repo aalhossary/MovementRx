@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from builtins import classmethod
-from typing import Dict, Union, cast
+from typing import Dict, Union, cast, Optional
 
 import numpy as np
 from spmclient import consts
@@ -30,11 +30,11 @@ class DataManager:
         """merge or update self._raw_data according to the path"""
         data_renamed_subject = DataManager._rename_subject(data_original_subject, subject)
 
-        # TODO remove the test code
-        # ------------------------- TEST CODE START----------------------
-        if subject == consts.SUBJECT_AFTER:
-            cls.removeme_divide_subject_data_by_two(data_renamed_subject, subject)
-        # ------------------------- TEST CODE END -----------------------
+#         # TODO remove the test code
+#         # ------------------------- TEST CODE START----------------------
+#         if subject == consts.SUBJECT_AFTER:
+#             cls.removeme_divide_subject_data_by_two(data_renamed_subject, subject)
+#         # ------------------------- TEST CODE END -----------------------
 
         DataManager.merge_subject(cls._raw_data, data_renamed_subject)
         cls._data_available_flags[subject] = True
@@ -77,22 +77,22 @@ class DataManager:
 
     @classmethod
     def get_multiples_from_data(cls, path: Dict = None, satisfy_missing_path_with_any: bool = False) \
-            -> Union[np.ndarray, None]:
+            -> Optional[np.ndarray]:
         return cls._get_multiples(cls._raw_data, path, satisfy_missing_path_with_any)
     
     @classmethod
     def get_multiples_from_analysis_data(cls, path: Dict = None) \
-            -> Union[np.ndarray, None]:
+            -> Optional[np.ndarray]:
         return cls._get_multiples(cls._analysis_data, path, has_subject=False)
     
     @classmethod
     def get_multiples_from_analysis_data_compact(cls, path: Dict = None) \
-            -> Union[np.ndarray, None]:
+            -> Optional[np.ndarray]:
         return cls._get_multiples(cls._analysis_data_compact, path, has_subject=False, has_dimension=False)
     
     @classmethod
     def _get_multiples(cls, data: Dict = None, path: Dict = None, satisfy_missing_path_with_any: bool = False, has_subject = True, has_dimension = True) \
-            -> Union[np.ndarray, None]:
+            -> Optional[np.ndarray]:
 #         if not data:
 #             data = cls._raw_data
         try:

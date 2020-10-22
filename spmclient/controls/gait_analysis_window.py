@@ -127,14 +127,14 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         file_dialog = QFileDialog(self)
         d = Path(__file__).parents[2] / 'res/cases/Lam'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of preintervension data", directory=str(d))
-        loaded_data = load_full_folder(dir_name)
+        loaded_data = load_full_folder(dir_name, scale=True)
         self.controller.set_data(loaded_data, consts.SUBJECT_B4)
 
     def load_after_intervention(self):
         file_dialog = QFileDialog(self)
         d = Path(__file__).parents[2] / 'res/cases/Lam'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of postintervension data", directory=str(d))
-        loaded_data = load_full_folder(dir_name)
+        loaded_data = load_full_folder(dir_name, scale=True)
         self.controller.set_data(loaded_data, consts.SUBJECT_AFTER)
 
     def data_loaded(self, data: Dict):
@@ -229,7 +229,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                 consts.DIMENSION: d
                             }
                             current_data = DataManager.get_multiples_from_data(path=current_task)
-                            if current_data is not None:
+                            if current_data is not None and len(current_data):
                                 ax: Axes = cast(Axes, data_canvas.ax)
                                 draw_mean_std(current_data, ax, data_format)
                                 self.add_line_to_ligand(current_task, data_format)
@@ -256,7 +256,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         elif action == self.actionTwo_Sample:  # Pre Vs. Post
             analysis = consts.PRE_VS_POST_TWO_SAMPLE
 
-        self.controller.analyse(analysis, self.alpha)
+        self.controller.analyse(analysis, self.alpha, ankle_x_only=True)
         
         self.label_analysis.analysis_name = action.toolTip()
 
@@ -269,12 +269,16 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         names = ['Color Bar', 'SPM']
         self.label_analysis.set_selected_widget_name(names[self.stackedWidget00R.currentIndex()])
 
-    def show_analysis_result(self):
+    def show_analysis_result(self, ankle_x_only=False):
         analysis_legend_image = None
         # first show the detailed analysis
         for s in consts.side:
             for i_j, j in enumerate(consts.joint):
                 for i_d, d in enumerate(consts.dim):
+                    
+                    if ankle_x_only and i_j == 2 and i_d:  # > 0:
+                        continue
+                    
                     # get the canvases
                     spm_canvas = self.get_target_canvas('spm1d', i_j, i_d, side=s)
                     mose_canvas = self.get_target_canvas('mose', i_j, i_d, side=s)
@@ -320,6 +324,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # Then show the compact analysis
         for s in consts.side:
             for i_j, j in enumerate(consts.joint):
+                
+                if ankle_x_only and i_j == 2:
+                    continue
+                
                 # get the canvas
                 joint_canvas = self.findChild(MplCanvas, name=f'joint{i_j}{s}')
                 joint_canvas = cast(MplCanvas, joint_canvas)
@@ -366,7 +374,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # TODO This method needs redesign, checks, and maybe moved to controller
         print("Full Redraw requested")
         self.show_raw_data()
-        self.show_analysis_result()
+        self.show_analysis_result(ankle_x_only=True)
         self.show_study_name()
 
     def visible_sides_changed(self):

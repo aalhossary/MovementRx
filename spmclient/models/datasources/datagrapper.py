@@ -19,7 +19,7 @@ def load_file(file: Path) -> np.ndarray:
     return data
 
 
-def load_full_folder(root_path: Union[Path, str]) -> Dict:
+def load_full_folder(root_path: Union[Path, str], scale=False) -> Dict:
     """Return the data in the order (Measurement, subject (person), side, joint, dimension"""
     # print('starting to load full folder')
     ret_dict = dict()
@@ -44,6 +44,19 @@ def load_full_folder(root_path: Union[Path, str]) -> Dict:
                 subject_dict = measurement_dict.setdefault(subj, dict())
                 side_dict = subject_dict.setdefault(s, dict())
                 joint_dict = side_dict.setdefault(j, dict())
-                joint_dict[dim] = load_file(f)
+                temp_data = load_file(f)
+                
+                # -------- test start------------------
+                if scale and measurment == consts.MEASUREMENT_MOMENTS:
+                    temp_data *= 16.5
+                # -------- test end ------------------
+
+                #  TODO This condition should be replaced with a permanent data format
+                if len(temp_data):
+                    shape = temp_data.shape
+                    if shape[1] < 95:
+                        temp_data = temp_data.transpose()
+                
+                joint_dict[dim] = temp_data
 
     return ret_dict

@@ -34,7 +34,7 @@ class App(Controller):
         self._display_manager.data_loaded(data)
         self._display_manager.show_raw_data()
 
-    def analyse(self, analysis: str, alpha: float):
+    def analyse(self, analysis: str, alpha: float, ankle_x_only=False):
         TTEST_2 = 'ttest2'
         TTEST_PAIRED = 'ttest_paired'
         HOTELLINGS_2 = 'hotellings2'
@@ -68,9 +68,13 @@ class App(Controller):
             measurement_detailed_dict = detailed_analysis_data.setdefault(meas, dict())
             for _, s in enumerate(consts.side):
                 side_detailed_dict = measurement_detailed_dict.setdefault(s, dict())
-                for _, j in enumerate(consts.joint):
+                for i_j, j in enumerate(consts.joint):
                     joint_detailed_dict = side_detailed_dict.setdefault(j, dict())
                     for i_d, d in enumerate(consts.dim):
+                    
+                        if ankle_x_only and i_j == 2 and i_d:  # > 0:
+                            continue
+                    
                         # dimension_detailed_dict = joint_detailed_dict.setdefault(d, dict())
                         temp_display_data_list = []
                         temp_display_fmat_list = []
@@ -107,7 +111,11 @@ class App(Controller):
             measurement_compact_dict = compact_analysis_data.setdefault(meas, dict())
             for _, s in enumerate(consts.side):
                 side_compact_dict = measurement_compact_dict.setdefault(s, dict())
-                for _, j in enumerate(consts.joint):
+                for i_j, j in enumerate(consts.joint):
+                    
+                    if ankle_x_only and i_j == 2:
+                        continue
+                    
                     # joint_compact_dict = side_compact_dict.setdefault(j, dict())
                     temp_display_data_list = []
                     temp_display_fmat_list = []
@@ -155,7 +163,7 @@ class App(Controller):
         DataManager.set_analysis_data_compact(compact_analysis_data)
         self._display_manager.analysis_done()
 
-        self._display_manager.show_analysis_result()
+        self._display_manager.show_analysis_result(ankle_x_only=ankle_x_only)
 
     def delete_data(self):
         self.delete_analysis()
