@@ -1,17 +1,22 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Dict, cast, List
 
 from PyQt5 import QtGui
+from PyQt5.Qt import QRegExp
+from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup,\
     QButtonGroup, QAbstractButton, QWidget
 from matplotlib import cm
-from matplotlib.axes import Axes
 from matplotlib import colorbar
-import spm1d
+from matplotlib.axes import Axes
+from matplotlib.image import AxesImage
+from matplotlib.lines import Line2D
 
 import matplotlib.pyplot as plt
 import numpy as np
+import spm1d
 from spmclient import consts
 from spmclient.controls.controller import Controller
 from spmclient.models.data_manager import DataManager
@@ -20,12 +25,6 @@ from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
 from spmclient.ui.gui.xml.mplcanvas import MplCanvas
 from spmclient.ui.gui.xml.ui_gait_analysis_window import Ui_ui_GaitAnalysisWindow
-from matplotlib.lines import Line2D
-from matplotlib.image import AxesImage
-from PyQt5.Qt import QRegExp
-from PyQt5.QtCore import QObject
-import os
-from pathlib import Path
 
 
 class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
@@ -118,21 +117,21 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
     # TODO merge load_reference, load_before_intervention, load_after_intervention
     def load_reference(self):
         file_dialog = QFileDialog(self)
-        d = Path(__file__).parents[2] / 'res/RefData'
+        d = Path(__file__).parents[2] / 'res/refDataScaled'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select reference data root folder", directory=str(d))
         loaded_data = load_full_folder(dir_name)
         self.controller.set_data(loaded_data, consts.SUBJECT_REF)
 
     def load_before_intervention(self):
         file_dialog = QFileDialog(self)
-        d = Path(__file__).parents[2] / 'res/cases/Lam'
+        d = Path(__file__).parents[2] / 'res/cases/subj1_pre'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of preintervension data", directory=str(d))
         loaded_data = load_full_folder(dir_name, scale=True)
         self.controller.set_data(loaded_data, consts.SUBJECT_B4)
 
     def load_after_intervention(self):
         file_dialog = QFileDialog(self)
-        d = Path(__file__).parents[2] / 'res/cases/Lam'
+        d = Path(__file__).parents[2] / 'res/cases/subj1_post'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of postintervension data", directory=str(d))
         loaded_data = load_full_folder(dir_name, scale=True)
         self.controller.set_data(loaded_data, consts.SUBJECT_AFTER)
