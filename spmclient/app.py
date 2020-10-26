@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import sys
-from typing import Dict, Tuple
+from typing import Dict, Tuple, cast
 
 from PyQt5.QtWidgets import QApplication
 import spm1d
@@ -97,6 +97,15 @@ class App(Controller):
                             }
                             data_yb = DataManager.get_multiples_from_data(path=task_yb)
                             if data_ya is not None and data_yb is not None:
+                                # ============= Test unequal array length start ==============
+                                if subject_a == consts.SUBJECT_REF and meas == consts.MEASUREMENT_KINEMATICS:
+                                    offset = 0  # To change later if needed
+                                    tail = data_ya.shape[1] - offset - data_yb.shape[1]
+                                    tail_avr = np.average(data_ya[:, -tail:], axis=0)
+                                    temp_b_tail = np.empty(shape=(data_yb.shape[0], tail))
+                                    temp_b_tail[:] = tail_avr[:]
+                                    data_yb = np.concatenate((data_yb, temp_b_tail), axis=1)
+                                # ============= Test unequal array length End  ==============
                                 spm_t = do_spm_test(data_ya, data_yb, test_names[0])
                                 spmi_t, _ = infer_z(spm_t, alpha)
                                 temp_display_data_list.append(spmi_t)
@@ -153,6 +162,15 @@ class App(Controller):
                             data_yb[:, :, i_d] = temp_joint_dimension_multiple
 
                         if data_ya is not None and data_yb is not None:
+                            # ============= Test unequal array length start ==============
+                            if subject_a == consts.SUBJECT_REF and meas == consts.MEASUREMENT_KINEMATICS:
+                                offset = 0  # To change later if needed
+                                tail = data_ya.shape[1] - offset - data_yb.shape[1]
+                                tail_avr = np.average(data_ya[:, -tail:], axis=0)
+                                temp_b_tail = np.empty(shape=(data_yb.shape[0], tail, 3))
+                                temp_b_tail[:] = tail_avr[:]
+                                data_yb = np.concatenate((data_yb, temp_b_tail), axis=1)
+                            # ============= Test unequal array length End  ==============
                             spm_t = do_spm_test(data_ya, data_yb, test_names[1])
                             spmi_t, _ = infer_z(spm_t, alpha)
                             temp_display_data_list.append(spmi_t)

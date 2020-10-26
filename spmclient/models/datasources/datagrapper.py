@@ -54,7 +54,7 @@ def load_full_folder(root_path: Union[Path, str], scale=False) -> Dict:
                 #  TODO This condition should be replaced with a permanent data format
                 if len(temp_data):
                     shape = temp_data.shape
-                    if shape[1] < 95:
+                    if shape[1] < 50:
                         temp_data = temp_data.transpose()
                 
                 joint_dict[dim] = temp_data

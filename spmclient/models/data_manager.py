@@ -47,14 +47,14 @@ class DataManager:
     def set_analysis_data_compact(cls, analysis_data_compact):
         cls._analysis_data_compact = analysis_data_compact
 
-    @classmethod
-    def removeme_divide_subject_data_by_two(cls, data, subject):
-        for measurement_dict in data.values():
-            subject_dict: Dict = measurement_dict[subject]
-            for side_dict in subject_dict.values():
-                for joint_dict in side_dict.values():
-                    for dim in joint_dict.values():
-                        dim /= 2
+    # @classmethod
+    # def removeme_divide_subject_data_by_two(cls, data, subject):
+    #     for measurement_dict in data.values():
+    #         subject_dict: Dict = measurement_dict[subject]
+    #         for side_dict in subject_dict.values():
+    #             for joint_dict in side_dict.values():
+    #                 for dim in joint_dict.values():
+    #                     dim /= 2
 
     @classmethod
     def is_data_available(cls, subject: str) -> bool:
