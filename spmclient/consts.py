@@ -9,9 +9,9 @@ MEASUREMENT_KINEMATICS = 'kinematic'
 MEASUREMENT_MOMENTS = 'moment'
 measurement_folder = ['kinematic', 'moment']
 
-SUBJECT_REF = 'Ref'
-SUBJECT_B4 = 'Before Surgery'
-SUBJECT_AFTER = 'After Surgery'
+SUBJECT_REF = 'Reference'
+SUBJECT_B4 = 'Preintervention'
+SUBJECT_AFTER = 'Postintervension'
 subject = [SUBJECT_REF, SUBJECT_B4, SUBJECT_AFTER]
 # subject = ['Ref', 'Lam', 'After Surgery']
 SIDE_RIGHT = 'R'

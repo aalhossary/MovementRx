@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1489</width>
-    <height>815</height>
+    <width>1303</width>
+    <height>748</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -878,6 +878,101 @@
               <property name="spacing">
                <number>0</number>
               </property>
+              <item row="2" column="0">
+               <widget class="QStackedWidget" name="stackedWidget20R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas20R"/>
+                <widget class="MplCanvas" name="spm1dcanvas20R"/>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QStackedWidget" name="stackedWidget22R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas22R"/>
+                <widget class="MplCanvas" name="spm1dcanvas22R"/>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_3">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Right Ankle</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QStackedWidget" name="stackedWidget21R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas21R"/>
+                <widget class="MplCanvas" name="spm1dcanvas21R"/>
+               </widget>
+              </item>
+              <item row="3" column="1" colspan="2">
+               <widget class="MplCanvas" name="joint2R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>130</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
               <item row="0" column="0">
                <widget class="MplCanvas" name="datacanvas20R" native="true">
                 <property name="sizePolicy">
@@ -923,101 +1018,6 @@
                   <width>100</width>
                   <height>75</height>
                  </size>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QStackedWidget" name="stackedWidget20R">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-                <property name="currentIndex">
-                 <number>1</number>
-                </property>
-                <widget class="MplCanvas" name="mosecanvas20R"/>
-                <widget class="MplCanvas" name="spm1dcanvas20R"/>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QStackedWidget" name="stackedWidget21R">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-                <property name="currentIndex">
-                 <number>1</number>
-                </property>
-                <widget class="MplCanvas" name="mosecanvas21R"/>
-                <widget class="MplCanvas" name="spm1dcanvas21R"/>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <widget class="QStackedWidget" name="stackedWidget22R">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>3</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-                <property name="currentIndex">
-                 <number>1</number>
-                </property>
-                <widget class="MplCanvas" name="mosecanvas22R"/>
-                <widget class="MplCanvas" name="spm1dcanvas22R"/>
-               </widget>
-              </item>
-              <item row="2" column="1" colspan="2">
-               <widget class="MplCanvas" name="joint2R" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>1</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>130</width>
-                  <height>30</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_3">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>50</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Right Ankle</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -1365,7 +1365,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+           <item row="1" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
             <widget class="RoundCirclePushButton" name="pushButton_0R">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -1390,7 +1390,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+           <item row="1" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
             <widget class="RoundCirclePushButton" name="pushButton_0L">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -1436,8 +1436,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1489</width>
-     <height>22</height>
+     <width>1303</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -1592,17 +1592,17 @@
   </widget>
   <action name="action_open_before_intervension">
    <property name="text">
-    <string>&amp;Open Before surgery data...</string>
+    <string>&amp;Preintervension data...</string>
    </property>
   </action>
   <action name="action_open_after_surgery_data">
    <property name="text">
-    <string>Open &amp;After surgery data...</string>
+    <string>Pos&amp;tintervension data...</string>
    </property>
   </action>
   <action name="action_specify_normal_standard">
    <property name="text">
-    <string>Specify &amp;Reference</string>
+    <string>Load &amp;Reference data</string>
    </property>
   </action>
   <action name="action_Exit">
@@ -1660,12 +1660,12 @@
   </action>
   <action name="actionPre_vs_Reference">
    <property name="text">
-    <string>Pre vs. Ref...</string>
+    <string>Pre vs. Reference</string>
    </property>
   </action>
   <action name="actionPost_vs_Ref">
    <property name="text">
-    <string>Post vs. Ref...</string>
+    <string>Post vs. Reference</string>
    </property>
   </action>
   <action name="actionNextView">
@@ -1678,7 +1678,7 @@
   </action>
   <action name="actionPre_and_Post_Vs_Ref">
    <property name="text">
-    <string>Pre and Post vs. Ref</string>
+    <string>Pre and Post vs. Reference</string>
    </property>
   </action>
   <action name="action_clear_all">
