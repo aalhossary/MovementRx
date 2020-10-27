@@ -162,3 +162,13 @@ class DataManager:
         cls._analysis_data.clear()
         cls._analysis_data_compact.clear()
 
+    @staticmethod
+    def rmse(predictions: np.ndarray, targets: np.ndarray) -> np.ndarray:
+        #  return np.sqrt(((predictions - targets) ** 2).mean())
+        if predictions.ndim > 1:
+            predictions = np.average(predictions, axis=0)
+        if targets.ndim > 1:
+            targets = np.average(targets, axis=0)
+        n = len(predictions)
+        rmse = np.linalg.norm(predictions - targets) / np.sqrt(n)
+        return rmse

@@ -11,5 +11,8 @@ class DisplayManager:
     def analysis_done(self):
         raise NotImplementedError()
 
+    def show_rmse(self, task_yb, rmse):
+        raise NotImplementedError()
+        
     def show_analysis_result(self, ankle_x_only):
         raise NotImplementedError()

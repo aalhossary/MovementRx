@@ -15,6 +15,7 @@ from spmclient.controls.gait_analysis_window import GaitAnalysisWindow
 from spmclient.models.data_manager import DataManager
 from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
+from builtins import staticmethod
 
 
 class App(Controller):
@@ -64,9 +65,9 @@ class App(Controller):
         # self._display_manager.analysis_started()
         detailed_analysis_data = dict()
         # do the detailed test
-        for _, meas in enumerate(consts.measurement_folder):
+        for meas in consts.measurement_folder:
             measurement_detailed_dict = detailed_analysis_data.setdefault(meas, dict())
-            for _, s in enumerate(consts.side):
+            for s in consts.side:
                 side_detailed_dict = measurement_detailed_dict.setdefault(s, dict())
                 for i_j, j in enumerate(consts.joint):
                     joint_detailed_dict = side_detailed_dict.setdefault(j, dict())
@@ -78,6 +79,7 @@ class App(Controller):
                         # dimension_detailed_dict = joint_detailed_dict.setdefault(d, dict())
                         temp_display_data_list = []
                         temp_display_fmat_list = []
+                        temp_rmse_list = []
                         for current_round in test_params:
                             subject_a, subject_b, display_subject = current_round
                             task_ya: Dict = {
@@ -97,21 +99,19 @@ class App(Controller):
                             }
                             data_yb = DataManager.get_multiples_from_data(path=task_yb)
                             if data_ya is not None and data_yb is not None:
-                                # ============= Test unequal array length start ==============
-                                if subject_a == consts.SUBJECT_REF and meas == consts.MEASUREMENT_KINEMATICS:
-                                    offset = 0  # To change later if needed
-                                    tail = data_ya.shape[1] - offset - data_yb.shape[1]
-                                    tail_avr = np.average(data_ya[:, -tail:], axis=0)
-                                    temp_b_tail = np.empty(shape=(data_yb.shape[0], tail))
-                                    temp_b_tail[:] = tail_avr[:]
-                                    data_yb = np.concatenate((data_yb, temp_b_tail), axis=1)
-                                # ============= Test unequal array length End  ==============
-                                spm_t = do_spm_test(data_ya, data_yb, test_names[0])
-                                spmi_t, _ = infer_z(spm_t, alpha)
+                                data_ya, data_yb, _offset, tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
+
+                                if tail:
+                                    rmse = DataManager.rmse(data_yb, data_ya)
+                                    #  TODO manage the case of more than one RMSE value. use DataManager, etc.
+                                    self._display_manager.show_rmse(task_yb, rmse)
+                                    
+                                spm_t = App.do_spm_test(data_ya, data_yb, test_names[0])
+                                spmi_t, _ = App.infer_z(spm_t, alpha)
                                 temp_display_data_list.append(spmi_t)
                                 temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
-                            # set the results in the DataManager, along with its DisplayFormat
-                            joint_detailed_dict[d] = (temp_display_data_list, temp_display_fmat_list)
+                        # set the results in the DataManager, along with its DisplayFormat
+                        joint_detailed_dict[d] = (temp_display_data_list, temp_display_fmat_list)
         DataManager.set_analysis_data(detailed_analysis_data)
 
         # do the compact test
@@ -162,17 +162,10 @@ class App(Controller):
                             data_yb[:, :, i_d] = temp_joint_dimension_multiple
 
                         if data_ya is not None and data_yb is not None:
-                            # ============= Test unequal array length start ==============
-                            if subject_a == consts.SUBJECT_REF and meas == consts.MEASUREMENT_KINEMATICS:
-                                offset = 0  # To change later if needed
-                                tail = data_ya.shape[1] - offset - data_yb.shape[1]
-                                tail_avr = np.average(data_ya[:, -tail:], axis=0)
-                                temp_b_tail = np.empty(shape=(data_yb.shape[0], tail, 3))
-                                temp_b_tail[:] = tail_avr[:]
-                                data_yb = np.concatenate((data_yb, temp_b_tail), axis=1)
-                            # ============= Test unequal array length End  ==============
-                            spm_t = do_spm_test(data_ya, data_yb, test_names[1])
-                            spmi_t, _ = infer_z(spm_t, alpha)
+                            data_ya, data_yb, _offset, _tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
+        
+                            spm_t = App.do_spm_test(data_ya, data_yb, test_names[1])
+                            spmi_t, _ = App.infer_z(spm_t, alpha)
                             temp_display_data_list.append(spmi_t)
                             temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
                     # set the results in the DataManager, along with its DisplayFormat
@@ -182,6 +175,23 @@ class App(Controller):
         self._display_manager.analysis_done()
 
         self._display_manager.show_analysis_result(ankle_x_only=ankle_x_only)
+
+    def _adjust_array_lengths(self, subject_a:str, meas:str, data_ya:np.ndarray, data_yb:np.ndarray)-> Tuple[np.ndarray, np.ndarray, int, int]:
+        if subject_a == consts.SUBJECT_REF and meas == consts.MEASUREMENT_KINEMATICS:
+            offset = 0  # To change later if needed
+            tail = data_ya.shape[1] - offset - data_yb.shape[1]
+            tail_avr = np.average(data_ya[:, -tail:], axis=0)
+            if data_yb.ndim == 2:
+                shape = (data_yb.shape[0], tail)
+            elif data_yb.ndim == 3:
+                shape = (data_yb.shape[0], tail, 3)
+            else:
+                raise RuntimeError(f'Can not deal with number of dimensions {data_yb.ndim}')
+            temp_b_tail = np.empty(shape=shape)
+            temp_b_tail[:] = tail_avr[:]
+            new_data_yb  = np.concatenate((data_yb, temp_b_tail), axis=1)
+            return data_ya, new_data_yb, offset, tail
+        return data_ya, data_yb, 0, 0
 
     def delete_data(self):
         self.delete_analysis()
@@ -210,26 +220,27 @@ class App(Controller):
 
             gait_analysis_window = GaitAnalysisWindow(self.params, controller=self)
             gait_analysis_window.show()
-            self._display_manager = gait_analysis_window
+            self._display_manager: DisplayManager = gait_analysis_window
 
         sys.exit(app.exec())
 
-
-def do_spm_test(ya: np.ndarray, yb: np.ndarray, test_name: str) -> spm1d.stats._spm.SPM_T:
-    # if ya.ndim == 2 and yb.ndim == 2:
-    #     spm_t = spm1d.stats.ttest2(ya, yb)
-    # elif ya.ndim == 3 and yb.ndim == 3:
-    #     spm_t = spm1d.stats.hotellings2(ya, yb)
-    # else:
-    #     raise RuntimeError(f'I do not know how to deal with array dimensions ({ya.shape}), ({yb.shape})')
-    test = eval('spm1d.stats.' + test_name)
-    spm_t = test(ya, yb)
-    return spm_t
-
-
-def infer_z(spm_t, alpha) -> Tuple[spm1d.stats._spm.SPMi_T, np.array]:
-    spmi_t = spm_t.inference(alpha)
-    return spmi_t, (spmi_t.z / spmi_t.zstar)
+    @staticmethod
+    def do_spm_test(ya: np.ndarray, yb: np.ndarray, test_name: str) -> spm1d.stats._spm.SPM_T:
+        # if ya.ndim == 2 and yb.ndim == 2:
+        #     spm_t = spm1d.stats.ttest2(ya, yb)
+        # elif ya.ndim == 3 and yb.ndim == 3:
+        #     spm_t = spm1d.stats.hotellings2(ya, yb)
+        # else:
+        #     raise RuntimeError(f'I do not know how to deal with array dimensions ({ya.shape}), ({yb.shape})')
+        test = eval('spm1d.stats.' + test_name)
+        spm_t = test(ya, yb)
+        return spm_t
+    
+    
+    @staticmethod
+    def infer_z(spm_t, alpha) -> Tuple[spm1d.stats._spm.SPMi_T, np.array]:
+        spmi_t = spm_t.inference(alpha)
+        return spmi_t, (spmi_t.z / spmi_t.zstar)
 
 
 if __name__ == '__main__':
