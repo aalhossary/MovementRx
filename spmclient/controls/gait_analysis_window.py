@@ -75,6 +75,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         
 
         self.alpha = params.get(consts.ALPHA)
+        self.ankle_x_only = True
 
         self.action_specify_normal_standard.triggered.connect(self.load_reference)
         self.action_open_before_intervension.triggered.connect(self.load_before_intervention)
@@ -94,13 +95,22 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         qlist: List[QObject] = self.findChildren(MplCanvas, re)
         for widget in qlist:
 #             print('set', widget.objectName(), 'visibility to', show)
-            widget.setVisible(show)
+            # TODO Simplify this expression
+            if not show:
+                widget.setVisible(show)
+            else:
+                if self.ankle_x_only and widget.objectName()[-2] != '2':  # not in ('2'):
+                    widget.setVisible(show)
         
         re = QRegExp('stackedWidget[012][012][RL]')
         qlist: List[QObject] = self.findChildren(QStackedWidget, re)
         for widget in qlist:
 #             print('set', widget.objectName(), 'visibility to', show)
-            widget.setVisible(show)
+            if not show:
+                widget.setVisible(show)
+            else:
+                if self.ankle_x_only and widget.objectName()[-3:-1] not in ('21', '22'):
+                    widget.setVisible(show)
 
 
     def joint_button_clicked(self, button: QAbstractButton):
