@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from matplotlib.axes._axes import Axes
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
+from matplotlib.axes._subplots import SubplotBase
+from PyQt5.Qt import right
 
 
 class MplCanvas(QWidget):  # FigureCanvasQTAgg):
@@ -27,3 +29,12 @@ class MplCanvas(QWidget):  # FigureCanvasQTAgg):
         layout.addWidget(self.canvas)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
+
+class HeatMapMplCanvas(MplCanvas):
+    def __init__(self, parent=None, *args, **kwargs):
+        MplCanvas.__init__(self, parent=parent, *args, **kwargs)
+        self.ax.get_yaxis().set_visible(False)
+        self.ax.get_gridspec().update(right=0.0)
+        self.canvas.draw()
+        self.update()
+        # TODO make sure the update geometry works. Till now, I just hide the Y Axis

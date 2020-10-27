@@ -194,7 +194,7 @@
                </widget>
               </item>
               <item row="2" column="0" colspan="2">
-               <widget class="MplCanvas" name="joint0L" native="true">
+               <widget class="HeatMapMplCanvas" name="joint0L" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -220,7 +220,7 @@
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>50</height>
+                  <height>40</height>
                  </size>
                 </property>
                 <property name="text">
@@ -401,7 +401,7 @@
                </widget>
               </item>
               <item row="2" column="0" colspan="2">
-               <widget class="MplCanvas" name="joint1L" native="true">
+               <widget class="HeatMapMplCanvas" name="joint1L" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -427,7 +427,7 @@
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>50</height>
+                  <height>40</height>
                  </size>
                 </property>
                 <property name="text">
@@ -578,7 +578,7 @@
                </widget>
               </item>
               <item row="2" column="0" colspan="2">
-               <widget class="MplCanvas" name="joint2L" native="true">
+               <widget class="HeatMapMplCanvas" name="joint2L" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -604,7 +604,7 @@
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>50</height>
+                  <height>40</height>
                  </size>
                 </property>
                 <property name="text">
@@ -794,7 +794,7 @@
                </widget>
               </item>
               <item row="2" column="1" colspan="2">
-               <widget class="MplCanvas" name="joint1R" native="true">
+               <widget class="HeatMapMplCanvas" name="joint1R" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -846,7 +846,7 @@
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>50</height>
+                  <height>40</height>
                  </size>
                 </property>
                 <property name="text">
@@ -925,7 +925,7 @@
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>50</height>
+                  <height>40</height>
                  </size>
                 </property>
                 <property name="text">
@@ -958,7 +958,7 @@
                </widget>
               </item>
               <item row="3" column="1" colspan="2">
-               <widget class="MplCanvas" name="joint2R" native="true">
+               <widget class="HeatMapMplCanvas" name="joint2R" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -1138,7 +1138,7 @@
                </widget>
               </item>
               <item row="2" column="1" colspan="2">
-               <widget class="MplCanvas" name="joint0R" native="true">
+               <widget class="HeatMapMplCanvas" name="joint0R" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -1174,7 +1174,7 @@
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>50</height>
+                  <height>40</height>
                  </size>
                 </property>
                 <property name="text">
@@ -1726,6 +1726,12 @@
     <slot>set_analysis_name(QString)</slot>
     <slot>set_selected_widget_name(QString)</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>HeatMapMplCanvas</class>
+   <extends>QWidget</extends>
+   <header location="global">spmclient.ui.gui.xml.mplcanvas.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
