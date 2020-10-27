@@ -46,16 +46,16 @@ def load_full_folder(root_path: Union[Path, str], scale=False) -> Dict:
                 joint_dict = side_dict.setdefault(j, dict())
                 temp_data = load_file(f)
                 
-                # -------- test start------------------
-                if scale and measurment == consts.MEASUREMENT_MOMENTS:
-                    temp_data *= 16.5
-                # -------- test end ------------------
+#                 # -------- test start------------------
+#                 if scale and measurment == consts.MEASUREMENT_MOMENTS:
+#                     temp_data *= 16.5
+#                 # -------- test end ------------------
 
-                #  TODO This condition should be replaced with a permanent data format
-                if len(temp_data):
-                    shape = temp_data.shape
-                    if shape[1] < 50:
-                        temp_data = temp_data.transpose()
+#                 #  TODO FIXME This condition should be replaced with a permanent data format
+#                 if len(temp_data):
+#                     shape = temp_data.shape
+#                     if shape[1] < 50:
+#                         temp_data = temp_data.transpose()
                 
                 joint_dict[dim] = temp_data
 

@@ -7,11 +7,16 @@ from spmclient import consts
 
 measurementSFX = dict([('kinematic', 'Ang'), ('moment', 'moment')])
 
-in_folder = '../res/refData'
-out_folder = '../res/refDataScaled'
+# in_folder = '../res/refData'
+# out_folder = '../res/refDataScaled'
+# subjname = 'Ref'  # 'subj1'
+in_folder = '../res/cases/subj1_pre_old'
+out_folder = '../res/cases/subj1_pre'
+subjname = 'subj1' # 'Lam'  # 'Ref' 'subj1'
+scales_file_str = './scales16.5.csv' #  './scales.csv'
+
 infolder_mask = '{measurement}/{side}_{joint}{dimension}_{measurementSFX}_{subjname}.csv'
 outfolder_mask = infolder_mask
-subjname = 'Ref'  # 'subj1'
 
 
 def scale_file(measurement:str, i_side: int, i_joint: int, i_dimension:int, scale: float):
@@ -44,7 +49,7 @@ def scale_file(measurement:str, i_side: int, i_joint: int, i_dimension:int, scal
 def main():
 
     scales = dict()
-    scales_path = Path('./scales.csv')
+    scales_path = Path(scales_file_str)
     with open(scales_path, 'r') as scales_file:
         reader = csv.reader(scales_file, delimiter=',')
         _headers = next(reader)

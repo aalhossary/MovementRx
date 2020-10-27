@@ -8,8 +8,8 @@ import samplerate
 
 measurementSFX = dict([('kinematic', 'Ang'), ('moment', 'moment')])
 
-in_folder = '../res/cases/subj1_post'
-out_folder = '../res/cases/subj1_postResampled'
+in_folder = '../res/cases/subj1_pre'
+out_folder = '../res/cases/subj1_preResampled'
 infolder_mask = '{measurement}/{side}_{joint}{dimension}_{measurementSFX}_{subjname}.csv'
 outfolder_mask = infolder_mask
 subjname = 'subj1'

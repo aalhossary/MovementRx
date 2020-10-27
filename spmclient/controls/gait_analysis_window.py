@@ -124,14 +124,14 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
     def load_before_intervention(self):
         file_dialog = QFileDialog(self)
-        d = Path(__file__).parents[2] / 'res/cases/subj1_pre'
+        d = Path(__file__).parents[2] / 'res/cases/subj1_preResampled'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of preintervension data", directory=str(d))
         loaded_data = load_full_folder(dir_name, scale=True)
         self.controller.set_data(loaded_data, consts.SUBJECT_B4)
 
     def load_after_intervention(self):
         file_dialog = QFileDialog(self)
-        d = Path(__file__).parents[2] / 'res/cases/subj1_post'
+        d = Path(__file__).parents[2] / 'res/cases/subj1_postResampled'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of postintervension data", directory=str(d))
         loaded_data = load_full_folder(dir_name, scale=True)
         self.controller.set_data(loaded_data, consts.SUBJECT_AFTER)
@@ -268,6 +268,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         names = ['Color Bar', 'SPM']
         self.label_analysis.set_selected_widget_name(names[self.stackedWidget00R.currentIndex()])
 
+    def show_rmse(self, task_yb, rmse):
+        pass
+    
     def show_analysis_result(self, ankle_x_only=False):
         analysis_legend_image = None
         # first show the detailed analysis
