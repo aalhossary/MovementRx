@@ -99,14 +99,14 @@ class App(Controller):
                             }
                             data_yb = DataManager.get_multiples_from_data(path=task_yb)
                             if data_ya is not None and data_yb is not None:
-                                data_ya, data_yb, _offset, tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
+                                data_ya, data_yb, roi, _offset, tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
 
                                 if tail:
                                     rmse = DataManager.rmse(data_yb, data_ya)
                                     #  TODO manage the case of more than one RMSE value. use DataManager, etc.
                                     self._display_manager.show_rmse(task_yb, rmse)
                                     
-                                spm_t = App.do_spm_test(data_ya, data_yb, test_names[0])
+                                spm_t = App.do_spm_test(data_ya, data_yb, test_names[0], roi=roi)
                                 spmi_t, _ = App.infer_z(spm_t, alpha)
                                 temp_display_data_list.append(spmi_t)
                                 temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
@@ -162,9 +162,9 @@ class App(Controller):
                             data_yb[:, :, i_d] = temp_joint_dimension_multiple
 
                         if data_ya is not None and data_yb is not None:
-                            data_ya, data_yb, _offset, _tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
+                            data_ya, data_yb, roi, _offset, _tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
         
-                            spm_t = App.do_spm_test(data_ya, data_yb, test_names[1])
+                            spm_t = App.do_spm_test(data_ya, data_yb, test_names[1], roi=roi)
                             spmi_t, _ = App.infer_z(spm_t, alpha)
                             temp_display_data_list.append(spmi_t)
                             temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
@@ -176,22 +176,24 @@ class App(Controller):
 
         self._display_manager.show_analysis_result(ankle_x_only=ankle_x_only)
 
-    def _adjust_array_lengths(self, subject_a:str, meas:str, data_ya:np.ndarray, data_yb:np.ndarray)-> Tuple[np.ndarray, np.ndarray, int, int]:
+    def _adjust_array_lengths(self, subject_a:str, meas:str, data_ya:np.ndarray, data_yb:np.ndarray)-> Tuple[np.ndarray, np.ndarray, np.ndarray, int, int]:
+        roi = np.array([True]*data_ya.shape[1])
         if subject_a == consts.SUBJECT_REF and meas == consts.MEASUREMENT_KINEMATICS:
             offset = 0  # To change later if needed
             tail = data_ya.shape[1] - offset - data_yb.shape[1]
-            tail_avr = np.average(data_ya[:, -tail:], axis=0)
+            roi[-tail:] = False
+            tail_avr = np.average(data_ya[:, -tail:], axis=0)  # TODO to remove later if ROI is adjusted
             if data_yb.ndim == 2:
                 shape = (data_yb.shape[0], tail)
             elif data_yb.ndim == 3:
                 shape = (data_yb.shape[0], tail, 3)
             else:
                 raise RuntimeError(f'Can not deal with number of dimensions {data_yb.ndim}')
-            temp_b_tail = np.empty(shape=shape)
-            temp_b_tail[:] = tail_avr[:]
+            temp_b_tail = np.ones(shape=shape)
+            temp_b_tail[:] = tail_avr[:]  # TODO enable this line later
             new_data_yb  = np.concatenate((data_yb, temp_b_tail), axis=1)
-            return data_ya, new_data_yb, offset, tail
-        return data_ya, data_yb, 0, 0
+            return data_ya, new_data_yb, roi, offset, tail
+        return data_ya, data_yb, roi, 0, 0
 
     def delete_data(self):
         self.delete_analysis()
@@ -225,7 +227,7 @@ class App(Controller):
         sys.exit(app.exec())
 
     @staticmethod
-    def do_spm_test(ya: np.ndarray, yb: np.ndarray, test_name: str) -> spm1d.stats._spm.SPM_T:
+    def do_spm_test(ya: np.ndarray, yb: np.ndarray, test_name: str, roi:np.ndarray) -> spm1d.stats._spm.SPM_T:
         # if ya.ndim == 2 and yb.ndim == 2:
         #     spm_t = spm1d.stats.ttest2(ya, yb)
         # elif ya.ndim == 3 and yb.ndim == 3:
@@ -233,7 +235,7 @@ class App(Controller):
         # else:
         #     raise RuntimeError(f'I do not know how to deal with array dimensions ({ya.shape}), ({yb.shape})')
         test = eval('spm1d.stats.' + test_name)
-        spm_t = test(ya, yb)
+        spm_t = test(ya, yb, roi=roi)
         return spm_t
     
     
