@@ -1,4 +1,4 @@
-from typing import cast
+from typing import cast, Optional
 
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from matplotlib.axes._axes import Axes
@@ -6,6 +6,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from matplotlib.axes._subplots import SubplotBase
 from PyQt5.Qt import right
+from matplotlib.lines import Line2D
 
 
 class MplCanvas(QWidget):  # FigureCanvasQTAgg):
@@ -29,6 +30,7 @@ class MplCanvas(QWidget):  # FigureCanvasQTAgg):
         layout.addWidget(self.canvas)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
+        self.moving_line: Optional[Line2D] = None
 
 class HeatMapMplCanvas(MplCanvas):
     def __init__(self, parent=None, *args, **kwargs):

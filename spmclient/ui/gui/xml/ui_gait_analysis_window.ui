@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1303</width>
-    <height>763</height>
+    <height>773</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,11 +31,220 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="centralwidget_gridLayout">
     <item row="0" column="0">
-     <layout class="QGridLayout" name="three_columns_layout" rowstretch="0,20,0" columnstretch="0,0,0">
+     <layout class="QGridLayout" name="three_columns_layout" rowstretch="0,20,0" columnstretch="0,0,0,0">
       <property name="spacing">
        <number>0</number>
       </property>
-      <item row="0" column="2" rowspan="3">
+      <item row="1" column="2">
+       <widget class="QLabel" name="skeletonlabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="res.qrc">:/images/res/RTLT_legSelected.png</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <layout class="QGridLayout" name="skeleton_gridLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="gridLayout" rowstretch="5,2,3,2" columnminimumwidth="100,100">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item row="2" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
+            <widget class="RoundCirclePushButton" name="pushButton_1R">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>100</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
+            <widget class="RoundCirclePushButton" name="pushButton_2R">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>100</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
+            <widget class="RoundCirclePushButton" name="pushButton_2L">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>100</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
+            <widget class="RoundCirclePushButton" name="pushButton_1L">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>100</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
+            <widget class="RoundCirclePushButton" name="pushButton_0R">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>100</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
+            <widget class="RoundCirclePushButton" name="pushButton_0L">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>100</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="2" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="label_study">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kinematics&lt;/span&gt; (deg) / &lt;span style=&quot; font-weight:600;&quot;&gt;Moments&lt;/span&gt; (Nm/kg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3" rowspan="3">
        <widget class="QWidget" name="widget_lt_side" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -60,7 +269,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,5,0,5,0,5">
+          <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,5,0,5,0,5,0">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -466,12 +675,97 @@
               <property name="spacing">
                <number>0</number>
               </property>
-              <item row="0" column="0">
-               <widget class="MplCanvas" name="datacanvas20L" native="true">
+              <item row="1" column="1">
+               <widget class="QStackedWidget" name="stackedWidget21L">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas21L"/>
+                <widget class="MplCanvas" name="spm1dcanvas21L"/>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QLabel" name="label_9">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Left Ankle</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QStackedWidget" name="stackedWidget20L">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
                   <horstretch>0</horstretch>
                   <verstretch>2</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas20L"/>
+                <widget class="MplCanvas" name="spm1dcanvas20L"/>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QStackedWidget" name="stackedWidget22L">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas22L"/>
+                <widget class="MplCanvas" name="spm1dcanvas22L"/>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="MplCanvas" name="datacanvas22L" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
                 <property name="minimumSize">
@@ -498,24 +792,8 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="2">
-               <widget class="MplCanvas" name="datacanvas22L" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QStackedWidget" name="stackedWidget20L">
+              <item row="0" column="0">
+               <widget class="MplCanvas" name="datacanvas20L" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
                   <horstretch>0</horstretch>
@@ -528,53 +806,6 @@
                   <height>75</height>
                  </size>
                 </property>
-                <property name="currentIndex">
-                 <number>1</number>
-                </property>
-                <widget class="MplCanvas" name="mosecanvas20L"/>
-                <widget class="MplCanvas" name="spm1dcanvas20L"/>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QStackedWidget" name="stackedWidget21L">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-                <property name="currentIndex">
-                 <number>1</number>
-                </property>
-                <widget class="MplCanvas" name="mosecanvas21L"/>
-                <widget class="MplCanvas" name="spm1dcanvas21L"/>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <widget class="QStackedWidget" name="stackedWidget22L">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-                <property name="currentIndex">
-                 <number>1</number>
-                </property>
-                <widget class="MplCanvas" name="mosecanvas22L"/>
-                <widget class="MplCanvas" name="spm1dcanvas22L"/>
                </widget>
               </item>
               <item row="2" column="0" colspan="2">
@@ -593,29 +824,57 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="2">
-               <widget class="QLabel" name="label_9">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>1</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Left Ankle</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
              </layout>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="3">
+            <widget class="QSlider" name="gait_sliderL">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>80</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QSlider::groove:horizontal {
+    border: off; /*1px solid #111; */
+    background-color: off;
+	height: 0px;
+    margin: 0px 0px;
+}
+QSlider::handle {
+	background: off;
+	border: off; /*1px solid black;*/
+    width: 40px;
+}
+
+QSlider::handle:horizontal {
+    margin: -40px 0px;
+	image: url(&quot;:/walkerL/res/StepImages/Left/1.png&quot;)
+}
+</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>20</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="pageStep">
+              <number>4</number>
+             </property>
+             <property name="value">
+              <number>1</number>
+             </property>
+             <property name="sliderPosition">
+              <number>1</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
             </widget>
            </item>
           </layout>
@@ -648,7 +907,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <layout class="QGridLayout" name="gridLayout_5" rowstretch="0,7,0,7,0,7">
+          <layout class="QGridLayout" name="gridLayout_5" rowstretch="0,0,0,0,0,0,0">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -659,6 +918,20 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
@@ -682,18 +955,174 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string/>
-             </property>
+           <item row="5" column="0" colspan="3">
+            <widget class="QWidget" name="widget_2R" native="true">
+             <layout class="QGridLayout" name="gridLayout_6">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_3">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Right Ankle</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QStackedWidget" name="stackedWidget22R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas22R"/>
+                <widget class="MplCanvas" name="spm1dcanvas22R"/>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QStackedWidget" name="stackedWidget20R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas20R"/>
+                <widget class="MplCanvas" name="spm1dcanvas20R"/>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QStackedWidget" name="stackedWidget21R">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <widget class="MplCanvas" name="mosecanvas21R"/>
+                <widget class="MplCanvas" name="spm1dcanvas21R"/>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="MplCanvas" name="datacanvas20R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="MplCanvas" name="datacanvas21R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="MplCanvas" name="datacanvas22R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>3</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>75</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1" colspan="2">
+               <widget class="HeatMapMplCanvas" name="joint2R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>130</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item row="3" column="0" colspan="3">
@@ -860,176 +1289,6 @@
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="5" column="0" colspan="3">
-            <widget class="QWidget" name="widget_2R" native="true">
-             <layout class="QGridLayout" name="gridLayout_6">
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item row="2" column="0">
-               <widget class="QStackedWidget" name="stackedWidget20R">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>3</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-                <property name="currentIndex">
-                 <number>1</number>
-                </property>
-                <widget class="MplCanvas" name="mosecanvas20R"/>
-                <widget class="MplCanvas" name="spm1dcanvas20R"/>
-               </widget>
-              </item>
-              <item row="2" column="2">
-               <widget class="QStackedWidget" name="stackedWidget22R">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>3</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-                <property name="currentIndex">
-                 <number>1</number>
-                </property>
-                <widget class="MplCanvas" name="mosecanvas22R"/>
-                <widget class="MplCanvas" name="spm1dcanvas22R"/>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="label_3">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>1</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Right Ankle</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QStackedWidget" name="stackedWidget21R">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>3</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-                <property name="currentIndex">
-                 <number>1</number>
-                </property>
-                <widget class="MplCanvas" name="mosecanvas21R"/>
-                <widget class="MplCanvas" name="spm1dcanvas21R"/>
-               </widget>
-              </item>
-              <item row="3" column="1" colspan="2">
-               <widget class="HeatMapMplCanvas" name="joint2R" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>1</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>130</width>
-                  <height>30</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="MplCanvas" name="datacanvas20R" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>3</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="MplCanvas" name="datacanvas21R" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>3</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="MplCanvas" name="datacanvas22R" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>3</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>75</height>
-                 </size>
                 </property>
                </widget>
               </item>
@@ -1206,12 +1465,61 @@
              </layout>
             </widget>
            </item>
+           <item row="6" column="0" colspan="3">
+            <widget class="QSlider" name="gait_sliderR">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>80</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QSlider::groove:horizontal {
+    border: off; /*1px solid #111; */
+    background-color: off;
+	height: 0px;
+    margin: 0px 0px;
+}
+QSlider::handle {
+	background: off;
+	border: off; /*1px solid black;*/
+    width: 40px;
+}
+
+QSlider::handle:horizontal {
+    margin: -40px 0px;
+    image: url(&quot;:/walkerR/res/StepImages/Right/1.png&quot;);
+}</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>20</number>
+             </property>
+             <property name="singleStep">
+              <number>1</number>
+             </property>
+             <property name="pageStep">
+              <number>4</number>
+             </property>
+             <property name="value">
+              <number>1</number>
+             </property>
+             <property name="sliderPosition">
+              <number>1</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
         </layout>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="2" column="2">
        <widget class="QLabel" name="label_image_src">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -1236,215 +1544,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="skeletonlabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-          <horstretch>1</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="res.qrc">:/images/res/RTLT_legSelected.png</pixmap>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-        <layout class="QGridLayout" name="skeleton_gridLayout">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <item row="0" column="0">
-          <layout class="QGridLayout" name="gridLayout" rowstretch="5,2,3,2" columnminimumwidth="100,100">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <item row="2" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_1R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>100</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_2R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>100</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_2L">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>100</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_1L">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>100</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_0R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>100</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_0L">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>100</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="0" column="1" alignment="Qt::AlignHCenter">
-       <widget class="QLabel" name="label_study">
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kinematics&lt;/span&gt; (deg) / &lt;span style=&quot; font-weight:600;&quot;&gt;Moments&lt;/span&gt; (Nm/kg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </item>
    </layout>
@@ -1455,7 +1554,7 @@
      <x>0</x>
      <y>0</y>
      <width>1303</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -1799,8 +1898,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1079</x>
-     <y>457</y>
+     <x>1302</x>
+     <y>501</y>
     </hint>
    </hints>
   </connection>
@@ -1811,12 +1910,44 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1079</x>
-     <y>457</y>
+     <x>1302</x>
+     <y>501</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gait_sliderL</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gait_sliderR</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>766</x>
+     <y>711</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>422</x>
+     <y>725</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gait_sliderR</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gait_sliderL</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>299</x>
+     <y>725</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>792</x>
+     <y>719</y>
     </hint>
    </hints>
   </connection>

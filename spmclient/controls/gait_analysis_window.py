@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, cast, List
+from typing import Dict, cast, List, Optional
 
 from PyQt5 import QtGui
 from PyQt5.Qt import QRegExp
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject, QTimer
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup,\
     QButtonGroup, QAbstractButton, QWidget
 from matplotlib import cm
@@ -89,6 +89,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.set_analysis_visible(False)
         
         self.show_study_name()
+        self.animator: Optional[QTimer] = None
 
     def set_analysis_visible(self, show: bool):
         re = QRegExp('joint[012][RL]')
@@ -159,10 +160,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         ax = self.legend_heatmap_panel.ax
         
         print("current geometry =", ax.get_geometry())
-        if ax.get_geometry() == (1,1,1):
+        if ax.get_geometry() == (1, 1, 1):
             ax.change_geometry(1, 3, 2)
-        
-        
+
         ax.clear()
         
         figure = self.legend_heatmap_panel.figure
@@ -178,17 +178,17 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                                cax=ax,
                                                use_gridspec=True,
                                                fraction=1.0, shrink=1.0,
-#                                                anchor = (0.0, 0.5), panchor = (0.0, 0.5),
+                                               # anchor = (0.0, 0.5), panchor = (0.0, 0.5),
                                                ticks=np.arange(10) + 0.5, 
-#                                                drawedges=True,
-#                                                pad=0.2
-                                               )
+                                               # drawedges=True,
+                                               # pad=0.2
+                                        )
 # #             print(figure.axes)
 # #             colorbar.ax.set_yticklabels(['low', '', '', '', 'mid', '', '', '', 'High', ''])
 #             colorbar.ax.set_yticklabels(['low', 'mid', 'High'])
 # #             colorbar.ax.get_yaxis().set_ticks([])
             for j, lab in enumerate(['No effect', '', '', 'Min', '', '', 'Moderate', '', '', '', 'High',]):
-#                 colorbar.ax.text(.5, (4 * j + 2) / 4.0, lab, ha='center', va='center')
+                # colorbar.ax.text(.5, (4 * j + 2) / 4.0, lab, ha='center', va='center')
                 colorbar.ax.text(2.5, ((2.9 * j) / 11) + 1.15, lab, ha='center', va='center')
         self.legend_heatmap_panel.canvas.draw()
 
@@ -223,8 +223,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             for s in tasks[consts.SIDE]:
                 for i_j, j in enumerate(tasks[consts.JOINT]):
                     for i_d, d in enumerate(tasks[consts.DIMENSION]):
-                        data_canvas = self.get_target_canvas('data', i_j, i_d, s)
-                        data_canvas = cast(MplCanvas, data_canvas)
+                        data_canvas = self.get_target_canvas('data', i_j, i_d, side=s)
                         # clear it first
                         # data_canvas.figure.clear()
                         data_canvas.ax.clear()
@@ -245,6 +244,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                 # add vertical line in data
                                 if self.actionKinematics.isChecked():
                                     data_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
+                        data_canvas.moving_line = None
                         data_canvas.canvas.draw()
                         ax = self.legend_data_panel.ax
                         ax.legend(handles=self.data_ligand.values(), frameon=False, loc='center')
@@ -317,18 +317,19 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             # draw each of the data / format pair on the canvas
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
                                 draw_inference_plot(spm_canvas, t2i, data_format=fmt)
-                            # Add vertical line
-                            if self.actionKinematics.isChecked():
-                                spm_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
-                            
+
                             temp_display_data = []
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
                                 cast(spm1d.stats._spm.SPMi_T, t2i)
                                 z_values = t2i.z / t2i.zstar
                                 temp_display_data.append(z_values)
                             analysis_legend_image = draw_heatmap(mose_canvas, temp_display_data)
+                            spm_canvas.moving_line = None
+                            mose_canvas.moving_line = None
+
                             # Add vertical line
                             if self.actionKinematics.isChecked():
+                                spm_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
                                 mose_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
                         spm_canvas.canvas.draw()
                         mose_canvas.canvas.draw()
@@ -341,10 +342,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                     continue
                 
                 # get the canvas
-                joint_canvas = self.findChild(MplCanvas, name=f'joint{i_j}{s}')
-                joint_canvas = cast(MplCanvas, joint_canvas)
+                joint_canvas = self.get_target_canvas('joint', i_j, None, side=s)
                 # clear it first
                 joint_canvas.ax.clear()
+                joint_canvas.moving_line = None
                 for meas in consts.measurement_folder:
                     # filter
                     if meas == consts.MEASUREMENT_KINEMATICS and not self.actionKinematics.isChecked():
@@ -375,6 +376,69 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.add_colorbar_to_legend(analysis_legend_image)
         self.legend_heatmap_groupbox.setVisible(True)
 
+        if self.animator is None:
+            self.animator = QTimer(self)
+            self.animator.setSingleShot(False)
+            self.animator.timeout.connect(self.advance_animation)
+        self.animator.start(1500)
+
+    def advance_animation(self):
+        current_value = self.gait_sliderR.value()
+        next_value = (current_value % 20) + 1  # in the period [1, 20]
+        # next_value = current_value + 1
+        # if next_value > 20:
+        #     next_value = 1
+        self.gait_sliderR.setValue(next_value)
+        self.gait_sliderL.setStyleSheet("QSlider::groove:horizontal {\n"
+                                        "    border: off;\n"
+                                        "    background-color: off;\n"
+                                        "    height: 0px;\n"
+                                        "    margin: 0px 0px;\n"
+                                        "}\n"
+                                        "QSlider::handle {\n"
+                                        "    background: off;\n"
+                                        "    border: off;\n"
+                                        "    width: 40px;\n"
+                                        "}\n"
+                                        "QSlider::handle:horizontal {\n"
+                                        "    margin: -40px 0px;\n"
+                                        f"    image: url(\":/walkerL/res/StepImages/Left/{next_value}.png\")\n"
+                                        "}")
+        self.gait_sliderR.setStyleSheet("QSlider::groove:horizontal {\n"
+                                        "    border: off;\n"
+                                        "    background-color: off;\n"
+                                        "    height: 0px;\n"
+                                        "    margin: 0px 0px;\n"
+                                        "}\n"
+                                        "QSlider::handle {\n"
+                                        "    background: off;\n"
+                                        "    border: off;\n"
+                                        "    width: 40px;\n"
+                                        "}\n"
+                                        "QSlider::handle:horizontal {\n"
+                                        "    margin: -40px 0px;\n"
+                                        f"    image: url(\":/walkerR/res/StepImages/Right/{next_value}.png\")\n"
+                                        "}")
+        x = current_value * 5
+        for s in consts.side:
+            c = 'r' if s == consts.SIDE_LEFT else 'b'
+            for i_j, j in enumerate(consts.joint):
+                # joint canvas
+                self.advance_animation_line(None, i_j, s, x, c, 'joint')
+
+                for i_d, d in enumerate(consts.dim):
+                    self.advance_animation_line(i_d, i_j, s, x, c, 'data')
+                    self.advance_animation_line(i_d, i_j, s, x, c, 'spm1d')
+                    self.advance_animation_line(i_d, i_j, s, x, c, 'mose')
+
+    def advance_animation_line(self, i_d: Optional[int], i_j: int, s: str, x: int, color: str, canvas_type: str):
+        mpl_canvas = self.get_target_canvas(canvas_type, i_j, i_d, side=s)
+        if mpl_canvas.moving_line is None:
+            mpl_canvas.moving_line = mpl_canvas.ax.axvline(
+                x=x, linewidth=4, color=color, ls='-', lw=1.5)
+        else:
+            mpl_canvas.moving_line.set_xdata([x, x])
+            mpl_canvas.canvas.draw()
 
     def show_study_name(self):
         if self.actionKinematics.isChecked():
@@ -419,9 +483,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             widget.setCurrentIndex(index)
         self.update_legend_selected_panel_name()
 
-    def get_target_canvas(self, canvas_type: str, i_j: int, i_d: int, side: str) -> MplCanvas:
-        # names are datacanvas00R, mosecanvas01R and spm1dcavcas01R
-        mose_canvas = self.findChild(MplCanvas, name=f'{canvas_type}canvas{i_j}{i_d}{side}')
+    def get_target_canvas(self, canvas_type: str, i_j: int, i_d: Optional[int], side: str) -> MplCanvas:
+        if i_d is None:
+            mose_canvas = self.findChild(MplCanvas, name=f'{canvas_type}{i_j}{side}')
+        else:
+            # names are datacanvas00R, mosecanvas01R and spm1dcavcas01R
+            mose_canvas = self.findChild(MplCanvas, name=f'{canvas_type}canvas{i_j}{i_d}{side}')
         mose_canvas = cast(MplCanvas, mose_canvas)
         return mose_canvas
 
@@ -429,6 +496,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         print('clear_analysis')
         self.set_analysis_visible(False)
         self.controller.delete_analysis()
+        if self.animator:
+            self.animator.stop()
 
     def clear_all(self):
         print('clear_all')
