@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>colorMapPicker</class>
- <widget class="QDialog" name="colorMapPicker">
+ <class>colorMapChooser</class>
+ <widget class="QDialog" name="colorMapChooser">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>437</width>
-    <height>300</height>
+    <height>539</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,92 +17,357 @@
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QCheckBox" name="checkBox">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Different colors for positive and negative values</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Preferred</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Number of levels</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSpinBox" name="spinBox">
-       <property name="minimum">
-        <number>3</number>
-       </property>
-       <property name="maximum">
-        <number>20</number>
-       </property>
-       <property name="value">
-        <number>4</number>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Preferred</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Colormap Name</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBox">
-       <property name="currentText">
-        <string notr="true">Jet</string>
-       </property>
+      <widget class="QToolBox" name="toolBox">
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <item>
-        <property name="text">
-         <string>Jet</string>
+       <widget class="QWidget" name="Scalarcomponents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>417</width>
+          <height>436</height>
+         </rect>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Coolhot</string>
+        <attribute name="label">
+         <string>Page 1</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="gridLayout_2" columnstretch="5,2">
+           <item row="1" column="0">
+            <layout class="QFormLayout" name="formLayout">
+             <item row="0" column="0" colspan="2">
+              <widget class="QLabel" name="label_7">
+               <property name="text">
+                <string>Individual compenents</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Min Value</string>
+               </property>
+               <property name="buddy">
+                <cstring>min_value_spinbox</cstring>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="min_value_spinbox">
+               <property name="value">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>Max Value</string>
+               </property>
+               <property name="buddy">
+                <cstring>max_value_spinbox</cstring>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QSpinBox" name="max_value_spinbox">
+               <property name="value">
+                <number>4</number>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="3" column="1">
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="4" column="0" colspan="2">
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>Three dimensional analysis</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0" colspan="2">
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>Legend Colors</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="0">
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>Number of levels</string>
+               </property>
+               <property name="buddy">
+                <cstring>num_levels_spinBox</cstring>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="1">
+              <widget class="QSpinBox" name="num_levels_spinBox">
+               <property name="minimum">
+                <number>3</number>
+               </property>
+               <property name="maximum">
+                <number>20</number>
+               </property>
+               <property name="value">
+                <number>4</number>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="0">
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>Colormap Name</string>
+               </property>
+               <property name="buddy">
+                <cstring>colormap_name_comboBox</cstring>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="1">
+              <widget class="QComboBox" name="colormap_name_comboBox">
+               <property name="currentIndex">
+                <number>0</number>
+               </property>
+               <item>
+                <property name="text">
+                 <string notr="true">coolwarm</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string notr="true">jet</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string notr="true">viridis</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QSpinBox" name="min_value_spinbox_2">
+               <property name="value">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>Min Value</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Max Value</string>
+               </property>
+               <property name="buddy">
+                <cstring>max_value_spinbox</cstring>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QSpinBox" name="max_value_spinbox_2">
+               <property name="value">
+                <number>10</number>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <spacer name="verticalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="7" column="1">
+              <spacer name="verticalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="1" rowspan="2">
+            <widget class="LegendMplCanvas" name="colormap_legend" native="true"/>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkBox">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Different colors for positive and negative values</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>272</width>
+          <height>137</height>
+         </rect>
         </property>
-       </item>
+        <attribute name="label">
+         <string>Page 2</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBox_2">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Different colors for positive and negative values</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Preferred</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>78</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Number of levels</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QSpinBox" name="spinBox_2">
+           <property name="minimum">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <number>20</number>
+           </property>
+           <property name="value">
+            <number>4</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <spacer name="verticalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Preferred</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>78</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Colormap Name</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QComboBox" name="comboBox_2">
+           <property name="currentText">
+            <string notr="true">Jet</string>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Jet</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>viridis</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Coolhot</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -119,39 +384,95 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LegendMplCanvas</class>
+   <extends>QWidget</extends>
+   <header location="global">spmclient.ui.gui.xml.mplcanvas.h</header>
+   <container>1</container>
+   <slots>
+    <slot>update_legend()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>min_value_spinbox</tabstop>
+  <tabstop>max_value_spinbox</tabstop>
+  <tabstop>num_levels_spinBox</tabstop>
+  <tabstop>colormap_name_comboBox</tabstop>
+  <tabstop>checkBox</tabstop>
+  <tabstop>comboBox_2</tabstop>
+  <tabstop>checkBox_2</tabstop>
+  <tabstop>spinBox_2</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>colorMapPicker</receiver>
+   <receiver>colorMapChooser</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>257</x>
+     <y>529</y>
     </hint>
     <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
+     <x>376</x>
+     <y>382</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>colorMapPicker</receiver>
+   <receiver>colorMapChooser</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>325</x>
+     <y>529</y>
     </hint>
     <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
+     <x>381</x>
+     <y>412</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colormap_name_comboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>colorMapChooser</receiver>
+   <slot>update_legend()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>250</x>
+     <y>233</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>289</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>num_levels_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>colorMapChooser</receiver>
+   <slot>update_legend()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>142</x>
+     <y>207</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>151</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>update_legend()</slot>
+ </slots>
 </ui>

@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, Q
 from matplotlib import cm
 from matplotlib import colorbar
 from matplotlib.axes import Axes
+from matplotlib.colors import Normalize
 from matplotlib.image import AxesImage
 from matplotlib.lines import Line2D
 
@@ -273,7 +274,6 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # TODO show that on status bar, and remove any waiting signs
         self.set_analysis_visible(True)
 
-
     def update_legend_selected_panel_name(self):
         names = ['Color Bar', 'SPM']
         self.label_analysis.set_selected_widget_name(names[self.stackedWidget00R.currentIndex()])
@@ -419,9 +419,13 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                         "    margin: -40px 0px;\n"
                                         f"    image: url(\":/walkerR/res/StepImages/Right/{next_value}.png\")\n"
                                         "}")
-        x = current_value * 5
         for s in consts.side:
-            c = 'r' if s == consts.SIDE_LEFT else 'b'
+            if s == consts.SIDE_LEFT:
+                c = 'r'
+                x = next_value * 5
+            else:
+                c = 'b'
+                x = 5 * (((next_value + 9) % 20) + 1)  # next_value -1 + 10 = next_value +9
             for i_j, j in enumerate(consts.joint):
                 # joint canvas
                 self.advance_animation_line(None, i_j, s, x, c, 'joint')
@@ -529,22 +533,28 @@ def draw_inference_plot(spm_canvas: MplCanvas, t2i: spm1d.stats._spm.SPMi_T, dat
 #     spm_canvas.canvas.draw()
 
 
-def draw_heatmap(target_canvas: MplCanvas, temp_list: List) -> AxesImage:  # List of what?
+def draw_heatmap(target_canvas: MplCanvas, temp_list: List, norm: Normalize=None, cmap: cm=None) -> AxesImage:
     z_array = np.array(temp_list)
     z_array = np.abs(z_array)
     ax: Axes = cast(Axes, target_canvas.ax)
-    cmap = cm.get_cmap('coolwarm', 11)
+    if cmap is None:
+        cmap = cm.get_cmap('coolwarm', 11)  # colormap name and number of quantization levels
+        # cmap = cm.get_cmap('jet', 11)  # colormap name and number of quantization levels
+        under_color = (0.5, 0.5, 0.5)
+        cmap.set_under(color=under_color)
     # norm = colors.BoundaryNorm(np.linspace(0, 10, 11), cmap.N)
+    if norm is None:
+        norm = Normalize(vmin=1, vmax=4)
     ax.grid(False)
     if len(temp_list) == 2:
         ax.set_yticks([0, 1])
         ax.set_yticklabels(['Pre', 'Post'])
-    ret = ax.imshow(z_array, interpolation='nearest', cmap=cmap, aspect='auto', vmax=4, vmin=1)  # , norm=norm)
+    ret = ax.imshow(z_array, interpolation='nearest', cmap=cmap, aspect='auto', norm=norm)
 
     # colorbar = ax.figure.colorbar(im, ax=ax, orientation="horizontal",
     #                           ticks=[0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5],
     #                           pad=0.2)  # set where to put the tick marks
     ax.autoscale(enable=True, axis='both', tight=True)
-#     target_canvas.canvas.draw()
+    #     target_canvas.canvas.draw()
     return ret
 

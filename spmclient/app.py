@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import sys
-from typing import Dict, Tuple, cast
-
+from typing import Dict, Tuple
 from PyQt5.QtWidgets import QApplication
 import spm1d
 
@@ -16,6 +15,11 @@ from spmclient.models.data_manager import DataManager
 from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
 from builtins import staticmethod
+
+TTEST_2 = 'ttest2'
+TTEST_PAIRED = 'ttest_paired'
+HOTELLINGS_2 = 'hotellings2'
+HOTELLINGS_PAIRED = 'hotellings_paired'
 
 
 class App(Controller):
@@ -36,10 +40,6 @@ class App(Controller):
         self._display_manager.show_raw_data()
 
     def analyse(self, analysis: str, alpha: float, ankle_x_only=False):
-        TTEST_2 = 'ttest2'
-        TTEST_PAIRED = 'ttest_paired'
-        HOTELLINGS_2 = 'hotellings2'
-        HOTELLINGS_PAIRED = 'hotellings_paired'
         # switch on the test type
         # The test_params are a list of triplets in the form of [(ya, yb, format)]
         # The test names are a list of the form [2D test, 3D test]
@@ -72,10 +72,10 @@ class App(Controller):
                 for i_j, j in enumerate(consts.joint):
                     joint_detailed_dict = side_detailed_dict.setdefault(j, dict())
                     for i_d, d in enumerate(consts.dim):
-                    
+
                         if ankle_x_only and i_j == 2 and i_d:  # > 0:
                             continue
-                    
+
                         # dimension_detailed_dict = joint_detailed_dict.setdefault(d, dict())
                         temp_display_data_list = []
                         temp_display_fmat_list = []
@@ -105,7 +105,7 @@ class App(Controller):
                                     rmse = DataManager.rmse(data_yb, data_ya)
                                     #  TODO manage the case of more than one RMSE value. use DataManager, etc.
                                     self._display_manager.show_rmse(task_yb, rmse)
-                                    
+
                                 spm_t = App.do_spm_test(data_ya, data_yb, test_names[0], roi=roi)
                                 spmi_t, _ = App.infer_z(spm_t, alpha)
                                 temp_display_data_list.append(spmi_t)
@@ -121,10 +121,10 @@ class App(Controller):
             for _, s in enumerate(consts.side):
                 side_compact_dict = measurement_compact_dict.setdefault(s, dict())
                 for i_j, j in enumerate(consts.joint):
-                    
+
                     if ankle_x_only and i_j == 2:
                         continue
-                    
+
                     # joint_compact_dict = side_compact_dict.setdefault(j, dict())
                     temp_display_data_list = []
                     temp_display_fmat_list = []
@@ -163,7 +163,7 @@ class App(Controller):
 
                         if data_ya is not None and data_yb is not None:
                             data_ya, data_yb, roi, _offset, _tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
-        
+
                             spm_t = App.do_spm_test(data_ya, data_yb, test_names[1], roi=roi)
                             spmi_t, _ = App.infer_z(spm_t, alpha)
                             temp_display_data_list.append(spmi_t)
@@ -176,12 +176,16 @@ class App(Controller):
 
         self._display_manager.show_analysis_result(ankle_x_only=ankle_x_only)
 
-    def _adjust_array_lengths(self, subject_a:str, meas:str, data_ya:np.ndarray, data_yb:np.ndarray)-> Tuple[np.ndarray, np.ndarray, np.ndarray, int, int]:
+    @staticmethod
+    def _adjust_array_lengths(subject_a: str, meas: str, data_ya: np.ndarray, data_yb: np.ndarray) \
+            -> Tuple[np.ndarray, np.ndarray, np.ndarray, int, int]:
         roi = np.array([True]*data_ya.shape[1])
+        offset = 0  # To change later if needed
+        tail = 0
         if subject_a == consts.SUBJECT_REF and meas == consts.MEASUREMENT_KINEMATICS:
-            offset = 0  # To change later if needed
             tail = data_ya.shape[1] - offset - data_yb.shape[1]
             roi[-tail:] = False
+
             tail_avr = np.average(data_ya[:, -tail:], axis=0)  # TODO to remove later if ROI is adjusted
             if data_yb.ndim == 2:
                 shape = (data_yb.shape[0], tail)
@@ -189,11 +193,40 @@ class App(Controller):
                 shape = (data_yb.shape[0], tail, 3)
             else:
                 raise RuntimeError(f'Can not deal with number of dimensions {data_yb.ndim}')
-            temp_b_tail = np.ones(shape=shape)
-            temp_b_tail[:] = tail_avr[:]  # TODO enable this line later
-            new_data_yb  = np.concatenate((data_yb, temp_b_tail), axis=1)
-            return data_ya, new_data_yb, roi, offset, tail
-        return data_ya, data_yb, roi, 0, 0
+            temp_b_tail = np.empty(shape=shape)  # ones(shape=shape)
+            temp_b_tail[:] = tail_avr[:]
+            data_yb = np.concatenate((data_yb, temp_b_tail), axis=1)
+
+            # data_ya = App.deflate(data_ya, roi)
+        return data_ya, data_yb, roi, offset, tail
+
+    @staticmethod
+    def inflate(data: np.ndarray, roi: np.ndarray) -> np.ndarray:
+        if not len(roi):
+            return data
+        segments = []
+        prev_start = 0
+        prev_state = roi[0]
+        segments_arr = []
+        for i in range(len(roi)):
+            if roi[i] != prev_state:
+                prev_state = roi[i]
+                segments.append((prev_state, prev_start, i))
+                prev_start = i
+        segments.append((prev_state, prev_start, len(roi)))
+        # now we have all segments
+        for seg in segments:
+            length = seg[2] - seg[1]
+            shape = (data.shape[0], length) if data.ndim == 2 else (data.shape[0], length, data.shape[2])
+            if seg[0]:
+                segments_arr.append(data[:, length])
+            else:
+                segments_arr.append(np.zeros(shape, dtype=float))
+        return np.concatenate(segments_arr, axis=1)
+
+    @staticmethod
+    def deflate(data_ya, roi: np.ndarray):
+        return data_ya[:, roi]
 
     def delete_data(self):
         self.delete_analysis()
@@ -227,7 +260,7 @@ class App(Controller):
         sys.exit(app.exec())
 
     @staticmethod
-    def do_spm_test(ya: np.ndarray, yb: np.ndarray, test_name: str, roi:np.ndarray) -> spm1d.stats._spm.SPM_T:
+    def do_spm_test(ya: np.ndarray, yb: np.ndarray, test_name: str, roi: np.ndarray) -> spm1d.stats._spm.SPM_T:
         # if ya.ndim == 2 and yb.ndim == 2:
         #     spm_t = spm1d.stats.ttest2(ya, yb)
         # elif ya.ndim == 3 and yb.ndim == 3:
@@ -237,8 +270,7 @@ class App(Controller):
         test = eval('spm1d.stats.' + test_name)
         spm_t = test(ya, yb, roi=roi)
         return spm_t
-    
-    
+
     @staticmethod
     def infer_z(spm_t, alpha) -> Tuple[spm1d.stats._spm.SPMi_T, np.array]:
         spmi_t = spm_t.inference(alpha)

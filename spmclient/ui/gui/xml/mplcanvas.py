@@ -40,3 +40,8 @@ class HeatMapMplCanvas(MplCanvas):
         self.canvas.draw()
         self.update()
         # TODO make sure the update geometry works. Till now, I just hide the Y Axis
+
+class LegendMplCanvas(MplCanvas):
+    def update_legend(self):
+        # TODO use it to draw the legend later
+        pass
