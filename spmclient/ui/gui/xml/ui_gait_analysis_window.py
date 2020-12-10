@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './ui_gait_analysis_window.ui'
+# Form implementation generated from reading ui file 'ui_gait_analysis_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
@@ -452,12 +452,12 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.joint2L.setObjectName("joint2L")
         self.gridLayout_13.addWidget(self.joint2L, 2, 0, 1, 2)
         self.gridLayout_3.addWidget(self.widget_2L, 5, 0, 1, 3)
-        self.gait_sliderL = QtWidgets.QSlider(self.widget_lt_side)
+        self.gait_sliderL = MyQSlider(self.widget_lt_side)
         self.gait_sliderL.setMinimumSize(QtCore.QSize(0, 80))
         self.gait_sliderL.setStyleSheet("QSlider::groove:horizontal {\n"
-"    border: off; /*1px solid #111; */\n"
+"    border: 1px solid #a0a0a0; /*  off;*/\n"
 "    background-color: off;\n"
-"    height: 0px;\n"
+"    height: 3px;\n"
 "    margin: 0px 0px;\n"
 "}\n"
 "QSlider::handle {\n"
@@ -471,12 +471,12 @@ class Ui_ui_GaitAnalysisWindow(object):
 "    image: url(\":/walkerL/res/StepImages/Left/1.png\")\n"
 "}\n"
 "")
-        self.gait_sliderL.setMinimum(1)
-        self.gait_sliderL.setMaximum(20)
-        self.gait_sliderL.setSingleStep(1)
-        self.gait_sliderL.setPageStep(4)
-        self.gait_sliderL.setProperty("value", 1)
-        self.gait_sliderL.setSliderPosition(1)
+        self.gait_sliderL.setMinimum(0)
+        self.gait_sliderL.setMaximum(100)
+        self.gait_sliderL.setSingleStep(5)
+        self.gait_sliderL.setPageStep(20)
+        self.gait_sliderL.setProperty("value", 55)
+        self.gait_sliderL.setSliderPosition(55)
         self.gait_sliderL.setOrientation(QtCore.Qt.Horizontal)
         self.gait_sliderL.setObjectName("gait_sliderL")
         self.gridLayout_3.addWidget(self.gait_sliderL, 6, 0, 1, 3)
@@ -813,12 +813,12 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.label.setObjectName("label")
         self.gridLayout_2.addWidget(self.label, 2, 0, 1, 1)
         self.gridLayout_5.addWidget(self.widget_0R, 1, 0, 1, 3)
-        self.gait_sliderR = QtWidgets.QSlider(self.widget_rt_side)
+        self.gait_sliderR = MyQSlider(self.widget_rt_side)
         self.gait_sliderR.setMinimumSize(QtCore.QSize(0, 80))
         self.gait_sliderR.setStyleSheet("QSlider::groove:horizontal {\n"
-"    border: off; /*1px solid #111; */\n"
+"    border: 1px solid #a0a0a0; /*  off;*/\n"
 "    background-color: off;\n"
-"    height: 0px;\n"
+"    height: 3px; /* 0px;*/\n"
 "    margin: 0px 0px;\n"
 "}\n"
 "QSlider::handle {\n"
@@ -831,13 +831,15 @@ class Ui_ui_GaitAnalysisWindow(object):
 "    margin: -40px 0px;\n"
 "    image: url(\":/walkerR/res/StepImages/Right/1.png\");\n"
 "}")
-        self.gait_sliderR.setMinimum(1)
-        self.gait_sliderR.setMaximum(20)
-        self.gait_sliderR.setSingleStep(1)
-        self.gait_sliderR.setPageStep(4)
-        self.gait_sliderR.setProperty("value", 1)
-        self.gait_sliderR.setSliderPosition(1)
+        self.gait_sliderR.setMinimum(0)
+        self.gait_sliderR.setMaximum(100)
+        self.gait_sliderR.setSingleStep(5)
+        self.gait_sliderR.setPageStep(20)
+        self.gait_sliderR.setProperty("value", 5)
+        self.gait_sliderR.setSliderPosition(5)
         self.gait_sliderR.setOrientation(QtCore.Qt.Horizontal)
+        self.gait_sliderR.setTickPosition(QtWidgets.QSlider.TicksBothSides)
+        self.gait_sliderR.setTickInterval(1)
         self.gait_sliderR.setObjectName("gait_sliderR")
         self.gridLayout_5.addWidget(self.gait_sliderR, 6, 0, 1, 3)
         self.gridLayout_7.addLayout(self.gridLayout_5, 0, 0, 1, 1)
@@ -1006,8 +1008,6 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.actionRight_Side.toggled['bool'].connect(self.widget_rt_side.setVisible)
         self.action_view_ligand.toggled['bool'].connect(self.legend_dock_widget.setVisible)
         self.legend_dock_widget.visibilityChanged['bool'].connect(self.action_view_ligand.setChecked)
-        self.gait_sliderL.valueChanged['int'].connect(self.gait_sliderR.setValue)
-        self.gait_sliderR.valueChanged['int'].connect(self.gait_sliderL.setValue)
         QtCore.QMetaObject.connectSlotsByName(ui_GaitAnalysisWindow)
 
     def retranslateUi(self, ui_GaitAnalysisWindow):
@@ -1060,9 +1060,7 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.action_clear_analysis.setToolTip(_translate("ui_GaitAnalysisWindow", "Clear the analysis results"))
         self.action_view_ligand.setText(_translate("ui_GaitAnalysisWindow", "Ligand"))
 
-from spmclient.ui.gui.xml.analysislabel import AnalysisLabel
-from spmclient.ui.gui.xml.mplcanvas import HeatMapMplCanvas, MplCanvas
-from spmclient.ui.gui.xml.roundcirclepushbutton import RoundCirclePushButton
+from spmclient.ui.gui.xml.customcomponents import AnalysisLabel, HeatMapMplCanvas, MplCanvas, MyQSlider, RoundCirclePushButton
 from . import res_rc
 
 if __name__ == "__main__":

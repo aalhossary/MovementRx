@@ -3,20 +3,19 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Dict, cast, List, Optional
 
+import matplotlib.pyplot as plt
+import numpy as np
 from PyQt5 import QtGui
 from PyQt5.Qt import QRegExp
-from PyQt5.QtCore import QObject, QTimer
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup,\
+from PyQt5.QtCore import QObject, QTimer, QThread, pyqtSignal
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup, \
     QButtonGroup, QAbstractButton, QWidget
 from matplotlib import cm
-from matplotlib import colorbar
 from matplotlib.axes import Axes
 from matplotlib.colors import Normalize
 from matplotlib.image import AxesImage
 from matplotlib.lines import Line2D
 
-import matplotlib.pyplot as plt
-import numpy as np
 import spm1d
 from spmclient import consts
 from spmclient.controls.controller import Controller
@@ -24,7 +23,8 @@ from spmclient.models.data_manager import DataManager
 from spmclient.models.datasources.datagrapper import load_full_folder
 from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
-from spmclient.ui.gui.xml.mplcanvas import MplCanvas
+from spmclient.ui.gui.xml.customcomponents import MplCanvas, KinematicsScaler,\
+    MomentsScaler
 from spmclient.ui.gui.xml.ui_gait_analysis_window import Ui_ui_GaitAnalysisWindow
 
 
@@ -90,13 +90,13 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.set_analysis_visible(False)
         
         self.show_study_name()
-        self.animator: Optional[QTimer] = None
+        self.animator_timer: Optional[QTimer] = None
 
     def set_analysis_visible(self, show: bool):
         re = QRegExp('joint[012][RL]')
         qlist: List[QObject] = self.findChildren(MplCanvas, re)
         for widget in qlist:
-#             print('set', widget.objectName(), 'visibility to', show)
+            # print('set', widget.objectName(), 'visibility to', show)
             # TODO Simplify this expression
             if not show:
                 widget.setVisible(show)
@@ -107,13 +107,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         re = QRegExp('stackedWidget[012][012][RL]')
         qlist: List[QObject] = self.findChildren(QStackedWidget, re)
         for widget in qlist:
-#             print('set', widget.objectName(), 'visibility to', show)
+            # print('set', widget.objectName(), 'visibility to', show)
             if not show:
                 widget.setVisible(show)
             else:
                 if self.ankle_x_only and widget.objectName()[-3:-1] not in ('21', '22'):
                     widget.setVisible(show)
-
 
     def joint_button_clicked(self, button: QAbstractButton):
         suffix = button.objectName()[-3:]
@@ -283,6 +282,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
     
     def show_analysis_result(self, ankle_x_only=False):
         analysis_legend_image = None
+
+        if self.actionKinematics.isChecked():
+            self.scaler = KinematicsScaler()
+        else:
+            self.scaler = MomentsScaler()
+
         # first show the detailed analysis
         for s in consts.side:
             for i_j, j in enumerate(consts.joint):
@@ -346,6 +351,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                 # clear it first
                 joint_canvas.ax.clear()
                 joint_canvas.moving_line = None
+
                 for meas in consts.measurement_folder:
                     # filter
                     if meas == consts.MEASUREMENT_KINEMATICS and not self.actionKinematics.isChecked():
@@ -376,73 +382,41 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.add_colorbar_to_legend(analysis_legend_image)
         self.legend_heatmap_groupbox.setVisible(True)
 
-        if self.animator is None:
-            self.animator = QTimer(self)
-            self.animator.setSingleShot(False)
-            self.animator.timeout.connect(self.advance_animation)
-        self.animator.start(1500)
+        if self.animator_timer is None:
+            self.animator_timer = QTimer(self)
+            self.animator_timer.setSingleShot(False)
+            self.animator_timer.timeout.connect(self.advance_animation)
+        self.animator_timer.start(1500)
 
     def advance_animation(self):
-        current_value = self.gait_sliderR.value()
-        next_value = (current_value % 20) + 1  # in the period [1, 20]
-        # next_value = current_value + 1
-        # if next_value > 20:
-        #     next_value = 1
-        self.gait_sliderR.setValue(next_value)
-        self.gait_sliderL.setStyleSheet("QSlider::groove:horizontal {\n"
-                                        "    border: off;\n"
-                                        "    background-color: off;\n"
-                                        "    height: 0px;\n"
-                                        "    margin: 0px 0px;\n"
-                                        "}\n"
-                                        "QSlider::handle {\n"
-                                        "    background: off;\n"
-                                        "    border: off;\n"
-                                        "    width: 40px;\n"
-                                        "}\n"
-                                        "QSlider::handle:horizontal {\n"
-                                        "    margin: -40px 0px;\n"
-                                        f"    image: url(\":/walkerL/res/StepImages/Left/{next_value}.png\")\n"
-                                        "}")
-        self.gait_sliderR.setStyleSheet("QSlider::groove:horizontal {\n"
-                                        "    border: off;\n"
-                                        "    background-color: off;\n"
-                                        "    height: 0px;\n"
-                                        "    margin: 0px 0px;\n"
-                                        "}\n"
-                                        "QSlider::handle {\n"
-                                        "    background: off;\n"
-                                        "    border: off;\n"
-                                        "    width: 40px;\n"
-                                        "}\n"
-                                        "QSlider::handle:horizontal {\n"
-                                        "    margin: -40px 0px;\n"
-                                        f"    image: url(\":/walkerR/res/StepImages/Right/{next_value}.png\")\n"
-                                        "}")
+        current_value = self.gait_sliderR.logicalValue()
+        next_value_r = (current_value % 100) + 5  # * 2  # 5  # in the period [5, 100]
+        next_value_l = ((next_value_r + 45) % 100) + 5  #  ((next_value_r - 5 + 50) % 100) + 5
+
+        print('Next values', next_value_r, '\t', next_value_l)
+
+        self.gait_sliderR.setLogicalValue(self.scaler, next_value_r, 'Right')
+        self.gait_sliderL.setLogicalValue(self.scaler, next_value_l, 'Left')
+
         for s in consts.side:
             if s == consts.SIDE_LEFT:
                 c = 'r'
-                x = next_value * 5
+                x = next_value_l
             else:
                 c = 'b'
-                x = 5 * (((next_value + 9) % 20) + 1)  # next_value -1 + 10 = next_value +9
-            for i_j, j in enumerate(consts.joint):
+                x = next_value_r
+            for i_j, _ in enumerate(consts.joint):
                 # joint canvas
                 self.advance_animation_line(None, i_j, s, x, c, 'joint')
 
-                for i_d, d in enumerate(consts.dim):
+                for i_d, _ in enumerate(consts.dim):
                     self.advance_animation_line(i_d, i_j, s, x, c, 'data')
                     self.advance_animation_line(i_d, i_j, s, x, c, 'spm1d')
                     self.advance_animation_line(i_d, i_j, s, x, c, 'mose')
 
     def advance_animation_line(self, i_d: Optional[int], i_j: int, s: str, x: int, color: str, canvas_type: str):
         mpl_canvas = self.get_target_canvas(canvas_type, i_j, i_d, side=s)
-        if mpl_canvas.moving_line is None:
-            mpl_canvas.moving_line = mpl_canvas.ax.axvline(
-                x=x, linewidth=4, color=color, ls='-', lw=1.5)
-        else:
-            mpl_canvas.moving_line.set_xdata([x, x])
-            mpl_canvas.canvas.draw()
+        mpl_canvas.animate_line(self.scaler, x, color)
 
     def show_study_name(self):
         if self.actionKinematics.isChecked():
@@ -500,12 +474,13 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         print('clear_analysis')
         self.set_analysis_visible(False)
         self.controller.delete_analysis()
-        if self.animator:
-            self.animator.stop()
+        if self.animator_timer:
+            self.animator_timer.stop()
 
     def clear_all(self):
         print('clear_all')
         self.controller.delete_data()
+
 
 def draw_mean_std(current_data, ax: Axes, display_format: DisplayFormat):
     current_data_mean = current_data.mean(axis=0)

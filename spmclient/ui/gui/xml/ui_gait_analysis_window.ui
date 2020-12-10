@@ -828,7 +828,7 @@
             </widget>
            </item>
            <item row="6" column="0" colspan="3">
-            <widget class="QSlider" name="gait_sliderL">
+            <widget class="MyQSlider" name="gait_sliderL">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -837,9 +837,9 @@
              </property>
              <property name="styleSheet">
               <string notr="true">QSlider::groove:horizontal {
-    border: off; /*1px solid #111; */
+    border: 1px solid #a0a0a0; /*  off;*/
     background-color: off;
-	height: 0px;
+	height: 3px;
     margin: 0px 0px;
 }
 QSlider::handle {
@@ -855,22 +855,22 @@ QSlider::handle:horizontal {
 </string>
              </property>
              <property name="minimum">
-              <number>1</number>
+              <number>0</number>
              </property>
              <property name="maximum">
-              <number>20</number>
+              <number>100</number>
              </property>
              <property name="singleStep">
-              <number>1</number>
+              <number>5</number>
              </property>
              <property name="pageStep">
-              <number>4</number>
+              <number>20</number>
              </property>
              <property name="value">
-              <number>1</number>
+              <number>55</number>
              </property>
              <property name="sliderPosition">
-              <number>1</number>
+              <number>55</number>
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -1466,7 +1466,7 @@ QSlider::handle:horizontal {
             </widget>
            </item>
            <item row="6" column="0" colspan="3">
-            <widget class="QSlider" name="gait_sliderR">
+            <widget class="MyQSlider" name="gait_sliderR">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -1475,9 +1475,9 @@ QSlider::handle:horizontal {
              </property>
              <property name="styleSheet">
               <string notr="true">QSlider::groove:horizontal {
-    border: off; /*1px solid #111; */
+    border: 1px solid #a0a0a0; /*  off;*/
     background-color: off;
-	height: 0px;
+	height: 3px; /* 0px;*/
     margin: 0px 0px;
 }
 QSlider::handle {
@@ -1492,25 +1492,31 @@ QSlider::handle:horizontal {
 }</string>
              </property>
              <property name="minimum">
-              <number>1</number>
+              <number>0</number>
              </property>
              <property name="maximum">
-              <number>20</number>
+              <number>100</number>
              </property>
              <property name="singleStep">
-              <number>1</number>
+              <number>5</number>
              </property>
              <property name="pageStep">
-              <number>4</number>
+              <number>20</number>
              </property>
              <property name="value">
-              <number>1</number>
+              <number>5</number>
              </property>
              <property name="sliderPosition">
-              <number>1</number>
+              <number>5</number>
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="tickPosition">
+              <enum>QSlider::TicksBothSides</enum>
+             </property>
+             <property name="tickInterval">
+              <number>1</number>
              </property>
             </widget>
            </item>
@@ -1827,18 +1833,18 @@ QSlider::handle:horizontal {
   <customwidget>
    <class>MplCanvas</class>
    <extends>QWidget</extends>
-   <header location="global">spmclient.ui.gui.xml.mplcanvas.h</header>
+   <header location="global">spmclient.ui.gui.xml.customcomponents.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>RoundCirclePushButton</class>
    <extends>QPushButton</extends>
-   <header location="global">spmclient.ui.gui.xml.roundcirclepushbutton.h</header>
+   <header location="global">spmclient.ui.gui.xml.customcomponents.h</header>
   </customwidget>
   <customwidget>
    <class>AnalysisLabel</class>
    <extends>QLabel</extends>
-   <header location="global">spmclient.ui.gui.xml.analysislabel.h</header>
+   <header location="global">spmclient.ui.gui.xml.customcomponents.h</header>
    <slots>
     <slot>set_analysis_name(QString)</slot>
     <slot>set_selected_widget_name(QString)</slot>
@@ -1847,8 +1853,13 @@ QSlider::handle:horizontal {
   <customwidget>
    <class>HeatMapMplCanvas</class>
    <extends>QWidget</extends>
-   <header location="global">spmclient.ui.gui.xml.mplcanvas.h</header>
+   <header location="global">spmclient.ui.gui.xml.customcomponents.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MyQSlider</class>
+   <extends>QSlider</extends>
+   <header location="global">spmclient.ui.gui.xml.customcomponents.h</header>
   </customwidget>
  </customwidgets>
  <resources>
@@ -1916,38 +1927,6 @@ QSlider::handle:horizontal {
     <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gait_sliderL</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>gait_sliderR</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>766</x>
-     <y>711</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>422</x>
-     <y>725</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gait_sliderR</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>gait_sliderL</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>299</x>
-     <y>725</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>792</x>
-     <y>719</y>
     </hint>
    </hints>
   </connection>

@@ -193,7 +193,7 @@ class Ui_colorMapChooser(object):
         self.comboBox_2.setItemText(2, _translate("colorMapChooser", "Coolhot"))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), _translate("colorMapChooser", "Page 2"))
 
-from spmclient.ui.gui.xml.mplcanvas import LegendMplCanvas
+from spmclient.ui.gui.xml.customcomponents import LegendMplCanvas
 
 if __name__ == "__main__":
     import sys
