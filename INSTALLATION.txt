@@ -1,0 +1,20 @@
+To install as a separate application,
+
+1) First install the required libraries:
+- Python 3.8 (3.7 should work but I did not try it)
+- matplotlib 3.3.2
+- numpy 1.19
+- pyqt 5.9
+- scipy 1.5 (required by spm1d (included a modified version within the code here))
+
+2) Navigate to the project root directory
+cd MovementRx
+
+3) Remember to add the project root to the PYTHONPATH environment variable.
+e.g. anaconda prompt, you can write
+set PYTHONPATH=.
+(please change this according to your environment)
+
+4) Launch the application
+python spmclient/app.py
+

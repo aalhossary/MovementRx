@@ -47,15 +47,6 @@ class DataManager:
     def set_analysis_data_compact(cls, analysis_data_compact):
         cls._analysis_data_compact = analysis_data_compact
 
-    # @classmethod
-    # def removeme_divide_subject_data_by_two(cls, data, subject):
-    #     for measurement_dict in data.values():
-    #         subject_dict: Dict = measurement_dict[subject]
-    #         for side_dict in subject_dict.values():
-    #             for joint_dict in side_dict.values():
-    #                 for dim in joint_dict.values():
-    #                     dim /= 2
-
     @classmethod
     def is_data_available(cls, subject: str) -> bool:
         """Check availability of data (and Handle errors)."""
@@ -63,15 +54,15 @@ class DataManager:
 
     @classmethod
     def get_average(cls, data: Dict, path: Dict = None) -> np.ndarray:
-#         if not data:
-#             data = cls._raw_data
+        # if not data:
+        #     data = cls._raw_data
         data2d = DataManager._get_multiples(data, path)
         return np.average(data2d, axis=0)
 
     @classmethod
     def get_std(cls, data: Dict, path: Dict = None) -> np.ndarray:
-#         if not data:
-#             data = cls._raw_data
+        # if not data:
+        #     data = cls._raw_data
         data2d = DataManager._get_multiples(data, path)
         return np.std(data2d, axis=0)
 
@@ -93,8 +84,8 @@ class DataManager:
     @classmethod
     def _get_multiples(cls, data: Dict = None, path: Dict = None, satisfy_missing_path_with_any: bool = False, has_subject = True, has_dimension = True) \
             -> Optional[np.ndarray]:
-#         if not data:
-#             data = cls._raw_data
+        # if not data:
+        #     data = cls._raw_data
         try:
             measurement: str = path.get(consts.MEASUREMENT, None)
             if satisfy_missing_path_with_any and not measurement:
@@ -108,7 +99,6 @@ class DataManager:
                 subject_as_dict: Dict = measurement_as_dict[subject]
             else:
                 subject_as_dict: Dict = measurement_as_dict
-                
 
             side: str = path.get(consts.SIDE, None)
             if satisfy_missing_path_with_any and not side:

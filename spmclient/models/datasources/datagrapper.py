@@ -45,7 +45,7 @@ def load_full_folder(root_path: Union[Path, str], scale=False) -> Dict:
                 side_dict = subject_dict.setdefault(s, dict())
                 joint_dict = side_dict.setdefault(j, dict())
                 temp_data = load_file(f)
-                
+
 #                 # -------- test start------------------
 #                 if scale and measurment == consts.MEASUREMENT_MOMENTS:
 #                     temp_data *= 16.5
@@ -56,7 +56,7 @@ def load_full_folder(root_path: Union[Path, str], scale=False) -> Dict:
 #                     shape = temp_data.shape
 #                     if shape[1] < 50:
 #                         temp_data = temp_data.transpose()
-                
+
                 joint_dict[dim] = temp_data
 
     return ret_dict

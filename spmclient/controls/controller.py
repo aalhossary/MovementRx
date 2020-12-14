@@ -1,8 +1,11 @@
 from abc import ABCMeta, abstractmethod
 from typing import Dict
 
+from PyQt5.QtCore import QObject
+from PyQt5.QtWidgets import QApplication
 
-class Controller(metaclass=ABCMeta):
+
+class Controller(QObject):  # (metaclass=ABCMeta):
     def set_data(self, data: Dict, subject: str):
         raise NotImplementedError()
 

@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from builtins import staticmethod
 import sys
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
+
 from PyQt5.QtWidgets import QApplication
-import spm1d
 
 import numpy as np
+import spm1d
 from spmclient import consts
 import spmclient
 from spmclient.controls.analysis_type_qdialogue import AnalysisTypeQDialogue
@@ -14,7 +16,7 @@ from spmclient.controls.gait_analysis_window import GaitAnalysisWindow
 from spmclient.models.data_manager import DataManager
 from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
-from builtins import staticmethod
+
 
 TTEST_2 = 'ttest2'
 TTEST_PAIRED = 'ttest_paired'
