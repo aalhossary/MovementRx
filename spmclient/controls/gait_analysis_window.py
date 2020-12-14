@@ -187,7 +187,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 # #             colorbar.ax.set_yticklabels(['low', '', '', '', 'mid', '', '', '', 'High', ''])
 #             colorbar.ax.set_yticklabels(['low', 'mid', 'High'])
 # #             colorbar.ax.get_yaxis().set_ticks([])
-            for j, lab in enumerate(['No effect', '', '', 'Min', '', '', 'Moderate', '', '', '', 'High',]):
+            for j, lab in enumerate(['Negligible', '', '', 'Min', '', '', 'Moderate', '', '', '', 'High',]):
                 # colorbar.ax.text(.5, (4 * j + 2) / 4.0, lab, ha='center', va='center')
                 colorbar.ax.text(2.5, ((2.9 * j) / 11) + 1.15, lab, ha='center', va='center')
         self.legend_heatmap_panel.canvas.draw()

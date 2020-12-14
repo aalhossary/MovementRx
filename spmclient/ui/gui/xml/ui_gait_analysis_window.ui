@@ -269,7 +269,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,5,0,5,0,5,0">
+          <layout class="QGridLayout" name="gridLayout_3">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -1638,6 +1638,24 @@ QSlider::handle:horizontal {
    <addaction name="actionNextView"/>
   </widget>
   <widget class="QDockWidget" name="legend_dock_widget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>150</width>
+     <height>165</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>220</width>
+     <height>16777215</height>
+    </size>
+   </property>
    <property name="floating">
     <bool>false</bool>
    </property>
