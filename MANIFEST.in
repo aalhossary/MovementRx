@@ -1,0 +1,3 @@
+include LICENSE README.md setup.py
+recursive-include spmclient/res *.csv
+global-include res *.csv *.py *.npz *.npy *.m *.mat *.txt
