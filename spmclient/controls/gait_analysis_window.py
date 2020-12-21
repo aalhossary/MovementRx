@@ -128,21 +128,24 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
     # TODO merge load_reference, load_before_intervention, load_after_intervention
     def load_reference(self):
         file_dialog = QFileDialog(self)
-        d = Path(__file__).parents[2] / 'res/refDataScaled'
+        # d = Path(__file__).parents[2] / 'res/refDataScaled'
+        d = Path(__file__).parents[1] / 'res/refDataScaled'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select reference data root folder", directory=str(d))
         loaded_data = load_full_folder(dir_name)
         self.controller.set_data(loaded_data, consts.SUBJECT_REF)
 
     def load_before_intervention(self):
         file_dialog = QFileDialog(self)
-        d = Path(__file__).parents[2] / 'res/cases/subj1_preResampled'
+        # d = Path(__file__).parents[2] / 'res/cases/subj1_preResampled'
+        d = Path(__file__).parents[1] / 'res/cases/subj1_preResampled'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of preintervension data", directory=str(d))
         loaded_data = load_full_folder(dir_name, scale=True)
         self.controller.set_data(loaded_data, consts.SUBJECT_B4)
 
     def load_after_intervention(self):
         file_dialog = QFileDialog(self)
-        d = Path(__file__).parents[2] / 'res/cases/subj1_postResampled'
+        # d = Path(__file__).parents[2] / 'res/cases/subj1_postResampled'
+        d = Path(__file__).parents[1] / 'res/cases/subj1_postResampled'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of postintervension data", directory=str(d))
         loaded_data = load_full_folder(dir_name, scale=True)
         self.controller.set_data(loaded_data, consts.SUBJECT_AFTER)
@@ -420,9 +423,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
     def show_study_name(self):
         if self.actionKinematics.isChecked():
-            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Kinematics</span> (deg)</p></body></html>')
+            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Kinematics</span> (% stride deg)</p></body></html>')
         else:
-            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Moments</span> (Nm/kg)</p></body></html>')
+            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Moments</span> (% stance Nm/kg)</p></body></html>')
 
     def display_options_changed(self, action: QAction):
         # TODO This method needs redesign, checks, and maybe moved to controller
