@@ -5,7 +5,8 @@ from PyQt5 import QtCore
 from PyQt5.Qt import QLabel
 from PyQt5.QtCore import QSize, QPointF, Qt
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QBitmap
+from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QBitmap,\
+    QFontMetrics
 from PyQt5.QtWidgets import QPushButton, QWidget, QSlider
 from PyQt5.QtWidgets import QVBoxLayout
 from matplotlib.axes._axes import Axes
@@ -69,7 +70,7 @@ class AnalysisLabel(QLabel):
 
 class Scaler:
     def scale(self, index_in_cycle: int) -> Optional[int]:
-        pass
+        raise NotImplementedError()
 
 
 class MomentsScaler(Scaler):
@@ -314,3 +315,34 @@ class MyQSlider(QSlider):
                     "}")
             self.handle_on = True
         
+    def paintEvent(self, event):
+        super(MyQSlider, self).paintEvent(event)
+
+        curr_value = str(self.value())
+        round_value = round(float(curr_value), 2)
+        value_str = str(round_value)
+
+        painter = QPainter(self)
+        painter.setPen(QPen(QtCore.Qt.white))
+
+        font_metrics = QFontMetrics(self.font())
+        font_width = font_metrics.boundingRect(value_str).width()
+        font_height = font_metrics.boundingRect(value_str).height()
+
+        rect = self.geometry()
+        if self.orientation() == QtCore.Qt.Horizontal:
+            horizontal_x_pos = rect.width() - font_width - 5
+            horizontal_y_pos = rect.height() * 0.75
+
+            painter.drawText(QtCore.QPoint(horizontal_x_pos, horizontal_y_pos), str(round_value))
+
+        elif self.orientation() == QtCore.Qt.Vertical:
+            pass
+#             vertical_x_pos = rect.width() - font_width - 5
+#             vertical_y_pos = rect.height() * 0.75
+# 
+#             painter.drawText(QtCore.QPoint(rect.width() / 2.0 - font_width / 2.0, rect.height() - 5), str(round_value))
+        else:
+            pass
+
+        painter.drawRect(rect)

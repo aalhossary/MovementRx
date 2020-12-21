@@ -240,7 +240,7 @@
       <item row="0" column="2" alignment="Qt::AlignHCenter">
        <widget class="QLabel" name="label_study">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kinematics&lt;/span&gt; (deg) / &lt;span style=&quot; font-weight:600;&quot;&gt;Moments&lt;/span&gt; (Nm/kg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kinematics&lt;/span&gt; (% stride deg) / &lt;span style=&quot; font-weight:600;&quot;&gt;Moments&lt;/span&gt; (Nm/kg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -446,7 +446,7 @@
            <item row="0" column="1">
             <widget class="QLabel" name="label_addL">
              <property name="text">
-              <string>Add. / Abduction</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Add. / Abduction&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -456,7 +456,7 @@
            <item row="0" column="2">
             <widget class="QLabel" name="label_rotL">
              <property name="text">
-              <string>Int. / Ext. rotation</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Int. / Ext. rotation&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -466,7 +466,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="label_flexL">
              <property name="text">
-              <string>Flex. / Extension</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flex. / Extension&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -914,7 +914,7 @@ QSlider::handle:horizontal {
            <item row="0" column="1">
             <widget class="QLabel" name="label_addR">
              <property name="text">
-              <string>Add. / Abduction</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Add. / Abduction&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -938,7 +938,7 @@ QSlider::handle:horizontal {
            <item row="0" column="0">
             <widget class="QLabel" name="label_flexR">
              <property name="text">
-              <string>Flex. / Extension</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flex. / Extension&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -948,7 +948,7 @@ QSlider::handle:horizontal {
            <item row="0" column="2">
             <widget class="QLabel" name="label_rotR">
              <property name="text">
-              <string>Int. / Ext. rotation</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Int. / Ext. rotation&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -1222,22 +1222,6 @@ QSlider::handle:horizontal {
                 </property>
                </widget>
               </item>
-              <item row="2" column="1" colspan="2">
-               <widget class="HeatMapMplCanvas" name="joint1R" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>1</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>130</width>
-                  <height>30</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
               <item row="0" column="2">
                <widget class="MplCanvas" name="datacanvas12R" native="true">
                 <property name="sizePolicy">
@@ -1289,6 +1273,22 @@ QSlider::handle:horizontal {
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1" colspan="2">
+               <widget class="HeatMapMplCanvas" name="joint1R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>130</width>
+                  <height>30</height>
+                 </size>
                 </property>
                </widget>
               </item>
@@ -1408,22 +1408,6 @@ QSlider::handle:horizontal {
                 </property>
                </widget>
               </item>
-              <item row="2" column="1" colspan="2">
-               <widget class="HeatMapMplCanvas" name="joint0R" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>1</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>130</width>
-                  <height>30</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
               <item row="0" column="2">
                <widget class="MplCanvas" name="datacanvas02R" native="true">
                 <property name="sizePolicy">
@@ -1459,6 +1443,22 @@ QSlider::handle:horizontal {
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1" colspan="2">
+               <widget class="HeatMapMplCanvas" name="joint0R" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>130</width>
+                  <height>30</height>
+                 </size>
                 </property>
                </widget>
               </item>
@@ -1613,9 +1613,25 @@ QSlider::handle:horizontal {
     <addaction name="separator"/>
     <addaction name="action_view_ligand"/>
    </widget>
+   <widget class="QMenu" name="menuo_ptions">
+    <property name="title">
+     <string>o&amp;ptions</string>
+    </property>
+    <widget class="QMenu" name="menuAnalysis_Type">
+     <property name="title">
+      <string>Analysis Type</string>
+     </property>
+     <addaction name="actionKnee_OA"/>
+     <addaction name="actionKnee_Ambutation"/>
+    </widget>
+    <addaction name="menuAnalysis_Type"/>
+    <addaction name="actionAlpha"/>
+    <addaction name="actionColor_Scale"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menuAnalysis"/>
    <addaction name="menuView"/>
+   <addaction name="menuo_ptions"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -1653,7 +1669,7 @@ QSlider::handle:horizontal {
    <property name="maximumSize">
     <size>
      <width>220</width>
-     <height>16777215</height>
+     <height>524287</height>
     </size>
    </property>
    <property name="floating">
@@ -1844,6 +1860,38 @@ QSlider::handle:horizontal {
    </property>
    <property name="text">
     <string>Ligand</string>
+   </property>
+  </action>
+  <action name="actionColor_Scale">
+   <property name="text">
+    <string>Colo&amp;r Scale</string>
+   </property>
+  </action>
+  <action name="actionAlpha">
+   <property name="text">
+    <string>Alpha</string>
+   </property>
+  </action>
+  <action name="actionKnee_OA">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Knee OA</string>
+   </property>
+  </action>
+  <action name="actionKnee_Ambutation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Knee Ambutation</string>
    </property>
   </action>
  </widget>
