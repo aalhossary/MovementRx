@@ -133,6 +133,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         dir_name = file_dialog.getExistingDirectory(self, caption="Select reference data root folder", directory=str(d))
         loaded_data = load_full_folder(dir_name)
         self.controller.set_data(loaded_data, consts.SUBJECT_REF)
+        self.update_actions_enabled()
 
     def load_before_intervention(self):
         file_dialog = QFileDialog(self)
@@ -141,6 +142,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of preintervension data", directory=str(d))
         loaded_data = load_full_folder(dir_name, scale=True)
         self.controller.set_data(loaded_data, consts.SUBJECT_B4)
+        self.update_actions_enabled()
 
     def load_after_intervention(self):
         file_dialog = QFileDialog(self)
@@ -149,6 +151,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of postintervension data", directory=str(d))
         loaded_data = load_full_folder(dir_name, scale=True)
         self.controller.set_data(loaded_data, consts.SUBJECT_AFTER)
+        self.update_actions_enabled()
 
     def data_loaded(self, data: Dict):
         # TODO tell that on status bar
@@ -396,7 +399,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         next_value_r = (current_value % 100) + 5  # * 2  # 5  # in the period [5, 100]
         next_value_l = ((next_value_r + 45) % 100) + 5  #  ((next_value_r - 5 + 50) % 100) + 5
 
-        print('Next values', next_value_r, '\t', next_value_l)
+        # print('Next values', next_value_r, '\t', next_value_l)
 
         self.gait_sliderR.setLogicalValue(self.scaler, next_value_r, 'Right')
         self.gait_sliderL.setLogicalValue(self.scaler, next_value_l, 'Left')
@@ -477,12 +480,25 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         print('clear_analysis')
         self.set_analysis_visible(False)
         self.controller.delete_analysis()
+        self.update_actions_enabled()
         if self.animator_timer:
             self.animator_timer.stop()
 
     def clear_all(self):
         print('clear_all')
         self.controller.delete_data()
+        self.update_actions_enabled()
+
+    def update_actions_enabled(self):
+        ref_available = DataManager.is_data_available(consts.SUBJECT_REF)
+        pre_available = DataManager.is_data_available(consts.SUBJECT_B4)
+        post_available = DataManager.is_data_available(consts.SUBJECT_AFTER)
+
+        self.actionPre_vs_Reference.setEnabled(ref_available and pre_available)
+        self.actionPost_vs_Ref.setEnabled(ref_available and post_available)
+        self.actionPre_and_Post_Vs_Ref.setEnabled(ref_available and pre_available and post_available)
+        self.actionPaired.setEnabled(pre_available and post_available)
+        self.actionTwo_Sample.setEnabled(pre_available and post_available)
 
 
 def draw_mean_std(current_data, ax: Axes, display_format: DisplayFormat):

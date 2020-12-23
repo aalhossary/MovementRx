@@ -15,6 +15,14 @@ from matplotlib.figure import Figure
 from matplotlib.lines import Line2D
 
 
+class Singleton(type):
+    _instances = {}
+    def __call__(self, *args, **kwargs):  # self here is actually cls ;-)
+        if self not in self._instances:
+            self._instances[self] = super(Singleton, self).__call__(*args, **kwargs)
+        return self._instances[self]
+
+
 class AnalysisLabel(QLabel):
 
     def __init__(self, parent=None, *args, **kwargs):
@@ -228,7 +236,7 @@ class RoundCirclePushButton(QPushButton):
     def setChecked(self, checked: bool) -> None:
         super(RoundCirclePushButton, self).setChecked(checked)
 
-        print("changing icon state to Checked =", checked)
+        # print("changing icon state to Checked =", checked)
         if checked:
             self.setIcon(self._checked_icon)
         else:
@@ -262,7 +270,7 @@ class MyQSlider(QSlider):
 
         scaled = scaler.scale(val)
         if scaled is None:
-            print(f'{side}\t{val}\t{scaled}\t1')
+            # print(f'{side}\t{val}\t{scaled}\t1')
             if self.handle_on:
                 self.setStyleSheet(
                     "QSlider::groove:horizontal {\n"
@@ -278,7 +286,7 @@ class MyQSlider(QSlider):
             self.setValue(scaled)
             # TODO simplify this IF THEN ELSE structure
             if self.handle_on:
-                print(f'{side}\t{val}\t{scaled}\t21')
+                # print(f'{side}\t{val}\t{scaled}\t21')
                 self.setStyleSheet(
                     "QSlider::groove:horizontal {\n"
                     "    border: 1px solid #a0a0a0; /*  off;*/\n"
@@ -296,7 +304,7 @@ class MyQSlider(QSlider):
                     f"    image: url(\":/walker{side[0]}/res/StepImages/{side}/{val // 5}.png\")\n"
                     "}")
             else:
-                print(f'{side}\t{val}\t{scaled}\t22')
+                # print(f'{side}\t{val}\t{scaled}\t22')
                 self.setStyleSheet(
                     "QSlider::groove:horizontal {\n"
                     "    border: 1px solid #a0a0a0; /*  off;*/\n"
@@ -318,12 +326,15 @@ class MyQSlider(QSlider):
     def paintEvent(self, event):
         super(MyQSlider, self).paintEvent(event)
 
-        curr_value = str(self.value())
-        round_value = round(float(curr_value), 2)
-        value_str = str(round_value)
+        if not self.handle_on:
+            return
+
+        # curr_value = str(self.value())
+        # round_value = round(float(curr_value), 2)
+        value_str = str(self.value())
 
         painter = QPainter(self)
-        painter.setPen(QPen(QtCore.Qt.white))
+        painter.setPen(QPen(QtCore.Qt.black))
 
         font_metrics = QFontMetrics(self.font())
         font_width = font_metrics.boundingRect(value_str).width()
@@ -334,7 +345,7 @@ class MyQSlider(QSlider):
             horizontal_x_pos = rect.width() - font_width - 5
             horizontal_y_pos = rect.height() * 0.75
 
-            painter.drawText(QtCore.QPoint(horizontal_x_pos, horizontal_y_pos), str(round_value))
+            painter.drawText(QtCore.QPoint(horizontal_x_pos, horizontal_y_pos), value_str)
 
         elif self.orientation() == QtCore.Qt.Vertical:
             pass

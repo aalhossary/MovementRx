@@ -6,9 +6,13 @@ from matplotlib import cm
 from matplotlib.colors import Normalize
 
 from spmclient.ui.gui.xml.ui_colormap_chooser import Ui_colorMapChooser
+from spmclient.ui.gui.xml.customcomponents import Singleton
 
 
-class ColorMapChooser(QDialog, Ui_colorMapChooser):
+class ColorMapChooserMeta(Singleton, QDialog.__class__, Ui_colorMapChooser.__class__):
+    pass
+
+class ColorMapChooser(QDialog, Ui_colorMapChooser, metaclass = ColorMapChooserMeta):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -20,23 +24,35 @@ class ColorMapChooser(QDialog, Ui_colorMapChooser):
     @QtCore.pyqtSlot()
     def update_legend(self):
         print('update called')
-        ax = self.colormap_legend.ax
-        if ax.get_geometry() == (1, 1, 1):
-            ax.change_geometry(1, 3, 2)
-        ax.clear()
+        ax1 = self.individual_colormap_legend.ax
+        if ax1.get_geometry() == (1, 1, 1):
+            ax1.change_geometry(1, 3, 2)
+        ax1.clear()
+        ax2 = self.three_components_colormap_legend.ax
+        if ax2.get_geometry() == (1, 1, 1):
+            ax2.change_geometry(1, 3, 2)
+        ax2.clear()
 
-        figure = self.colormap_legend.figure
-        figure.gca().set_axis_off()
-        if ax is not figure.gca():
-            print('=======', ax, figure.gca())
+        figure1 = self.individual_colormap_legend.figure
+        figure1.gca().set_axis_off()
+        figure2 = self.three_components_colormap_legend.figure
+        figure2.gca().set_axis_off()
 
-        num_levels = self.num_levels_spinBox.value()
-        cmap_name = self.colormap_name_comboBox.currentText()
-        cmap = cm.get_cmap(cmap_name, num_levels)
+#         if ax1 is not figure1.gca():
+#             print('=======', ax1, figure1.gca())
+
+        num_levels1 = self.individ_num_levels_spinBox.value()
+        num_levels2 = self.threecomp_num_levels_spinBox.value()
+        cmap_name1 = self.individ_colormap_name_comboBox.currentText()
+        cmap_name2 = self.threecomp_colormap_name_comboBox.currentText()
+        cmap1 = cm.get_cmap(cmap_name1, num_levels1)
+        cmap2 = cm.get_cmap(cmap_name2, num_levels2)
         under_color = (0.5, 0.5, 0.5)
-        cmap.set_under(color=under_color)
+        cmap1.set_under(color=under_color)
+        cmap2.set_under(color=under_color)
 
-        norm = Normalize(vmin=self.min_value_spinbox.value(), vmax=self.max_value_spinbox.value())
+        norm1 = Normalize(vmin=self.individ_min_value_spinbox.value(), vmax=self.individ_max_value_spinbox.value())
+        norm2 = Normalize(vmin=self.threecomp_min_value_spinbox.value(), vmax=self.threecomp_max_value_spinbox.value())
 
         # colorbar = figure.colorbar(axes_image,
         #                            orientation="vertical",
@@ -45,10 +61,14 @@ class ColorMapChooser(QDialog, Ui_colorMapChooser):
         #                            fraction=1.0, shrink=1.0,
         #                            ticks=np.arange(10) + 0.5,
         #                            )
-        colorbar = figure.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap), cax=ax, orientation="vertical",
+        colorbar1 = figure1.colorbar(cm.ScalarMappable(norm=norm1, cmap=cmap1), cax=ax1, orientation="vertical",
                                    use_gridspec=True, fraction=1.0, shrink=1.0,
                                    )
-        self.colormap_legend.canvas.draw()
+        colorbar2 = figure2.colorbar(cm.ScalarMappable(norm=norm2, cmap=cmap2), cax=ax2, orientation="vertical",
+                                   use_gridspec=True, fraction=1.0, shrink=1.0,
+                                   )
+        self.individual_colormap_legend.canvas.draw()
+        self.three_components_colormap_legend.canvas.draw()
 
 def main():
     app = QApplication(sys.argv)
