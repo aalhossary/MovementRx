@@ -3,11 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Dict, cast, List, Optional
 
-import matplotlib.pyplot as plt
-import numpy as np
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.Qt import QRegExp
-from PyQt5.QtCore import QObject, QTimer, QThread, pyqtSignal
+from PyQt5.QtCore import QObject, QTimer, QEvent
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup, \
     QButtonGroup, QAbstractButton, QWidget
 from matplotlib import cm
@@ -16,14 +14,17 @@ from matplotlib.colors import Normalize
 from matplotlib.image import AxesImage
 from matplotlib.lines import Line2D
 
+import matplotlib.pyplot as plt
+import numpy as np
 import spm1d
 from spmclient import consts
+from spmclient.controls.colormap_chooser import ColorMapChooser
 from spmclient.controls.controller import Controller
 from spmclient.models.data_manager import DataManager
 from spmclient.models.datasources.datagrapper import load_full_folder
 from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
-from spmclient.ui.gui.xml.customcomponents import MplCanvas, KinematicsScaler,\
+from spmclient.ui.gui.xml.customcomponents import MplCanvas, KinematicsScaler, \
     MomentsScaler
 from spmclient.ui.gui.xml.ui_gait_analysis_window import Ui_ui_GaitAnalysisWindow
 
@@ -73,7 +74,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.show_hide_joint_button_group.addButton(self.pushButton_2L)
         self.show_hide_joint_button_group.buttonClicked.connect(self.joint_button_clicked)
 
-        
+        self.actionColor_Scale.triggered.connect(self.update_color_maps)
 
         self.alpha = params.get(consts.ALPHA)
         self.ankle_x_only = True
@@ -88,37 +89,64 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         plt.rcParams['figure.constrained_layout.use'] = True
         
         self.set_analysis_visible(False)
+        self.update_actions_enabled()
         
         self.show_study_name()
-        self.animator_timer: Optional[QTimer] = None
+
+        self.animator_timer: QTimer = QTimer(self)
+        self.animator_timer.setSingleShot(False)
+        self.animator_timer.timeout.connect(self.advance_animation)
+        self.action_animation.toggled[bool].connect(self.trigger_animation)
+        
+        for j in range(3):
+            for s in consts.side:
+                joint_canvas = self.get_target_canvas('joint', j, None, side=s)
+                # Notice that the canvas is NOT a Widget
+                joint_canvas.canvas.mpl_connect('button_press_event', self.vector_canvas_clicked)
 
     def set_analysis_visible(self, show: bool):
         re = QRegExp('joint[012][RL]')
         qlist: List[QObject] = self.findChildren(MplCanvas, re)
         for widget in qlist:
             # print('set', widget.objectName(), 'visibility to', show)
-            # TODO Simplify this expression
-            if not show:
-                widget.setVisible(show)
+            if show:
+                if self.ankle_x_only:
+                    widget.setVisible(widget.objectName()[-2] != '2')
+                else:
+                    widget.setVisible(True)
             else:
-                if self.ankle_x_only and widget.objectName()[-2] != '2':  # not in ('2'):
-                    widget.setVisible(show)
+                widget.setVisible(False)
         
-        re = QRegExp('stackedWidget[012][012][RL]')
+        re = QRegExp('stackedWidget[0-2][0-2][RL]')
         qlist: List[QObject] = self.findChildren(QStackedWidget, re)
         for widget in qlist:
             # print('set', widget.objectName(), 'visibility to', show)
-            if not show:
-                widget.setVisible(show)
+            if show:
+                if self.ankle_x_only:
+                    if widget.objectName()[-3:-1] == '20':
+                        widget.setVisible(True)
+                    # else leave it unchanged.. This is useful when you show analysis on top of another analysis
+                else:
+                    widget.setVisible(True)
             else:
-                if self.ankle_x_only and widget.objectName()[-3:-1] not in ('21', '22'):
-                    widget.setVisible(show)
+                widget.setVisible(False)
 
     def joint_button_clicked(self, button: QAbstractButton):
         suffix = button.objectName()[-3:]
         widget = self.findChild(QWidget, 'widget'+suffix)
         widget.setVisible(button.isChecked())
         
+    def vector_canvas_clicked(self, event):
+        canvas = event.canvas
+        heatMapMplWidget = canvas.parent()
+        name = heatMapMplWidget.objectName()
+        joint, side = name[-2], name[-1]
+        re = QRegExp(f'stackedWidget{joint}[012]{side}')
+        qlist: List[QObject] = self.findChildren(QStackedWidget, re)
+        for widget in qlist:
+            widget = cast(QStackedWidget, widget)
+            widget.setVisible(not widget.isVisible())
+
     def rt_side_checked(self):
         return self.actionRight_Side.isChecked()
 
@@ -161,41 +189,46 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         title = f'{current_task[consts.SUBJECT]} {current_task[consts.SIDE]}'
         self.data_ligand[title] = Line2D([0], [0], linestyle=data_format.line_and_marks(), color=data_format.color(), label=title)
 
-    def add_colorbar_to_legend(self, axes_image):
-        print(f'add_colorbar_to_legend({axes_image})')
-        ax = self.legend_heatmap_panel.ax
-        
-        print("current geometry =", ax.get_geometry())
-        if ax.get_geometry() == (1, 1, 1):
-            ax.change_geometry(1, 3, 2)
+    def add_colorbar_to_legend(self, axes_image1, axes_image2):
+        print(f'add_colorbar_to_legend({axes_image1}, {axes_image2})')
 
-        ax.clear()
-        
+        cmc = ColorMapChooser()
         figure = self.legend_heatmap_panel.figure
-        figure.gca().set_axis_off()
-        if ax is not figure.gca():
-            print('=======', ax, figure.gca())
+        ax1 = self.legend_heatmap_panel.ax
 
-        if axes_image:
-            print('Add legend')
-#             print(figure.axes)
-            colorbar = figure.colorbar(axes_image,
-                                               orientation="vertical",
-                                               cax=ax,
-                                               use_gridspec=True,
-                                               fraction=1.0, shrink=1.0,
-                                               # anchor = (0.0, 0.5), panchor = (0.0, 0.5),
-                                               ticks=np.arange(10) + 0.5, 
-                                               # drawedges=True,
-                                               # pad=0.2
-                                        )
-# #             print(figure.axes)
-# #             colorbar.ax.set_yticklabels(['low', '', '', '', 'mid', '', '', '', 'High', ''])
-#             colorbar.ax.set_yticklabels(['low', 'mid', 'High'])
-# #             colorbar.ax.get_yaxis().set_ticks([])
-            for j, lab in enumerate(['Negligible', '', '', 'Min', '', '', 'Moderate', '', '', '', 'High',]):
-                # colorbar.ax.text(.5, (4 * j + 2) / 4.0, lab, ha='center', va='center')
-                colorbar.ax.text(2.5, ((2.9 * j) / 11) + 1.15, lab, ha='center', va='center')
+        ax1.change_geometry(1, 5, 2)
+        ax1.clear()
+
+        if axes_image1:
+            cmap1 = cmc.cmap1
+            norm1 = cmc.norm1
+            labels = ['Mild', 'Mod', 'severe', 'X-treme']
+            for j, lab in enumerate(labels):
+                ax1.text(0.9, norm1.vmin + ((2 * j + 1) / (2 * len(labels)) * (norm1.vmax - norm1.vmin)), 
+                         lab, ha='right', va='center_baseline')
+
+            figure.colorbar(cm.ScalarMappable(norm=norm1, cmap=cmap1), orientation="vertical", 
+                            cax=ax1, use_gridspec=True, fraction=1.0, shrink=1.0, extend='both',
+                            ticks=np.arange(norm1.vmax + 1),
+                                       # anchor = (0.0, 0.5), panchor = (0.0, 0.5), drawedges=True, pad=0.2
+                                       )
+        else:
+            ax1.axis("off")
+
+        cmap2 = cmc.cmap2
+        norm2 = cmc.norm2
+        # figure = self.legend_heatmap_panel.figure
+        ax2 = figure.add_subplot(1, 5, 4)
+        ax2.clear()
+#         ax.change_geometry(1, 5, 4)
+        # figure.gca().set_axis_off()
+        if axes_image2:
+            figure.colorbar(cm.ScalarMappable(norm=norm2, cmap=cmap2), orientation="vertical",
+                                       cax=ax2, use_gridspec=True, fraction=1.0, shrink=1.0, extend='both',
+                                       ticks=np.arange(norm2.vmax + 1),
+                                       )
+        else:
+            ax2.axis("off")
         self.legend_heatmap_panel.canvas.draw()
 
     def show_raw_data(self):
@@ -279,20 +312,41 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # TODO show that on status bar, and remove any waiting signs
         self.set_analysis_visible(True)
 
+    def trigger_animation(self, triggered: bool):
+        if triggered:
+            self.animator_timer.start(1500)
+            print("Timer started")
+        else:
+            self.animator_timer.stop()
+            print("Timer stopped")
+
     def update_legend_selected_panel_name(self):
         names = ['Color Bar', 'SPM']
         self.label_analysis.set_selected_widget_name(names[self.stackedWidget00R.currentIndex()])
+
+    def update_color_maps(self):
+        cmc = ColorMapChooser()
+        choice = cmc.exec()
+        if choice:
+            self.show_analysis_result()
 
     def show_rmse(self, task_yb, rmse):
         pass
     
     def show_analysis_result(self, ankle_x_only=False):
-        analysis_legend_image = None
+        analysis_legend_image1 = None
+        analysis_legend_image2 = None
 
         if self.actionKinematics.isChecked():
             self.scaler = KinematicsScaler()
         else:
             self.scaler = MomentsScaler()
+
+        cmc = ColorMapChooser()
+        cmap1 = cmc.cmap1
+        norm1 = cmc.norm1
+        cmap2 = cmc.cmap2
+        norm2 = cmc.norm2
 
         # first show the detailed analysis
         for s in consts.side:
@@ -334,7 +388,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                 cast(spm1d.stats._spm.SPMi_T, t2i)
                                 z_values = t2i.z / t2i.zstar
                                 temp_display_data.append(z_values)
-                            analysis_legend_image = draw_heatmap(mose_canvas, temp_display_data)
+
+                            analysis_legend_image1 = draw_heatmap(mose_canvas, temp_display_data, norm=norm1, cmap=cmap1)
                             spm_canvas.moving_line = None
                             mose_canvas.moving_line = None
 
@@ -378,29 +433,22 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             cast(spm1d.stats._spm.SPMi_T, t2i)
                             z_values = t2i.z / t2i.zstar
                             temp_display_data.append(z_values)
-                        analysis_legend_image = draw_heatmap(joint_canvas, temp_display_data)
+                        analysis_legend_image2 = draw_heatmap(joint_canvas, temp_display_data, norm=norm2, cmap=cmap2)
                         # Add vertical line
                         if self.actionKinematics.isChecked():
                             joint_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
                 joint_canvas.canvas.draw()
                 
         self.update_legend_selected_panel_name()
-        self.add_colorbar_to_legend(analysis_legend_image)
+        self.add_colorbar_to_legend(analysis_legend_image1, analysis_legend_image2)
         self.legend_heatmap_groupbox.setVisible(True)
-
-        if self.animator_timer is None:
-            self.animator_timer = QTimer(self)
-            self.animator_timer.setSingleShot(False)
-            self.animator_timer.timeout.connect(self.advance_animation)
-        self.animator_timer.start(1500)
+        self.action_animation.setChecked(True)
 
     def advance_animation(self):
         current_value = self.gait_sliderR.logicalValue()
         next_value_r = (current_value % 100) + 5  # * 2  # 5  # in the period [5, 100]
         next_value_l = ((next_value_r + 45) % 100) + 5  #  ((next_value_r - 5 + 50) % 100) + 5
-
         # print('Next values', next_value_r, '\t', next_value_l)
-
         self.gait_sliderR.setLogicalValue(self.scaler, next_value_r, 'Right')
         self.gait_sliderL.setLogicalValue(self.scaler, next_value_l, 'Left')
 
@@ -426,9 +474,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
     def show_study_name(self):
         if self.actionKinematics.isChecked():
-            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Kinematics</span> (% stride deg)</p></body></html>')
+            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Kinematics</span> (% Stride deg)</p></body></html>')
         else:
-            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Moments</span> (% stance Nm/kg)</p></body></html>')
+            self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Moments</span> (% Stance Nm/kg)</p></body></html>')
 
     def display_options_changed(self, action: QAction):
         # TODO This method needs redesign, checks, and maybe moved to controller
@@ -438,13 +486,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.show_study_name()
 
     def visible_sides_changed(self):
-        icon_name_list = [':/images/res/']
+        icon_name_list = [':/images/']
         if self.rt_side_checked():
             icon_name_list.append('RT')
         if self.lt_side_checked():
             icon_name_list.append('LT')
         icon_name_list.append('_legSelected.png')
-        # self.skeletonlabel.setPixmap(QtGui.QPixmap(":/images/res/RTLT_legSelected.png"))
         self.skeletonlabel.setPixmap(QtGui.QPixmap(''.join(icon_name_list)))
 
         self.pushButton_0R.setVisible(self.rt_side_checked())
@@ -455,8 +502,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.pushButton_2L.setVisible(self.lt_side_checked())
 
     def show_next_view(self):
-        re = QRegExp('stackedWidget[012][012][RL]')
-        qlist: List[QObject] = self.findChildren(QStackedWidget, re)
+        reg = QRegExp('stackedWidget[012][012][RL]')
+        qlist: List[QObject] = self.findChildren(QStackedWidget, reg)
         for widget in qlist:
             widget = cast(QStackedWidget, widget)
 
@@ -481,13 +528,14 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.set_analysis_visible(False)
         self.controller.delete_analysis()
         self.update_actions_enabled()
-        if self.animator_timer:
-            self.animator_timer.stop()
+        self.action_animation.setChecked(False)
+        self.legend_heatmap_groupbox.setVisible(False)
 
     def clear_all(self):
         print('clear_all')
         self.controller.delete_data()
-        self.update_actions_enabled()
+        self.clear_analysis()
+        # self.update_actions_enabled()
 
     def update_actions_enabled(self):
         ref_available = DataManager.is_data_available(consts.SUBJECT_REF)
@@ -531,24 +579,12 @@ def draw_heatmap(target_canvas: MplCanvas, temp_list: List, norm: Normalize=None
     z_array = np.array(temp_list)
     z_array = np.abs(z_array)
     ax: Axes = cast(Axes, target_canvas.ax)
-    if cmap is None:
-        cmap = cm.get_cmap('coolwarm', 11)  # colormap name and number of quantization levels
-        # cmap = cm.get_cmap('jet', 11)  # colormap name and number of quantization levels
-        under_color = (0.5, 0.5, 0.5)
-        cmap.set_under(color=under_color)
-    # norm = colors.BoundaryNorm(np.linspace(0, 10, 11), cmap.N)
-    if norm is None:
-        norm = Normalize(vmin=1, vmax=4)
     ax.grid(False)
     if len(temp_list) == 2:
         ax.set_yticks([0, 1])
         ax.set_yticklabels(['Pre', 'Post'])
     ret = ax.imshow(z_array, interpolation='nearest', cmap=cmap, aspect='auto', norm=norm)
 
-    # colorbar = ax.figure.colorbar(im, ax=ax, orientation="horizontal",
-    #                           ticks=[0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5],
-    #                           pad=0.2)  # set where to put the tick marks
     ax.autoscale(enable=True, axis='both', tight=True)
-    #     target_canvas.canvas.draw()
     return ret
 

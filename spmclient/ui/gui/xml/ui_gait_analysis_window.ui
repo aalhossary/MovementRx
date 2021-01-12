@@ -44,7 +44,7 @@
          </sizepolicy>
         </property>
         <property name="pixmap">
-         <pixmap resource="res.qrc">:/images/res/RTLT_legSelected.png</pixmap>
+         <pixmap resource="../../../resources.qrc">:/images/res/RTLT_legSelected.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -240,7 +240,7 @@
       <item row="0" column="2" alignment="Qt::AlignHCenter">
        <widget class="QLabel" name="label_study">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kinematics&lt;/span&gt; (% stride deg) / &lt;span style=&quot; font-weight:600;&quot;&gt;Moments&lt;/span&gt; (Nm/kg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kinematics&lt;/span&gt; (% Stride deg) / &lt;span style=&quot; font-weight:600;&quot;&gt;Moments&lt;/span&gt; (Nm/kg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -415,6 +415,9 @@
                   <width>200</width>
                   <height>30</height>
                  </size>
+                </property>
+                <property name="toolTip">
+                 <string>Click to expand</string>
                 </property>
                </widget>
               </item>
@@ -623,6 +626,9 @@
                   <height>30</height>
                  </size>
                 </property>
+                <property name="toolTip">
+                 <string>Click to expand</string>
+                </property>
                </widget>
               </item>
               <item row="2" column="2">
@@ -822,6 +828,9 @@
                   <height>30</height>
                  </size>
                 </property>
+                <property name="toolTip">
+                 <string>Click to expand</string>
+                </property>
                </widget>
               </item>
              </layout>
@@ -850,7 +859,7 @@ QSlider::handle {
 
 QSlider::handle:horizontal {
     margin: -40px 0px;
-	image: url(&quot;:/walkerL/res/StepImages/Left/1.png&quot;)
+	image: url(&quot;:/walker/res/StepImages/Left/1.png&quot;)
 }
 </string>
              </property>
@@ -1126,6 +1135,9 @@ QSlider::handle:horizontal {
                   <height>30</height>
                  </size>
                 </property>
+                <property name="toolTip">
+                 <string>Click to expand</string>
+                </property>
                </widget>
               </item>
              </layout>
@@ -1295,6 +1307,9 @@ QSlider::handle:horizontal {
                   <width>130</width>
                   <height>30</height>
                  </size>
+                </property>
+                <property name="toolTip">
+                 <string>Click to expand</string>
                 </property>
                </widget>
               </item>
@@ -1466,6 +1481,9 @@ QSlider::handle:horizontal {
                   <height>30</height>
                  </size>
                 </property>
+                <property name="toolTip">
+                 <string>Click to expand</string>
+                </property>
                </widget>
               </item>
              </layout>
@@ -1494,7 +1512,7 @@ QSlider::handle {
 
 QSlider::handle:horizontal {
     margin: -40px 0px;
-    image: url(&quot;:/walkerR/res/StepImages/Right/1.png&quot;);
+    image: url(&quot;:/walker/res/StepImages/Right/1.png&quot;);
 }</string>
              </property>
              <property name="minimum">
@@ -1599,7 +1617,7 @@ QSlider::handle:horizontal {
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
     <widget class="QMenu" name="menuClear">
      <property name="title">
@@ -1618,6 +1636,7 @@ QSlider::handle:horizontal {
     <addaction name="menuClear"/>
     <addaction name="separator"/>
     <addaction name="action_view_ligand"/>
+    <addaction name="action_animation"/>
    </widget>
    <widget class="QMenu" name="menuo_ptions">
     <property name="title">
@@ -1634,10 +1653,18 @@ QSlider::handle:horizontal {
     <addaction name="actionAlpha"/>
     <addaction name="actionColor_Scale"/>
    </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>&amp;Info</string>
+    </property>
+    <addaction name="action_about"/>
+    <addaction name="action_license"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menuAnalysis"/>
    <addaction name="menuView"/>
    <addaction name="menuo_ptions"/>
+   <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -1755,12 +1782,12 @@ QSlider::handle:horizontal {
   </widget>
   <action name="action_open_before_intervension">
    <property name="text">
-    <string>&amp;Preintervension data...</string>
+    <string>&amp;Pre intervension data...</string>
    </property>
   </action>
   <action name="action_open_after_surgery_data">
    <property name="text">
-    <string>Pos&amp;tintervension data...</string>
+    <string>Pos&amp;t intervension data...</string>
    </property>
   </action>
   <action name="action_specify_normal_standard">
@@ -1865,7 +1892,7 @@ QSlider::handle:horizontal {
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Ligand</string>
+    <string>Legend</string>
    </property>
   </action>
   <action name="actionColor_Scale">
@@ -1898,6 +1925,24 @@ QSlider::handle:horizontal {
    </property>
    <property name="text">
     <string>Knee Ambutation</string>
+   </property>
+  </action>
+  <action name="action_animation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>A&amp;nimation</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="action_license">
+   <property name="text">
+    <string>&amp;License</string>
    </property>
   </action>
  </widget>
@@ -1935,7 +1980,7 @@ QSlider::handle:horizontal {
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../../../resources.qrc"/>
  </resources>
  <connections>
   <connection>

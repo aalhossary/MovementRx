@@ -138,7 +138,7 @@
        <item row="6" column="1">
         <widget class="QSpinBox" name="threecomp_max_value_spinbox">
          <property name="value">
-          <number>10</number>
+          <number>11</number>
          </property>
         </widget>
        </item>
@@ -197,7 +197,7 @@
           <number>20</number>
          </property>
          <property name="value">
-          <number>4</number>
+          <number>8</number>
          </property>
         </widget>
        </item>
@@ -233,6 +233,52 @@
          </item>
         </widget>
        </item>
+       <item row="11" column="0">
+        <spacer name="verticalSpacer_8">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="11" column="1">
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="12" column="0" colspan="2">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>3D Compenets Legend Colors</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBox_2">
+         <property name="text">
+          <string>Same as Individual Compenents</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
        <item row="20" column="0">
         <widget class="QLabel" name="label_4">
          <property name="text">
@@ -240,6 +286,22 @@
          </property>
          <property name="buddy">
           <cstring>individ_num_levels_spinBox</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="20" column="1">
+        <widget class="QSpinBox" name="threecomp_num_levels_spinBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="minimum">
+          <number>3</number>
+         </property>
+         <property name="maximum">
+          <number>20</number>
+         </property>
+         <property name="value">
+          <number>8</number>
          </property>
         </widget>
        </item>
@@ -276,68 +338,6 @@
            <string notr="true">viridis</string>
           </property>
          </item>
-        </widget>
-       </item>
-       <item row="11" column="1">
-        <spacer name="verticalSpacer_7">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="11" column="0">
-        <spacer name="verticalSpacer_8">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="12" column="0" colspan="2">
-        <widget class="QLabel" name="label_12">
-         <property name="text">
-          <string>3D Compenets Legend Colors</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="0" colspan="2">
-        <widget class="QCheckBox" name="checkBox_2">
-         <property name="text">
-          <string>Same as Individual Compenents</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="20" column="1">
-        <widget class="QSpinBox" name="threecomp_num_levels_spinBox">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="minimum">
-          <number>3</number>
-         </property>
-         <property name="maximum">
-          <number>20</number>
-         </property>
-         <property name="value">
-          <number>4</number>
-         </property>
         </widget>
        </item>
       </layout>
@@ -447,8 +447,8 @@
      <y>459</y>
     </hint>
     <hint type="destinationlabel">
-     <x>296</x>
-     <y>228</y>
+     <x>336</x>
+     <y>233</y>
     </hint>
    </hints>
   </connection>
@@ -463,8 +463,8 @@
      <y>487</y>
     </hint>
     <hint type="destinationlabel">
-     <x>296</x>
-     <y>246</y>
+     <x>338</x>
+     <y>265</y>
     </hint>
    </hints>
   </connection>
@@ -479,8 +479,8 @@
      <y>308</y>
     </hint>
     <hint type="destinationlabel">
-     <x>296</x>
-     <y>209</y>
+     <x>338</x>
+     <y>201</y>
     </hint>
    </hints>
   </connection>
@@ -495,8 +495,72 @@
      <y>291</y>
     </hint>
     <hint type="destinationlabel">
-     <x>296</x>
-     <y>191</y>
+     <x>338</x>
+     <y>176</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>threecomp_max_value_spinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>colorMapChooser</receiver>
+   <slot>update_legend()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>215</x>
+     <y>199</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>threecomp_min_value_spinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>colorMapChooser</receiver>
+   <slot>update_legend()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>177</x>
+     <y>174</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>118</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>individ_max_value_spinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>colorMapChooser</receiver>
+   <slot>update_legend()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>196</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>334</x>
+     <y>85</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>individ_min_value_spinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>colorMapChooser</receiver>
+   <slot>update_legend()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>58</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>336</x>
+     <y>53</y>
     </hint>
    </hints>
   </connection>

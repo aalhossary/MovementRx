@@ -1,0 +1,50 @@
+<RCC>
+  <qresource prefix="images">
+    <file>res/_legSelected.png</file>
+    <file>res/LT_legSelected.png</file>
+    <file>res/RT_legSelected.png</file>
+    <file>res/RTLT_legSelected.png</file>
+  </qresource>
+  <qresource prefix="walker">
+    <file>res/StepImages/Left/1.png</file>
+    <file>res/StepImages/Left/2.png</file>
+    <file>res/StepImages/Left/3.png</file>
+    <file>res/StepImages/Left/4.png</file>
+    <file>res/StepImages/Left/5.png</file>
+    <file>res/StepImages/Left/6.png</file>
+    <file>res/StepImages/Left/7.png</file>
+    <file>res/StepImages/Left/8.png</file>
+    <file>res/StepImages/Left/9.png</file>
+    <file>res/StepImages/Left/10.png</file>
+    <file>res/StepImages/Left/11.png</file>
+    <file>res/StepImages/Left/12.png</file>
+    <file>res/StepImages/Left/13.png</file>
+    <file>res/StepImages/Left/14.png</file>
+    <file>res/StepImages/Left/15.png</file>
+    <file>res/StepImages/Left/16.png</file>
+    <file>res/StepImages/Left/17.png</file>
+    <file>res/StepImages/Left/18.png</file>
+    <file>res/StepImages/Left/19.png</file>
+    <file>res/StepImages/Left/20.png</file>
+    <file>res/StepImages/Right/1.png</file>
+    <file>res/StepImages/Right/2.png</file>
+    <file>res/StepImages/Right/3.png</file>
+    <file>res/StepImages/Right/4.png</file>
+    <file>res/StepImages/Right/5.png</file>
+    <file>res/StepImages/Right/6.png</file>
+    <file>res/StepImages/Right/7.png</file>
+    <file>res/StepImages/Right/8.png</file>
+    <file>res/StepImages/Right/9.png</file>
+    <file>res/StepImages/Right/10.png</file>
+    <file>res/StepImages/Right/11.png</file>
+    <file>res/StepImages/Right/12.png</file>
+    <file>res/StepImages/Right/13.png</file>
+    <file>res/StepImages/Right/14.png</file>
+    <file>res/StepImages/Right/15.png</file>
+    <file>res/StepImages/Right/16.png</file>
+    <file>res/StepImages/Right/17.png</file>
+    <file>res/StepImages/Right/18.png</file>
+    <file>res/StepImages/Right/19.png</file>
+    <file>res/StepImages/Right/20.png</file>
+  </qresource>
+</RCC>

@@ -10,7 +10,6 @@ import numpy as np
 import spm1d
 from spmclient import consts
 import spmclient
-from spmclient.controls.analysis_type_qdialogue import AnalysisTypeQDialogue
 from spmclient.controls.controller import Controller
 from spmclient.controls.gait_analysis_window import GaitAnalysisWindow
 from spmclient.models.data_manager import DataManager
@@ -117,7 +116,7 @@ class App(Controller):
         DataManager.set_analysis_data(detailed_analysis_data)
 
         # do the compact test
-        compact_analysis_data = dict()
+        compact_analysis_data:Dict[str, Dict] = dict()
         for _, meas in enumerate(consts.measurement_folder):
             measurement_compact_dict = compact_analysis_data.setdefault(meas, dict())
             for _, s in enumerate(consts.side):
@@ -231,8 +230,8 @@ class App(Controller):
         return data_ya[:, roi]
 
     def delete_data(self):
-        self.delete_analysis()
         DataManager.clear_data()
+        self.delete_analysis()
         self._display_manager.show_raw_data()
 
     def delete_analysis(self):
@@ -244,20 +243,29 @@ class App(Controller):
         pass
 
     def __init__(self):
-        self.params: Dict = None
+        Controller.__init__(self, None)
+        self.params: Optional[Dict] = None
+
+    def get_default_params(self):
+        params = dict()
+        params[consts.RT_SIDE_CHECKED] = True
+        params[consts.LT_SIDE_CHECKED] = True
+        params[consts.KINEMATICS_CHECKED] = False
+        params[consts.MOMENTS_CHECKED] = True
+        params[consts.ALPHA] = 0.05
+        return params
 
     def main(self):
         app = QApplication(sys.argv)
-        analysis_type_dialogue = AnalysisTypeQDialogue()
+        # analysis_type_dialogue = AnalysisTypeQDialogue()
         # analysis_type_dialogue.setModal(True)
 
-        if analysis_type_dialogue.exec():
-            self.params = analysis_type_dialogue.get_params()
-            print(self.params)
+        self.params = self.get_default_params()
+        print(self.params)
 
-            gait_analysis_window = GaitAnalysisWindow(self.params, controller=self)
-            gait_analysis_window.show()
-            self._display_manager: DisplayManager = gait_analysis_window
+        gait_analysis_window = GaitAnalysisWindow(self.params, controller=self)
+        gait_analysis_window.show()
+        self._display_manager: DisplayManager = gait_analysis_window
 
         sys.exit(app.exec())
 

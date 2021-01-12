@@ -1,11 +1,11 @@
 from __future__ import annotations
+
 from typing import cast, Optional
 
 from PyQt5 import QtCore
 from PyQt5.Qt import QLabel
-from PyQt5.QtCore import QSize, QPointF, Qt
-from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QBitmap,\
+from PyQt5.QtCore import QSize, QPointF, Qt, pyqtSlot
+from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QBitmap, \
     QFontMetrics
 from PyQt5.QtWidgets import QPushButton, QWidget, QSlider
 from PyQt5.QtWidgets import QVBoxLayout
@@ -128,12 +128,13 @@ class MplCanvas(QWidget):  # FigureCanvasQTAgg):
             if self.moving_line:
                 self.moving_line.remove()
                 self.moving_line = None
+                self.canvas.draw()
         else:
             if self.moving_line is None:
                 self.moving_line = self.ax.axvline(x=scaled, linewidth=4, color=color, ls='-', lw=1.5)
             else:
                 self.moving_line.set_xdata([scaled, scaled])
-                self.canvas.draw()
+            self.canvas.draw()
 
 
 class HeatMapMplCanvas(MplCanvas):
@@ -301,7 +302,7 @@ class MyQSlider(QSlider):
                     "}\n"
                     "QSlider::handle:horizontal {\n"
                     "    margin: -40px 0px;\n"
-                    f"    image: url(\":/walker{side[0]}/res/StepImages/{side}/{val // 5}.png\")\n"
+                    f"    image: url(\":/walker/res/StepImages/{side}/{val // 5}.png\")\n"
                     "}")
             else:
                 # print(f'{side}\t{val}\t{scaled}\t22')
@@ -319,7 +320,7 @@ class MyQSlider(QSlider):
                     "}\n"
                     "QSlider::handle:horizontal {\n"
                     "    margin: -40px 0px;\n"
-                    f"    image: url(\":/walker{side[0]}/res/StepImages/{side}/{val // 5}.png\")\n"
+                    f"    image: url(\":/walker/res/StepImages/{side}/{val // 5}.png\")\n"
                     "}")
             self.handle_on = True
         
