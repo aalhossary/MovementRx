@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-from typing import cast, Optional
+from typing import cast, Optional, Tuple
 
 from PyQt5 import QtCore
 from PyQt5.Qt import QLabel
 from PyQt5.QtCore import QSize, QPointF, Qt, pyqtSlot
 from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QBitmap, \
     QFontMetrics
-from PyQt5.QtWidgets import QPushButton, QWidget, QSlider
-from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QPushButton, QWidget, QSlider, QGridLayout
 from matplotlib.axes._axes import Axes
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
@@ -116,8 +115,8 @@ class MplCanvas(QWidget):  # FigureCanvasQTAgg):
         self.ax: Axes = cast(Axes, ax)
         self.ax.xaxis.set_visible(False)
 
-        layout = QVBoxLayout(self)
-        layout.addWidget(self.canvas)
+        layout = QGridLayout(self)
+        layout.addWidget(self.canvas, 1, 1, 1, 1)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
         self.moving_line: Optional[Line2D] = None
@@ -136,15 +135,20 @@ class MplCanvas(QWidget):  # FigureCanvasQTAgg):
                 self.moving_line.set_xdata([scaled, scaled])
             self.canvas.draw()
 
+    def set_heights(self, heights: Tuple[int, int, int]):
+        layout = self.layout()
+        layout.setRowStretch(0, heights[0])
+        layout.setRowStretch(1, heights[1])
+        layout.setRowStretch(2, heights[2])
 
 class HeatMapMplCanvas(MplCanvas):
     def __init__(self, parent=None, *args, **kwargs):
         MplCanvas.__init__(self, parent=parent, *args, **kwargs)
         self.ax.get_yaxis().set_visible(False)
-        self.ax.get_gridspec().update(right=0.0)
-        self.canvas.draw()
-        self.update()
-        # TODO make sure the update geometry works. Till now, I just hide the Y Axis
+#         self.ax.get_gridspec().update(right=0.0)
+#         self.canvas.draw()
+#         self.update()
+#         # TODO make sure the update geometry works. Till now, I just hide the Y Axis
 
 
 class LegendMplCanvas(MplCanvas):

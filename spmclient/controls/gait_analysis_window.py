@@ -104,6 +104,13 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                 # Notice that the canvas is NOT a Widget
                 joint_canvas.canvas.mpl_connect('button_press_event', self.vector_canvas_clicked)
 
+        for s in consts.side:
+            for j in range(3):
+                for d in range(3):
+                    spm1d_canvas = self.get_target_canvas('mose', j, d, side=s)
+                    print(spm1d_canvas)
+                    spm1d_canvas.set_heights((1,2,1))
+
     def set_analysis_visible(self, show: bool):
         re = QRegExp('joint[012][RL]')
         qlist: List[QObject] = self.findChildren(MplCanvas, re)
@@ -138,8 +145,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         
     def vector_canvas_clicked(self, event):
         canvas = event.canvas
-        heatMapMplWidget = canvas.parent()
-        name = heatMapMplWidget.objectName()
+        stacked_widget = canvas.parent()
+        name = stacked_widget.objectName()
         joint, side = name[-2], name[-1]
         re = QRegExp(f'stackedWidget{joint}[012]{side}')
         qlist: List[QObject] = self.findChildren(QStackedWidget, re)
