@@ -3,9 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Dict, cast, List, Optional
 
-from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5 import QtGui
 from PyQt5.Qt import QRegExp
-from PyQt5.QtCore import QObject, QTimer, QEvent
+from PyQt5.QtCore import QObject, QTimer
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup, \
     QButtonGroup, QAbstractButton, QWidget
 from matplotlib import cm
@@ -108,7 +108,6 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             for j in range(3):
                 for d in range(3):
                     spm1d_canvas = self.get_target_canvas('mose', j, d, side=s)
-                    print(spm1d_canvas)
                     spm1d_canvas.set_heights((1,2,1))
 
     def set_analysis_visible(self, show: bool):
@@ -493,7 +492,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.show_study_name()
 
     def visible_sides_changed(self):
-        icon_name_list = [':/images/']
+        icon_name_list = [':/images/res/']
         if self.rt_side_checked():
             icon_name_list.append('RT')
         if self.lt_side_checked():
