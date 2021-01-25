@@ -5,9 +5,9 @@ from typing import Dict, cast, List, Optional
 
 from PyQt5 import QtGui
 from PyQt5.Qt import QRegExp
-from PyQt5.QtCore import QObject, QTimer
+from PyQt5.QtCore import QObject, QTimer, QFile, QIODevice, QTextStream
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup, \
-    QButtonGroup, QAbstractButton, QWidget
+    QButtonGroup, QAbstractButton, QWidget, QDialog
 from matplotlib import cm
 from matplotlib.axes import Axes
 from matplotlib.colors import Normalize
@@ -26,7 +26,9 @@ from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
 from spmclient.ui.gui.xml.customcomponents import MplCanvas, KinematicsScaler, \
     MomentsScaler
+from spmclient.ui.gui.xml.ui_about_dialogue import Ui_About
 from spmclient.ui.gui.xml.ui_gait_analysis_window import Ui_ui_GaitAnalysisWindow
+from spmclient.ui.gui.xml.ui_license_dialog import Ui_license_dialog
 
 
 class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
@@ -63,7 +65,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.actionRight_Side.setChecked(params.get(consts.RT_SIDE_CHECKED, False))
         self.actionLeft_Side.setChecked(params.get(consts.LT_SIDE_CHECKED, False))
         self.sides_action_group.triggered[QAction].connect(self.visible_sides_changed)
-        
+
         self.show_hide_joint_button_group = QButtonGroup(self)
         self.show_hide_joint_button_group.setExclusive(False) #  Must be set before adding any buttons
         self.show_hide_joint_button_group.addButton(self.pushButton_0R)
@@ -75,6 +77,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.show_hide_joint_button_group.buttonClicked.connect(self.joint_button_clicked)
 
         self.actionColor_Scale.triggered.connect(self.update_color_maps)
+        self.action_about.triggered.connect(self.show_about)
+        self.action_license.triggered.connect(self.show_license)
 
         self.alpha = params.get(consts.ALPHA)
         self.ankle_x_only = True
@@ -87,17 +91,17 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.actionNextView.triggered.connect(self.show_next_view)
 
         plt.rcParams['figure.constrained_layout.use'] = True
-        
+
         self.set_analysis_visible(False)
         self.update_actions_enabled()
-        
+
         self.show_study_name()
 
         self.animator_timer: QTimer = QTimer(self)
         self.animator_timer.setSingleShot(False)
         self.animator_timer.timeout.connect(self.advance_animation)
         self.action_animation.toggled[bool].connect(self.trigger_animation)
-        
+
         for j in range(3):
             for s in consts.side:
                 joint_canvas = self.get_target_canvas('joint', j, None, side=s)
@@ -109,6 +113,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                 for d in range(3):
                     spm1d_canvas = self.get_target_canvas('mose', j, d, side=s)
                     spm1d_canvas.set_heights((1,2,1))
+        self.legend_heatmap_groupbox.setVisible(False)
+        self.legend_dock_widget.hide()
 
     def set_analysis_visible(self, show: bool):
         re = QRegExp('joint[012][RL]')
@@ -122,7 +128,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                     widget.setVisible(True)
             else:
                 widget.setVisible(False)
-        
+
         re = QRegExp('stackedWidget[0-2][0-2][RL]')
         qlist: List[QObject] = self.findChildren(QStackedWidget, re)
         for widget in qlist:
@@ -141,7 +147,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         suffix = button.objectName()[-3:]
         widget = self.findChild(QWidget, 'widget'+suffix)
         widget.setVisible(button.isChecked())
-        
+
     def vector_canvas_clicked(self, event):
         canvas = event.canvas
         stacked_widget = canvas.parent()
@@ -210,10 +216,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             norm1 = cmc.norm1
             labels = ['Mild', 'Mod', 'severe', 'X-treme']
             for j, lab in enumerate(labels):
-                ax1.text(0.9, norm1.vmin + ((2 * j + 1) / (2 * len(labels)) * (norm1.vmax - norm1.vmin)), 
+                ax1.text(0.9, norm1.vmin + ((2 * j + 1) / (2 * len(labels)) * (norm1.vmax - norm1.vmin)),
                          lab, ha='right', va='center_baseline')
 
-            figure.colorbar(cm.ScalarMappable(norm=norm1, cmap=cmap1), orientation="vertical", 
+            figure.colorbar(cm.ScalarMappable(norm=norm1, cmap=cmap1), orientation="vertical",
                             cax=ax1, use_gridspec=True, fraction=1.0, shrink=1.0, extend='both',
                             ticks=np.arange(norm1.vmax + 1),
                                        # anchor = (0.0, 0.5), panchor = (0.0, 0.5), drawedges=True, pad=0.2
@@ -311,7 +317,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             analysis = consts.PRE_VS_POST_TWO_SAMPLE
 
         self.controller.analyse(analysis, self.alpha, ankle_x_only=True)
-        
+
         self.label_analysis.analysis_name = action.toolTip()
 
     def analysis_done(self):
@@ -336,6 +342,29 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         if choice:
             self.show_analysis_result()
 
+    def show_about(self):
+        about = QDialog(self)
+        ui = Ui_About()
+        ui.setupUi(about)
+        about.exec()
+
+    def show_license(self):
+        txt = None
+        fd = QFile(":/text/res/LICENSE")
+        if fd.open(QIODevice.ReadOnly | QFile.Text):
+            txt = QTextStream(fd).readAll()
+            fd.close()
+
+        license_dlg = QDialog(self)
+        ui = Ui_license_dialog()
+        ui.setupUi(license_dlg)
+        if txt:
+            ui.plainTextEdit.setPlainText(txt)
+        else:
+            ui.plainTextEdit.setPlainText("ERROR: Can't read the license file (GPL Ver. 3)!")
+
+        license_dlg.exec()
+
     def show_rmse(self, task_yb, rmse):
         pass
     
@@ -358,10 +387,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         for s in consts.side:
             for i_j, j in enumerate(consts.joint):
                 for i_d, d in enumerate(consts.dim):
-                    
+
                     if ankle_x_only and i_j == 2 and i_d:  # > 0:
                         continue
-                    
+
                     # get the canvases
                     spm_canvas = self.get_target_canvas('spm1d', i_j, i_d, side=s)
                     mose_canvas = self.get_target_canvas('mose', i_j, i_d, side=s)
@@ -384,7 +413,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                         dimension = DataManager.get_multiples_from_analysis_data(path=current_task)
                         if dimension:
                             temp_display_data_list, temp_display_fmat_list = dimension
-    
+
                             # draw each of the data / format pair on the canvas
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
                                 draw_inference_plot(spm_canvas, t2i, data_format=fmt)
@@ -409,10 +438,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # Then show the compact analysis
         for s in consts.side:
             for i_j, j in enumerate(consts.joint):
-                
+
                 if ankle_x_only and i_j == 2:
                     continue
-                
+
                 # get the canvas
                 joint_canvas = self.get_target_canvas('joint', i_j, None, side=s)
                 # clear it first
@@ -444,7 +473,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                         if self.actionKinematics.isChecked():
                             joint_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
                 joint_canvas.canvas.draw()
-                
+
         self.update_legend_selected_panel_name()
         self.add_colorbar_to_legend(analysis_legend_image1, analysis_legend_image2)
         self.legend_heatmap_groupbox.setVisible(True)

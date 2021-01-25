@@ -7,7 +7,8 @@ from PyQt5.Qt import QLabel
 from PyQt5.QtCore import QSize, QPointF, Qt, pyqtSlot
 from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QBitmap, \
     QFontMetrics
-from PyQt5.QtWidgets import QPushButton, QWidget, QSlider, QGridLayout
+from PyQt5.QtWidgets import QPushButton, QWidget, QSlider, QGridLayout,\
+    QApplication
 from matplotlib.axes._axes import Axes
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
@@ -169,16 +170,16 @@ class RoundCirclePushButton(QPushButton):
         # unchecked_icon, checked_icon, empty_icon = self.__class__.get_icons()
         self.__class__.get_icons()
 
-        self.setMinimumSize(100, 100)
-        self.setMaximumSize(100, 100)
+        self.setMinimumSize(50, 50)
+        self.setMaximumSize(50, 50)
         self.setStyleSheet('background-color:transparent;')
         # self.setAttribute(Qt.WA_OpaquePaintEvent, True)
         # self.setAttribute(Qt.WA_TranslucentBackground, True)  # For Translucent Window
         # TODO Try to clear QWidget::DrawWindowBackground if you call/ override render()
         # self.setIcon(self.ring_icon)
         self.setIcon(self.__class__._empty_icon)
-        self.setIconSize(QSize(100, 100))
-        r4 = QRegion(0 + 5, 0 + 5, 100 - (5 * 2), 100 - (5 * 2), type=QRegion.Ellipse)
+        self.setIconSize(QSize(50, 50))
+        r4 = QRegion(0 + 3, 0 + 3, 50 - (3 * 2), 50 - (3 * 2), type=QRegion.Ellipse)
         self.setMask(r4)
         self.setCheckable(True)
         # self.clicked.connect(clicked)
@@ -194,7 +195,7 @@ class RoundCirclePushButton(QPushButton):
     def get_icons(cls):
         if not cls._unchecked_icon:
             unchecked_pixmap = cls.create_ring_pixmap(ring_color='yellow')
-            checked_pixmap = cls.create_ring_pixmap(ring_color='green')
+            checked_pixmap = cls.create_ring_pixmap(ring_color='green')  # QColor(0, 255, 0, 127))  # green
 
             cls._unchecked_icon = QIcon(unchecked_pixmap)
             cls._checked_icon = QIcon(checked_pixmap)
@@ -209,16 +210,17 @@ class RoundCirclePushButton(QPushButton):
 
     @staticmethod
     def create_ring_pixmap(ring_color) -> QPixmap:
-        ring_map = QPixmap(101, 101)
+        ring_map = QPixmap(51, 51)
         ring_map.fill(QColor('red'))  # Any dummy color just to see
         color = QColor(ring_color)
-        pen_thickness = 10
+        # color.setAlpha(127)
+        pen_thickness = 6
         pen = QPen(color)
         pen.setWidth(pen_thickness)
         painter = QPainter(ring_map)
         # painter.begin(ring_map)
         painter.setPen(pen)
-        painter.drawEllipse(QPointF(50, 50), 100 / 2 - pen_thickness, 100 / 2 - pen_thickness)
+        painter.drawEllipse(QPointF(25, 25), 50 / 2 - pen_thickness, 50 / 2 - pen_thickness)
         mask = ring_map.createMaskFromColor(color, mode=Qt.MaskOutColor)
         painter.end()
         ring_map.setMask(mask)
@@ -362,3 +364,21 @@ class MyQSlider(QSlider):
             pass
 
         painter.drawRect(rect)
+
+
+
+if __name__ == '__main__':
+    import sys
+    app = QApplication(sys.argv)
+    widget = QWidget()
+    button1 = RoundCirclePushButton(widget)
+    button2 = RoundCirclePushButton(widget)
+    button2.move(100, 100)
+    button3 = RoundCirclePushButton(widget)
+    button3.move(200, 200)
+    widget.resize(400, 400)
+    widget.show()
+    sys.exit(app.exec_())
+    
+    
+    

@@ -66,7 +66,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <layout class="QGridLayout" name="gridLayout" rowstretch="5,2,3,2" columnminimumwidth="100,100">
+          <layout class="QGridLayout" name="gridLayout" rowstretch="9,5,6,4" columnminimumwidth="100,100">
            <property name="leftMargin">
             <number>0</number>
            </property>
@@ -354,7 +354,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas00L"/>
                 <widget class="MplCanvas" name="spm1dcanvas00L"/>
@@ -375,7 +375,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas01L"/>
                 <widget class="MplCanvas" name="spm1dcanvas01L"/>
@@ -396,7 +396,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas02L"/>
                 <widget class="MplCanvas" name="spm1dcanvas02L"/>
@@ -564,7 +564,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas10L"/>
                 <widget class="MplCanvas" name="spm1dcanvas10L"/>
@@ -585,7 +585,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas11L"/>
                 <widget class="MplCanvas" name="spm1dcanvas11L"/>
@@ -606,7 +606,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas12L"/>
                 <widget class="MplCanvas" name="spm1dcanvas12L"/>
@@ -696,7 +696,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas21L"/>
                 <widget class="MplCanvas" name="spm1dcanvas21L"/>
@@ -739,7 +739,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas20L"/>
                 <widget class="MplCanvas" name="spm1dcanvas20L"/>
@@ -760,7 +760,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas22L"/>
                 <widget class="MplCanvas" name="spm1dcanvas22L"/>
@@ -1031,7 +1031,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas22R"/>
                 <widget class="MplCanvas" name="spm1dcanvas22R"/>
@@ -1052,7 +1052,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas20R"/>
                 <widget class="MplCanvas" name="spm1dcanvas20R"/>
@@ -1073,7 +1073,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas21R"/>
                 <widget class="MplCanvas" name="spm1dcanvas21R"/>
@@ -1188,7 +1188,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas10R"/>
                 <widget class="MplCanvas" name="spm1dcanvas10R"/>
@@ -1209,7 +1209,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas12R"/>
                 <widget class="MplCanvas" name="spm1dcanvas12R"/>
@@ -1230,7 +1230,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas11R"/>
                 <widget class="MplCanvas" name="spm1dcanvas11R"/>
@@ -1367,7 +1367,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas00R"/>
                 <widget class="MplCanvas" name="spm1dcanvas00R"/>
@@ -1388,7 +1388,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas02R"/>
                 <widget class="MplCanvas" name="spm1dcanvas02R"/>
@@ -1409,7 +1409,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas01R"/>
                 <widget class="MplCanvas" name="spm1dcanvas01R"/>
@@ -1653,7 +1653,7 @@ QSlider::handle:horizontal {
     <addaction name="actionNextView"/>
     <addaction name="menuClear"/>
     <addaction name="separator"/>
-    <addaction name="action_view_ligand"/>
+    <addaction name="action_view_legend"/>
     <addaction name="action_animation"/>
    </widget>
    <widget class="QMenu" name="menuo_ptions">
@@ -1905,7 +1905,7 @@ QSlider::handle:horizontal {
     <string>Clear the analysis results</string>
    </property>
   </action>
-  <action name="action_view_ligand">
+  <action name="action_view_legend">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -2012,8 +2012,8 @@ QSlider::handle:horizontal {
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>694</x>
-     <y>410</y>
+     <x>1138</x>
+     <y>464</y>
     </hint>
    </hints>
   </connection>
@@ -2034,7 +2034,7 @@ QSlider::handle:horizontal {
    </hints>
   </connection>
   <connection>
-   <sender>action_view_ligand</sender>
+   <sender>action_view_legend</sender>
    <signal>toggled(bool)</signal>
    <receiver>legend_dock_widget</receiver>
    <slot>setVisible(bool)</slot>
@@ -2052,7 +2052,7 @@ QSlider::handle:horizontal {
   <connection>
    <sender>legend_dock_widget</sender>
    <signal>visibilityChanged(bool)</signal>
-   <receiver>action_view_ligand</receiver>
+   <receiver>action_view_legend</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">

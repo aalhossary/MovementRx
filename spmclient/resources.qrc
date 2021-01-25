@@ -5,6 +5,15 @@
     <file>res/RT_legSelected.png</file>
     <file>res/RTLT_legSelected.png</file>
   </qresource>
+  <qresource prefix="text">
+    <file>res/LICENSE</file>
+  </qresource>
+  <qresource prefix="logos">
+    <file>res/logos/ntu logo.png</file>
+    <file>res/logos/astar-logo.png</file>
+    <file>res/logos/Kyoto Uni logo.png</file>
+    <file>res/logos/NHG-Logo_NoBg.png</file>
+  </qresource>
   <qresource prefix="walker">
     <file>res/StepImages/Left/1.png</file>
     <file>res/StepImages/Left/2.png</file>
