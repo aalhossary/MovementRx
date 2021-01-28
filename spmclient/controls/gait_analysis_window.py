@@ -7,7 +7,7 @@ from PyQt5 import QtGui
 from PyQt5.Qt import QRegExp
 from PyQt5.QtCore import QObject, QTimer, QFile, QIODevice, QTextStream
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup, \
-    QButtonGroup, QAbstractButton, QWidget, QDialog
+    QButtonGroup, QAbstractButton, QWidget, QDialog, QComboBox, QWidgetAction
 from matplotlib import cm
 from matplotlib.axes import Axes
 from matplotlib.colors import Normalize
@@ -76,12 +76,27 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.show_hide_joint_button_group.addButton(self.pushButton_2L)
         self.show_hide_joint_button_group.buttonClicked.connect(self.joint_button_clicked)
 
-        self.actionColor_Scale.triggered.connect(self.update_color_maps)
+        self.action_color_Scale.triggered.connect(self.update_color_maps)
         self.action_about.triggered.connect(self.show_about)
         self.action_license.triggered.connect(self.show_license)
 
-        self.alpha = params.get(consts.ALPHA)
         self.ankle_x_only = True
+
+        self.current_action: Optional[QAction] = None
+        self.alpha = params.get(consts.ALPHA)
+        self.alpha_comboBox = QComboBox(self.menu_options)
+        self.alpha_comboBox.setEditable(True)
+        self.alpha_comboBox.setInsertPolicy(QComboBox.InsertAlphabetically)
+        self.alpha_comboBox.setObjectName("alpha_comboBox")
+        self.alpha_comboBox.addItem("0.005")
+        self.alpha_comboBox.addItem("0.01")
+        self.alpha_comboBox.addItem("0.05")
+        self.alpha_comboBox.addItem("0.1")
+        self.alpha_comboBox.setCurrentIndex(2)
+        self.alpha_comboBox.currentTextChanged.connect(self.alpha_updated)
+        self.alpha_widget_action = QWidgetAction(self.menu_options)
+        self.alpha_widget_action.setDefaultWidget(self.alpha_comboBox)
+        self.menu_alpha.addAction(self.alpha_widget_action)
 
         self.action_specify_normal_standard.triggered.connect(self.load_reference)
         self.action_open_before_intervension.triggered.connect(self.load_before_intervention)
@@ -303,6 +318,11 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                         self.legend_data_panel.canvas.draw()
 
     def analyse(self, action: QAction):
+        if action:
+            self.current_action = action
+        else:
+            return
+
         print(action.text())
         analysis = ''
         if action == self.actionPre_vs_Reference:
@@ -341,6 +361,11 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         choice = cmc.exec()
         if choice:
             self.show_analysis_result()
+
+    def alpha_updated(self, alpha:str):
+        # self.alpha = float(self.alpha_comboBox.currentText())
+        self.alpha = float(alpha)
+        self.analyse(self.current_action)
 
     def show_about(self):
         about = QDialog(self)
@@ -560,6 +585,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
     def clear_analysis(self):
         print('clear_analysis')
+        self.current_action = None
         self.set_analysis_visible(False)
         self.controller.delete_analysis()
         self.update_actions_enabled()

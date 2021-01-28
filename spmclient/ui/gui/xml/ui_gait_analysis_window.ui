@@ -1656,20 +1656,25 @@ QSlider::handle:horizontal {
     <addaction name="action_view_legend"/>
     <addaction name="action_animation"/>
    </widget>
-   <widget class="QMenu" name="menuo_ptions">
+   <widget class="QMenu" name="menu_options">
     <property name="title">
      <string>o&amp;ptions</string>
     </property>
-    <widget class="QMenu" name="menuAnalysis_Type">
+    <widget class="QMenu" name="menu_analysis_type">
      <property name="title">
       <string>Analysis Type</string>
      </property>
-     <addaction name="actionKnee_OA"/>
-     <addaction name="actionKnee_Ambutation"/>
+     <addaction name="action_knee_OA"/>
+     <addaction name="action_knee_Ambutation"/>
     </widget>
-    <addaction name="menuAnalysis_Type"/>
-    <addaction name="actionAlpha"/>
-    <addaction name="actionColor_Scale"/>
+    <widget class="QMenu" name="menu_alpha">
+     <property name="title">
+      <string>Alpha</string>
+     </property>
+    </widget>
+    <addaction name="menu_analysis_type"/>
+    <addaction name="menu_alpha"/>
+    <addaction name="action_color_Scale"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -1681,7 +1686,7 @@ QSlider::handle:horizontal {
    <addaction name="menu_File"/>
    <addaction name="menuAnalysis"/>
    <addaction name="menuView"/>
-   <addaction name="menuo_ptions"/>
+   <addaction name="menu_options"/>
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -1913,17 +1918,12 @@ QSlider::handle:horizontal {
     <string>Legend</string>
    </property>
   </action>
-  <action name="actionColor_Scale">
+  <action name="action_color_Scale">
    <property name="text">
     <string>Colo&amp;r Scale</string>
    </property>
   </action>
-  <action name="actionAlpha">
-   <property name="text">
-    <string>Alpha</string>
-   </property>
-  </action>
-  <action name="actionKnee_OA">
+  <action name="action_knee_OA">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1934,7 +1934,7 @@ QSlider::handle:horizontal {
     <string>Knee OA</string>
    </property>
   </action>
-  <action name="actionKnee_Ambutation">
+  <action name="action_knee_Ambutation">
    <property name="checkable">
     <bool>true</bool>
    </property>
