@@ -56,18 +56,16 @@ __version__ = "0.1.1m"
 # ---------------------------------------------------------------------------------------------
 # IMPORTS
 # ---------------------------------------------------------------------------------------------
-import os
 import sys
 
-from PyQt5 import QtCore
-from PyQt5 import QtGui
-from PyQt5 import uic
-from PyQt5 import QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    _fromUtf8 = lambda s: s
+
+# try:
+#     _fromUtf8 = QtCore.QString.fromUtf8
+# except AttributeError:
+#     _fromUtf8 = lambda s: s
+_fromUtf8 = lambda s: s
 
 __all__ = ['QRangeSlider']
 

@@ -3,12 +3,11 @@ from __future__ import annotations
 from typing import cast, Optional, Tuple
 
 from PyQt5 import QtCore
-from PyQt5.Qt import QLabel
 from PyQt5.QtCore import QSize, QPointF, Qt, pyqtSlot
 from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QBitmap, \
     QFontMetrics
 from PyQt5.QtWidgets import QPushButton, QWidget, QSlider, QGridLayout,\
-    QApplication
+    QApplication, QLabel
 from matplotlib.axes._axes import Axes
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
