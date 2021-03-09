@@ -34,7 +34,7 @@
        <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>Individual compenents</string>
+          <string>Individual components</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -262,7 +262,7 @@
        <item row="12" column="0" colspan="2">
         <widget class="QLabel" name="label_12">
          <property name="text">
-          <string>3D Compenets Legend Colors</string>
+          <string>3D Componets Legend Colors</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -279,7 +279,7 @@
          </property>
         </widget>
        </item>
-       <item row="20" column="0">
+       <item row="14" column="0">
         <widget class="QLabel" name="label_4">
          <property name="text">
           <string>Number of levels</string>
@@ -289,7 +289,17 @@
          </property>
         </widget>
        </item>
-       <item row="20" column="1">
+       <item row="15" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Colormap Name</string>
+         </property>
+         <property name="buddy">
+          <cstring>individ_colormap_name_comboBox</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="1">
         <widget class="QSpinBox" name="threecomp_num_levels_spinBox">
          <property name="enabled">
           <bool>false</bool>
@@ -305,17 +315,7 @@
          </property>
         </widget>
        </item>
-       <item row="21" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Colormap Name</string>
-         </property>
-         <property name="buddy">
-          <cstring>individ_colormap_name_comboBox</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="21" column="1">
+       <item row="15" column="1">
         <widget class="QComboBox" name="threecomp_colormap_name_comboBox">
          <property name="enabled">
           <bool>false</bool>

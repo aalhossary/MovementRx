@@ -5,15 +5,14 @@ from typing import Dict, Union, cast, Optional
 
 import numpy as np
 from spmclient import consts
-import spmclient.models
 
 
 class DataManager:
 
-    _instance: spmclient.models.data_manager.DataManager = None
+    _instance: DataManager = None
     # empty_dict = dict()
     _raw_data = dict()
-    _data_available_flags = dict()
+    _data_available_flags: Dict[str, bool] = dict()
     _analysis_data = dict()
     _analysis_data_compact = dict()
 
@@ -30,14 +29,31 @@ class DataManager:
         """merge or update self._raw_data according to the path"""
         data_renamed_subject = DataManager._rename_subject(data_original_subject, subject)
 
-#         # TODO remove the test code
-#         # ------------------------- TEST CODE START----------------------
-#         if subject == consts.SUBJECT_AFTER:
-#             cls.removeme_divide_subject_data_by_two(data_renamed_subject, subject)
-#         # ------------------------- TEST CODE END -----------------------
-
         DataManager.merge_subject(cls._raw_data, data_renamed_subject)
         cls._data_available_flags[subject] = True
+        cls.update_all_ankle_dim_data_available()
+
+    @classmethod
+    def update_all_ankle_dim_data_available(cls):
+        flag = True
+        for subject in consts.subject:
+            if cls.is_data_available(subject):
+                path: Dict = {
+                    consts.MEASUREMENT: consts.MEASUREMENT_MOMENTS,
+                    consts.SUBJECT: subject,
+                    consts.SIDE: consts.SIDE_LEFT,
+                    consts.JOINT: consts.joint[2],
+                    consts.DIMENSION: consts.dim[1]
+                }
+                multiples = cls._get_multiples(cls._raw_data, path=path)
+                if multiples is not None:
+                    flag &= len(multiples) > 0
+        cls._data_available_flags['ALL_ANKLE_DIM'] = flag
+
+    @classmethod
+    def is_all_ankle_dim_data_available(cls) -> bool:
+        """Check availability of all dimensions of ankle data of all available cases (default is True)."""
+        return cls._data_available_flags.get('ALL_ANKLE_DIM', True)
 
     @classmethod
     def set_analysis_data(cls, analysis_data):
@@ -77,13 +93,12 @@ class DataManager:
         return cls._get_multiples(cls._analysis_data, path, has_subject=False)
     
     @classmethod
-    def get_multiples_from_analysis_data_compact(cls, path: Dict = None) \
-            -> Optional[np.ndarray]:
+    def get_multiples_from_analysis_data_compact(cls, path: Dict = None) -> Optional[np.ndarray]:
         return cls._get_multiples(cls._analysis_data_compact, path, has_subject=False, has_dimension=False)
     
     @classmethod
-    def _get_multiples(cls, data: Dict = None, path: Dict = None, satisfy_missing_path_with_any: bool = False, has_subject = True, has_dimension = True) \
-            -> Optional[np.ndarray]:
+    def _get_multiples(cls, data: Dict = None, path: Dict = None, satisfy_missing_path_with_any: bool = False,
+                       has_subject=True, has_dimension=True) -> Optional[np.ndarray]:
         # if not data:
         #     data = cls._raw_data
         try:

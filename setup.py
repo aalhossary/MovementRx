@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
 	name    	         			= 'movementrx',
-	version     	     			= '0.1.3',
+	version     	     			= '0.2.3',
 	description     	 			= 'Gait analysis using One-Dimensional Statistical Parametric Mapping',
 	author           				= 'Amr ALHOSSARY',
 	author_email     				= 'aalhossary@ntu.edu.sg',

@@ -32,6 +32,9 @@ def load_full_folder(root_path: Union[Path, str], scale=False) -> Dict:
             generator = folder.iterdir()  # glob(str(kinematic_filename_mask))
             for f in generator:
                 matched = any_filename_mask.fullmatch(f.name)
+                if not matched:  # to tolerate other additional files (e.g. desktop.ini, thumbs.db)
+                    continue
+
                 # print(matched)
                 s = matched.group(1)
                 j = matched.group(2)
@@ -49,6 +52,8 @@ def load_full_folder(root_path: Union[Path, str], scale=False) -> Dict:
 #                 # -------- test start------------------
 #                 if scale and measurment == consts.MEASUREMENT_MOMENTS:
 #                     temp_data *= 16.5
+                if subj == 'subj1test' and measurment == consts.MEASUREMENT_KINEMATICS:
+                    temp_data = temp_data.transpose()
 #                 # -------- test end ------------------
 
 #                 #  TODO FIXME This condition should be replaced with a permanent data format

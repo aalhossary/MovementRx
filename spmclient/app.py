@@ -116,7 +116,7 @@ class App(Controller):
         DataManager.set_analysis_data(detailed_analysis_data)
 
         # do the compact test
-        compact_analysis_data:Dict[str, Dict] = dict()
+        compact_analysis_data: Dict[str, Dict] = dict()
         for _, meas in enumerate(consts.measurement_folder):
             measurement_compact_dict = compact_analysis_data.setdefault(meas, dict())
             for _, s in enumerate(consts.side):
@@ -185,20 +185,21 @@ class App(Controller):
         tail = 0
         if subject_a == consts.SUBJECT_REF and meas == consts.MEASUREMENT_KINEMATICS:
             tail = data_ya.shape[1] - offset - data_yb.shape[1]
-            roi[-tail:] = False
+            if tail:
+                roi[-tail:] = False
 
-            tail_avr = np.average(data_ya[:, -tail:], axis=0)  # TODO to remove later if ROI is adjusted
-            if data_yb.ndim == 2:
-                shape = (data_yb.shape[0], tail)
-            elif data_yb.ndim == 3:
-                shape = (data_yb.shape[0], tail, 3)
-            else:
-                raise RuntimeError(f'Can not deal with number of dimensions {data_yb.ndim}')
-            temp_b_tail = np.empty(shape=shape)  # ones(shape=shape)
-            temp_b_tail[:] = tail_avr[:]
-            data_yb = np.concatenate((data_yb, temp_b_tail), axis=1)
+                tail_avr = np.average(data_ya[:, -tail:], axis=0)  # TODO to remove later if ROI is adjusted
+                if data_yb.ndim == 2:
+                    shape = (data_yb.shape[0], tail)
+                elif data_yb.ndim == 3:
+                    shape = (data_yb.shape[0], tail, 3)
+                else:
+                    raise RuntimeError(f'Can not deal with number of dimensions {data_yb.ndim}')
+                temp_b_tail = np.empty(shape=shape)  # ones(shape=shape)
+                temp_b_tail[:] = tail_avr[:]
+                data_yb = np.concatenate((data_yb, temp_b_tail), axis=1)
 
-            # data_ya = App.deflate(data_ya, roi)
+                # data_ya = App.deflate(data_ya, roi)
         return data_ya, data_yb, roi, offset, tail
 
     @staticmethod

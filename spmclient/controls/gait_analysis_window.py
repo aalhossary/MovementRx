@@ -4,8 +4,8 @@ from pathlib import Path
 from typing import Dict, cast, List, Optional
 
 from PyQt5 import QtGui
-from PyQt5.Qt import QRegExp
-from PyQt5.QtCore import QObject, QTimer, QFile, QIODevice, QTextStream
+# from PyQt5.Qt import QRegExp
+from PyQt5.QtCore import QObject, QTimer, QFile, QIODevice, QTextStream, QRegExp
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup, \
     QButtonGroup, QAbstractButton, QWidget, QDialog, QComboBox, QWidgetAction
 from matplotlib import cm
@@ -13,10 +13,14 @@ from matplotlib.axes import Axes
 from matplotlib.colors import Normalize
 from matplotlib.image import AxesImage
 from matplotlib.lines import Line2D
+# print("going to import matplotlib.pyplot as plt")
 
 import matplotlib.pyplot as plt
+# print("going to import numpy")
 import numpy as np
+# print("going to import numpy")
 import spm1d
+# print("going to import spmclient modules")
 from spmclient import consts
 from spmclient.controls.colormap_chooser import ColorMapChooser
 from spmclient.controls.controller import Controller
@@ -36,8 +40,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
     def __init__(self, params: Dict, controller: Controller):
         QMainWindow.__init__(self)
         Ui_ui_GaitAnalysisWindow.__init__(self)
+        print("finished calling Ui_ui_GaitAnalysisWindow init")
         self.controller = controller
         self.setupUi(self)
+        print("finished calling setupUi")
 
         self.data_ligand = dict()
 
@@ -57,6 +63,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.actionKinematics.setChecked(params.get(consts.KINEMATICS_CHECKED, False))
         self.actionMoments.setChecked(params.get(consts.MOMENTS_CHECKED, False))
         self.measurement_action_group.triggered[QAction].connect(self.display_options_changed)
+        self.set_scaler()
 
         self.sides_action_group = QActionGroup(self)
         self.sides_action_group.addAction(self.actionRight_Side)
@@ -80,8 +87,6 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.action_about.triggered.connect(self.show_about)
         self.action_license.triggered.connect(self.show_license)
 
-        self.ankle_x_only = True
-
         self.current_action: Optional[QAction] = None
         self.alpha = params.get(consts.ALPHA)
         self.alpha_comboBox = QComboBox(self.menu_options)
@@ -99,8 +104,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.menu_alpha.addAction(self.alpha_widget_action)
 
         self.action_specify_normal_standard.triggered.connect(self.load_reference)
-        self.action_open_before_intervension.triggered.connect(self.load_before_intervention)
-        self.action_open_after_surgery_data.triggered.connect(self.load_after_intervention)
+        self.action_open_before_intervention_data.triggered.connect(self.load_before_intervention)
+        self.action_open_post_intervention_data.triggered.connect(self.load_after_intervention)
         self.action_clear_all.triggered.connect(self.clear_all)
         self.action_clear_analysis.triggered.connect(self.clear_analysis)
         self.actionNextView.triggered.connect(self.show_next_view)
@@ -127,17 +132,17 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             for j in range(3):
                 for d in range(3):
                     spm1d_canvas = self.get_target_canvas('mose', j, d, side=s)
-                    spm1d_canvas.set_heights((1,2,1))
+                    spm1d_canvas.set_heights((1, 2, 1))
         self.legend_heatmap_groupbox.setVisible(False)
         self.legend_dock_widget.hide()
 
-    def set_analysis_visible(self, show: bool):
+    def set_analysis_visible(self, show: bool, ankle_x_only: bool = False):
         re = QRegExp('joint[012][RL]')
         qlist: List[QObject] = self.findChildren(MplCanvas, re)
         for widget in qlist:
             # print('set', widget.objectName(), 'visibility to', show)
             if show:
-                if self.ankle_x_only:
+                if ankle_x_only:
                     widget.setVisible(widget.objectName()[-2] != '2')
                 else:
                     widget.setVisible(True)
@@ -149,12 +154,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         for widget in qlist:
             # print('set', widget.objectName(), 'visibility to', show)
             if show:
-                if self.ankle_x_only:
+                if ankle_x_only:
                     if widget.objectName()[-3:-1] == '20':
                         widget.setVisible(True)
                     # else leave it unchanged.. This is useful when you show analysis on top of another analysis
-                else:
-                    widget.setVisible(True)
             else:
                 widget.setVisible(False)
 
@@ -237,23 +240,30 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             figure.colorbar(cm.ScalarMappable(norm=norm1, cmap=cmap1), orientation="vertical",
                             cax=ax1, use_gridspec=True, fraction=1.0, shrink=1.0, extend='both',
                             ticks=np.arange(norm1.vmax + 1),
-                                       # anchor = (0.0, 0.5), panchor = (0.0, 0.5), drawedges=True, pad=0.2
-                                       )
+                            # anchor = (0.0, 0.5), panchor = (0.0, 0.5), drawedges=True, pad=0.2
+                            )
         else:
             ax1.axis("off")
 
         cmap2 = cmc.cmap2
         norm2 = cmc.norm2
         # figure = self.legend_heatmap_panel.figure
-        ax2 = figure.add_subplot(1, 5, 4)
+
+        for ax in figure.get_axes():
+            if 'ax2' == ax.get_label():
+                ax2 = ax
+                break
+        else:  # Loop else (no_break)
+            ax2 = figure.add_subplot(1, 5, 4, label='ax2')  # Remember having a unique label.
+
         ax2.clear()
-#         ax.change_geometry(1, 5, 4)
+        #         ax.change_geometry(1, 5, 4)
         # figure.gca().set_axis_off()
         if axes_image2:
             figure.colorbar(cm.ScalarMappable(norm=norm2, cmap=cmap2), orientation="vertical",
-                                       cax=ax2, use_gridspec=True, fraction=1.0, shrink=1.0, extend='both',
-                                       ticks=np.arange(norm2.vmax + 1),
-                                       )
+                            cax=ax2, use_gridspec=True, fraction=1.0, shrink=1.0, extend='both',
+                            ticks=np.arange(norm2.vmax + 1),
+                            )
         else:
             ax2.axis("off")
         self.legend_heatmap_panel.canvas.draw()
@@ -336,13 +346,14 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         elif action == self.actionTwo_Sample:  # Pre Vs. Post
             analysis = consts.PRE_VS_POST_TWO_SAMPLE
 
-        self.controller.analyse(analysis, self.alpha, ankle_x_only=True)
+        ankle_x_only = not DataManager().is_all_ankle_dim_data_available()
+        self.controller.analyse(analysis, self.alpha, ankle_x_only)
 
         self.label_analysis.analysis_name = action.toolTip()
 
     def analysis_done(self):
         # TODO show that on status bar, and remove any waiting signs
-        self.set_analysis_visible(True)
+        self.set_analysis_visible(True, ankle_x_only=not DataManager().is_all_ankle_dim_data_available())
 
     def trigger_animation(self, triggered: bool):
         if triggered:
@@ -362,7 +373,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         if choice:
             self.show_analysis_result()
 
-    def alpha_updated(self, alpha:str):
+    def alpha_updated(self, alpha: str):
         # self.alpha = float(self.alpha_comboBox.currentText())
         self.alpha = float(alpha)
         self.analyse(self.current_action)
@@ -397,10 +408,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         analysis_legend_image1 = None
         analysis_legend_image2 = None
 
-        if self.actionKinematics.isChecked():
-            self.scaler = KinematicsScaler()
-        else:
-            self.scaler = MomentsScaler()
+        self.set_scaler()
 
         cmc = ColorMapChooser()
         cmap1 = cmc.cmap1
@@ -502,7 +510,20 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.update_legend_selected_panel_name()
         self.add_colorbar_to_legend(analysis_legend_image1, analysis_legend_image2)
         self.legend_heatmap_groupbox.setVisible(True)
-        self.action_animation.setChecked(True)
+        if self.action_auto_animation.isChecked():
+            self.action_animation.setChecked(True)
+
+    # def set_ankle_x_only_visible(self, ankle_x_only: bool):
+    #     reg = QRegExp('(stackedWidget[2][12][RL])|(joint2[RL])')
+    #     q_list: List[QObject] = self.findChildren(QStackedWidget, reg)
+    #     for widget in q_list:
+    #         widget.setVisible(True)
+
+    def set_scaler(self):
+        if self.actionKinematics.isChecked():
+            self.scaler = KinematicsScaler()
+        else:
+            self.scaler = MomentsScaler()
 
     def advance_animation(self):
         current_value = self.gait_sliderR.logicalValue()
@@ -542,7 +563,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # TODO This method needs redesign, checks, and maybe moved to controller
         print("Full Redraw requested")
         self.show_raw_data()
-        self.show_analysis_result(ankle_x_only=True)
+        self.show_analysis_result(ankle_x_only=not DataManager().is_all_ankle_dim_data_available())
         self.show_study_name()
 
     def visible_sides_changed(self):

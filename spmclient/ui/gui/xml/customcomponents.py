@@ -111,7 +111,7 @@ class MplCanvas(QWidget):  # FigureCanvasQTAgg):
         self.canvas = FigureCanvasQTAgg(self.figure)
         # ax = self.figure.add_subplot(111)
         gridspec = self.figure.add_gridspec(nrows=1, ncols=1, top=0.99, bottom=0.01, right=0.99)
-        ax = self.figure.add_subplot(gridspec[0, 0])
+        ax = self.figure.add_subplot(gridspec[0], label='ax')
         self.ax: Axes = cast(Axes, ax)
         self.ax.xaxis.set_visible(False)
 

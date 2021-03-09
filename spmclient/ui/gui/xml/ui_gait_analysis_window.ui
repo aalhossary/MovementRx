@@ -922,7 +922,7 @@ QSlider::handle:horizontal {
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <layout class="QGridLayout" name="gridLayout_5" rowstretch="0,0,0,0,0,0,0">
+          <layout class="QGridLayout" name="gridLayout_5">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -972,12 +972,6 @@ QSlider::handle:horizontal {
            </item>
            <item row="5" column="0" colspan="3">
             <widget class="QWidget" name="widget_2R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
              <layout class="QGridLayout" name="gridLayout_6">
               <property name="leftMargin">
                <number>0</number>
@@ -1151,12 +1145,6 @@ QSlider::handle:horizontal {
            </item>
            <item row="3" column="0" colspan="3">
             <widget class="QWidget" name="widget_1R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
              <layout class="QGridLayout" name="gridLayout_10">
               <property name="leftMargin">
                <number>0</number>
@@ -1330,12 +1318,6 @@ QSlider::handle:horizontal {
            </item>
            <item row="1" column="0" colspan="3">
             <widget class="QWidget" name="widget_0R" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
              <layout class="QGridLayout" name="gridLayout_2">
               <property name="leftMargin">
                <number>0</number>
@@ -1611,8 +1593,8 @@ QSlider::handle:horizontal {
     </property>
     <addaction name="action_specify_normal_standard"/>
     <addaction name="separator"/>
-    <addaction name="action_open_before_intervension"/>
-    <addaction name="action_open_after_surgery_data"/>
+    <addaction name="action_open_before_intervention_data"/>
+    <addaction name="action_open_post_intervention_data"/>
     <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
@@ -1665,7 +1647,7 @@ QSlider::handle:horizontal {
       <string>Analysis Type</string>
      </property>
      <addaction name="action_knee_OA"/>
-     <addaction name="action_knee_Ambutation"/>
+     <addaction name="action_knee_amputation"/>
     </widget>
     <widget class="QMenu" name="menu_alpha">
      <property name="title">
@@ -1675,6 +1657,7 @@ QSlider::handle:horizontal {
     <addaction name="menu_analysis_type"/>
     <addaction name="menu_alpha"/>
     <addaction name="action_color_Scale"/>
+    <addaction name="actionAuto_animation"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -1704,8 +1687,8 @@ QSlider::handle:horizontal {
     <bool>false</bool>
    </attribute>
    <addaction name="action_specify_normal_standard"/>
-   <addaction name="action_open_before_intervension"/>
-   <addaction name="action_open_after_surgery_data"/>
+   <addaction name="action_open_before_intervention_data"/>
+   <addaction name="action_open_post_intervention_data"/>
    <addaction name="separator"/>
    <addaction name="actionNextView"/>
   </widget>
@@ -1803,14 +1786,14 @@ QSlider::handle:horizontal {
     </layout>
    </widget>
   </widget>
-  <action name="action_open_before_intervension">
+  <action name="action_open_before_intervention_data">
    <property name="text">
-    <string>&amp;Pre intervension data...</string>
+    <string>&amp;Pre intervention data...</string>
    </property>
   </action>
-  <action name="action_open_after_surgery_data">
+  <action name="action_open_post_intervention_data">
    <property name="text">
-    <string>Pos&amp;t intervension data...</string>
+    <string>Pos&amp;t intervention data...</string>
    </property>
   </action>
   <action name="action_specify_normal_standard">
@@ -1934,7 +1917,7 @@ QSlider::handle:horizontal {
     <string>Knee OA</string>
    </property>
   </action>
-  <action name="action_knee_Ambutation">
+  <action name="action_knee_amputation">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1942,7 +1925,7 @@ QSlider::handle:horizontal {
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Knee Ambutation</string>
+    <string>Knee Amputation</string>
    </property>
   </action>
   <action name="action_animation">
@@ -1961,6 +1944,14 @@ QSlider::handle:horizontal {
   <action name="action_license">
    <property name="text">
     <string>&amp;License</string>
+   </property>
+  </action>
+  <action name="action_auto_animation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Auto animation</string>
    </property>
   </action>
  </widget>
