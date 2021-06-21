@@ -7,19 +7,19 @@ from spmclient import consts
 
 measurementSFX = dict([('kinematic', 'Ang'), ('moment', 'moment')])
 
-# in_folder = '../res/refData'
-# out_folder = '../res/refDataScaled'
-# subjname = 'Ref'  # 'subj1'
-in_folder = '../res/cases/subj1_pre_old'
-out_folder = '../res/cases/subj1_pre'
-subjname = 'subj1' # 'Lam'  # 'Ref' 'subj1'
-scales_file_str = './scales16.5.csv' #  './scales.csv'
+in_folder = '../spmclient/res/cases/Amputee'
+out_folder = '../spmclient/res/cases/AmputeeFlipped'
+subjname = 'subj1'  # 'subj1'
+# in_folder = 'C:\\Users\\Amr\\Google Drive\\Share\\From Phillis\\amputee Apr - YZ Moment Correct\\TTA011'
+# out_folder = 'C:\\Users\\Amr\\Google Drive\\Share\\From Phillis\\amputee Apr - YZ Moment Correct\\TTA011Scaled'
+# subjname = 'subj1'  # 'Lam'  # 'Ref' 'subj1'
+scales_file_str = './tools/KneeOAFlips.csv' #  './scales.csv'
 
 infolder_mask = '{measurement}/{side}_{joint}{dimension}_{measurementSFX}_{subjname}.csv'
 outfolder_mask = infolder_mask
 
 
-def scale_file(measurement:str, i_side: int, i_joint: int, i_dimension:int, scale: float):
+def scale_file(measurement:str, i_side: int, i_joint: int, i_dimension:int, scale: float, transpose=False):
     side = consts.side[i_side]
     joint = consts.joint[i_joint]
     dim = consts.dim[i_dimension]
@@ -33,6 +33,8 @@ def scale_file(measurement:str, i_side: int, i_joint: int, i_dimension:int, scal
     with open(Path(in_folder, file_name), 'r') as infile:
         reader = csv.reader(infile, delimiter=',')
         headers = next(reader)
+        headers = [l.strip() for l in headers]
+        
         data = np.array(list(reader)).astype(float)
 
         outpath = Path(out_folder, file_name)
@@ -43,6 +45,8 @@ def scale_file(measurement:str, i_side: int, i_joint: int, i_dimension:int, scal
         with open(outpath, 'w') as outfile:
             print(', '.join(headers), file=outfile)
             data = data if scale == 1 else data *scale
+            if transpose:
+                data = data.T
             np.savetxt(outfile, data, fmt='%.9f', delimiter=',')
 
 
@@ -61,10 +65,15 @@ def main():
         print(data)
 
     for measurement in consts.measurement_folder:
+
+        # # This line should be REMOVED
+        # transpose = (measurement == consts.measurement_folder[0])
+
         for i_side in range(len(consts.side)):
             for i_joint in range(len(consts.joint)):
                 for i_dimension in range(len(consts.dim)):
-                    scale_file(measurement, i_side, i_joint, i_dimension, scales[measurement][i_joint, (i_side * 3 + i_dimension)])
+                    scale_file(measurement, i_side, i_joint, i_dimension, 
+                               scales[measurement][i_joint, (i_side * 3 + i_dimension)])  # , transpose)
     # with open()
 
 
