@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui_colormap_chooser.ui'
+# Form implementation generated from reading ui file 'ui\gui\xml\ui_colormap_chooser.ui'
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
@@ -164,6 +164,9 @@ class Ui_colorMapChooser(object):
         self.threecomp_min_value_spinbox.valueChanged['int'].connect(colorMapChooser.update_legend)
         self.individ_max_value_spinbox.valueChanged['int'].connect(colorMapChooser.update_legend)
         self.individ_min_value_spinbox.valueChanged['int'].connect(colorMapChooser.update_legend)
+        self.checkBox_2.toggled['bool'].connect(colorMapChooser.toggle_same_as_individual_components)
+        self.individ_colormap_name_comboBox.currentIndexChanged['int'].connect(self.threecomp_colormap_name_comboBox.setCurrentIndex)
+        self.individ_num_levels_spinBox.valueChanged['int'].connect(self.threecomp_num_levels_spinBox.setValue)
         QtCore.QMetaObject.connectSlotsByName(colorMapChooser)
 
     def retranslateUi(self, colorMapChooser):

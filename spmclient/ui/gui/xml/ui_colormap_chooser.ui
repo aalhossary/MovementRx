@@ -411,12 +411,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>64</x>
-     <y>402</y>
+     <x>255</x>
+     <y>420</y>
     </hint>
     <hint type="destinationlabel">
-     <x>97</x>
-     <y>464</y>
+     <x>255</x>
+     <y>446</y>
     </hint>
    </hints>
   </connection>
@@ -427,12 +427,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>44</x>
-     <y>401</y>
+     <x>232</x>
+     <y>420</y>
     </hint>
     <hint type="destinationlabel">
-     <x>97</x>
-     <y>487</y>
+     <x>232</x>
+     <y>472</y>
     </hint>
    </hints>
   </connection>
@@ -443,8 +443,8 @@
    <slot>update_legend()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>269</x>
-     <y>459</y>
+     <x>302</x>
+     <y>446</y>
     </hint>
     <hint type="destinationlabel">
      <x>336</x>
@@ -459,8 +459,8 @@
    <slot>update_legend()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>285</x>
-     <y>487</y>
+     <x>302</x>
+     <y>472</y>
     </hint>
     <hint type="destinationlabel">
      <x>338</x>
@@ -475,8 +475,8 @@
    <slot>update_legend()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>254</x>
-     <y>308</y>
+     <x>302</x>
+     <y>332</y>
     </hint>
     <hint type="destinationlabel">
      <x>338</x>
@@ -491,8 +491,8 @@
    <slot>update_legend()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>241</x>
-     <y>291</y>
+     <x>272</x>
+     <y>293</y>
     </hint>
     <hint type="destinationlabel">
      <x>338</x>
@@ -507,8 +507,8 @@
    <slot>update_legend()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>215</x>
-     <y>199</y>
+     <x>251</x>
+     <y>200</y>
     </hint>
     <hint type="destinationlabel">
      <x>338</x>
@@ -523,8 +523,8 @@
    <slot>update_legend()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>177</x>
-     <y>174</y>
+     <x>223</x>
+     <y>172</y>
     </hint>
     <hint type="destinationlabel">
      <x>338</x>
@@ -564,8 +564,57 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>colorMapChooser</receiver>
+   <slot>toggle_same_as_individual_components(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>186</x>
+     <y>412</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>197</x>
+     <y>343</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>individ_colormap_name_comboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>threecomp_colormap_name_comboBox</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>143</x>
+     <y>323</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>143</x>
+     <y>467</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>individ_num_levels_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>threecomp_num_levels_spinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>123</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>437</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>update_legend()</slot>
+  <slot>toggle_same_as_individual_components(bool)</slot>
  </slots>
 </ui>

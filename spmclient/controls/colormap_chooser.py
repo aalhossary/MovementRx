@@ -68,6 +68,22 @@ class ColorMapChooser(QDialog, Ui_colorMapChooser, metaclass = ColorMapChooserMe
         self.individual_colormap_legend.canvas.draw()
         self.three_components_colormap_legend.canvas.draw()
 
+    @QtCore.pyqtSlot('bool')
+    def toggle_same_as_individual_components(self, selected: bool):
+        print(f'toggle_same_as_individual_components toggled {selected}')
+        if selected:
+            self.individ_colormap_name_comboBox.currentIndexChanged['int'].connect(
+                self.threecomp_colormap_name_comboBox.setCurrentIndex)
+            self.individ_num_levels_spinBox.valueChanged['int'].connect(self.threecomp_num_levels_spinBox.setValue)
+            self.individ_colormap_name_comboBox.currentIndexChanged['int'].emit(self.individ_colormap_name_comboBox.currentIndex())
+            self.individ_num_levels_spinBox.valueChanged['int'].emit(self.individ_num_levels_spinBox.value())
+
+        else:
+            self.individ_colormap_name_comboBox.currentIndexChanged['int'].disconnect(
+                self.threecomp_colormap_name_comboBox.setCurrentIndex)
+            self.individ_num_levels_spinBox.valueChanged['int'].disconnect(self.threecomp_num_levels_spinBox.setValue)
+
+
 def main():
     app = QApplication(sys.argv)
     cmc = ColorMapChooser()
