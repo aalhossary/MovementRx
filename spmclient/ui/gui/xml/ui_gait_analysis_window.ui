@@ -1657,7 +1657,6 @@ QSlider::handle:horizontal {
     <addaction name="menu_analysis_type"/>
     <addaction name="menu_alpha"/>
     <addaction name="action_color_Scale"/>
-    <addaction name="actionAuto_animation"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -1903,7 +1902,7 @@ QSlider::handle:horizontal {
   </action>
   <action name="action_color_Scale">
    <property name="text">
-    <string>Colo&amp;r Scale</string>
+    <string>Colo&amp;r Scale...</string>
    </property>
   </action>
   <action name="action_knee_OA">
