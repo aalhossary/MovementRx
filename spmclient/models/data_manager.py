@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from builtins import classmethod
-from typing import Dict, Union, cast, Optional
+from typing import Dict, cast, Optional
 
 import numpy as np
 from spmclient import consts
