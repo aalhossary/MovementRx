@@ -435,6 +435,12 @@
                   <height>40</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Left Hip</string>
                 </property>
@@ -645,6 +651,12 @@
                   <height>40</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Left Knee</string>
                 </property>
@@ -715,6 +727,12 @@
                   <width>0</width>
                   <height>40</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
                 </property>
                 <property name="text">
                  <string>Left Ankle</string>
@@ -1002,6 +1020,12 @@ QSlider::handle:horizontal {
                   <height>40</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Right Ankle</string>
                 </property>
@@ -1286,6 +1310,12 @@ QSlider::handle:horizontal {
                   <height>40</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Right Knee</string>
                 </property>
@@ -1458,6 +1488,12 @@ QSlider::handle:horizontal {
                   <width>0</width>
                   <height>40</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
                 </property>
                 <property name="text">
                  <string>Right Hip</string>
