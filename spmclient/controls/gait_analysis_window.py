@@ -177,14 +177,20 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
     def vector_canvas_clicked(self, event):
         canvas = event.canvas
-        stacked_widget = canvas.parent()
-        name = stacked_widget.objectName()
+        vector_widget = canvas.parent()
+        name = vector_widget.objectName()
         joint, side = name[-2], name[-1]
         re = QRegExp(f'stackedWidget{joint}[012]{side}')
         qlist: List[QObject] = self.findChildren(QStackedWidget, re)
         for widget in qlist:
             widget = cast(QStackedWidget, widget)
             widget.setVisible(not widget.isVisible())
+        if qlist[0].isVisible():
+            widget = cast(QWidget, vector_widget)
+            widget.setToolTip("Click to collapse")
+        else:
+            widget = cast(QWidget, vector_widget)
+            widget.setToolTip("Click to expand")
 
     def rt_side_checked(self):
         return self.actionRight_Side.isChecked()
