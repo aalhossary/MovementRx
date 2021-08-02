@@ -40,10 +40,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
     def __init__(self, params: Dict, controller: Controller):
         QMainWindow.__init__(self)
         Ui_ui_GaitAnalysisWindow.__init__(self)
-        print("finished calling Ui_ui_GaitAnalysisWindow init")
+        # print("finished calling Ui_ui_GaitAnalysisWindow init")
         self.controller = controller
         self.setupUi(self)
-        print("finished calling setupUi")
+        # print("finished calling setupUi")
 
         self.data_ligand = dict()
 
@@ -111,6 +111,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.actionNextView.triggered.connect(self.show_next_view)
 
         plt.rcParams['figure.constrained_layout.use'] = True
+        self.show_animation_triggered(False)
+        self.action_show_animation.triggered[bool].connect(self.show_animation_triggered)
 
         self.set_analysis_visible(False)
         self.update_actions_enabled()
@@ -120,7 +122,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.animator_timer: QTimer = QTimer(self)
         self.animator_timer.setSingleShot(False)
         self.animator_timer.timeout.connect(self.advance_animation)
-        self.action_animation.toggled[bool].connect(self.trigger_animation)
+        self.action_animate.toggled[bool].connect(self.trigger_animation)
 
         for j in range(3):
             for s in consts.side:
@@ -135,6 +137,13 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                     spm1d_canvas.set_heights((1, 2, 1))
         self.legend_heatmap_groupbox.setVisible(False)
         self.legend_dock_widget.hide()
+
+    def show_animation_triggered(self, show: bool):
+        self.gait_sliderR.setVisible(show)
+        self.gait_sliderL.setVisible(show)
+        self.update_actions_enabled()
+        if not show:
+            self.action_animate.setChecked(False)
 
     def set_analysis_visible(self, show: bool, ankle_x_only: bool = False):
         re = QRegExp('joint[012][RL]')
@@ -356,7 +365,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.set_analysis_visible(True, ankle_x_only=not DataManager().is_all_ankle_dim_data_available())
 
     def trigger_animation(self, triggered: bool):
-        if triggered:
+        if triggered and self.action_show_animation.isChecked():
             self.animator_timer.start(1500)
             print("Timer started")
         else:
@@ -510,8 +519,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.update_legend_selected_panel_name()
         self.add_colorbar_to_legend(analysis_legend_image1, analysis_legend_image2)
         self.legend_heatmap_groupbox.setVisible(True)
-        if self.action_auto_animation.isChecked():
-            self.action_animation.setChecked(True)
+        self.action_animate.setEnabled(True)
+        if self.action_show_animation.isChecked():
+            self.action_animate.setChecked(True)
 
     # def set_ankle_x_only_visible(self, ankle_x_only: bool):
     #     reg = QRegExp('(stackedWidget[2][12][RL])|(joint2[RL])')
@@ -613,7 +623,6 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.set_analysis_visible(False)
         self.controller.delete_analysis()
         self.update_actions_enabled()
-        self.action_animation.setChecked(False)
         self.legend_heatmap_groupbox.setVisible(False)
 
     def clear_all(self):
@@ -632,6 +641,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.actionPre_and_Post_Vs_Ref.setEnabled(ref_available and pre_available and post_available)
         self.actionPaired.setEnabled(pre_available and post_available)
         self.actionTwo_Sample.setEnabled(pre_available and post_available)
+
+        if not (ref_available or pre_available or post_available):
+            self.action_animate.setChecked(False)
+        self.action_animate.setEnabled(self.action_show_animation.isChecked() and (ref_available or pre_available or post_available))
 
 
 def draw_mean_std(current_data, ax: Axes, display_format: DisplayFormat):

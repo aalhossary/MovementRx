@@ -1887,6 +1887,13 @@ QSlider::handle:horizontal {
      <addaction name="action_clear_all"/>
      <addaction name="action_clear_analysis"/>
     </widget>
+    <widget class="QMenu" name="menuA_nimation">
+     <property name="title">
+      <string>A&amp;nimation</string>
+     </property>
+     <addaction name="action_show_animation"/>
+     <addaction name="action_animate"/>
+    </widget>
     <addaction name="actionKinematics"/>
     <addaction name="actionMoments"/>
     <addaction name="separator"/>
@@ -1897,7 +1904,7 @@ QSlider::handle:horizontal {
     <addaction name="menuClear"/>
     <addaction name="separator"/>
     <addaction name="action_view_legend"/>
-    <addaction name="action_animation"/>
+    <addaction name="menuA_nimation"/>
    </widget>
    <widget class="QMenu" name="menu_options">
     <property name="title">
@@ -2188,14 +2195,6 @@ QSlider::handle:horizontal {
     <string>Knee Amputation</string>
    </property>
   </action>
-  <action name="action_animation">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>A&amp;nimation</string>
-   </property>
-  </action>
   <action name="action_about">
    <property name="text">
     <string>&amp;About</string>
@@ -2206,12 +2205,32 @@ QSlider::handle:horizontal {
     <string>&amp;License</string>
    </property>
   </action>
-  <action name="action_auto_animation">
+  <action name="action_show_animation">
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
    <property name="text">
-    <string>Auto animation</string>
+    <string>&amp;Show</string>
+   </property>
+   <property name="toolTip">
+    <string>Show Animated gait</string>
+   </property>
+  </action>
+  <action name="action_animate">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>A&amp;nimate</string>
+   </property>
+   <property name="toolTip">
+    <string>Animate Gait</string>
    </property>
   </action>
  </widget>
