@@ -566,7 +566,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.show_analysis_result(ankle_x_only=not DataManager().is_all_ankle_dim_data_available())
         self.show_study_name()
 
-    def visible_sides_changed(self):
+    def visible_sides_changed(self, last_triggered_action: QAction):
+        if not (self.actionRight_Side.isChecked() or self.actionLeft_Side.isChecked()):
+            last_triggered_action.setChecked(True)
+            # return
         icon_name_list = [':/images/res/']
         if self.rt_side_checked():
             icon_name_list.append('RT')
