@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from matplotlib.axes import Axes
 from typing import cast, Optional, Tuple
 
 from PyQt5 import QtCore
@@ -8,7 +9,6 @@ from PyQt5.QtGui import QRegion, QIcon, QPixmap, QColor, QPen, QPainter, QBitmap
     QFontMetrics
 from PyQt5.QtWidgets import QPushButton, QWidget, QSlider, QGridLayout,\
     QApplication, QLabel
-from matplotlib.axes._axes import Axes
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from matplotlib.lines import Line2D
@@ -61,9 +61,6 @@ class AnalysisLabel(QLabel):
         try:
             if self.analysis_name:
                 text.append(f'<p><span style=" font-weight:600;">{self.analysis_name}</span></p>')
-            #         except AttributeError:
-            #             pass
-            #         try:
             if self.selected_widget_name:
                 text.append(f'<p><span style=" font-weight:600;">{self.selected_widget_name}{{t}}</span></p>')
         except AttributeError:
