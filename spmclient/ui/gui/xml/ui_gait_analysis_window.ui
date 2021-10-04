@@ -31,7 +31,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="centralwidget_gridLayout">
     <item row="0" column="0">
-     <layout class="QGridLayout" name="three_columns_layout" rowstretch="0,20,0" columnstretch="0,0,0,0">
+     <layout class="QGridLayout" name="three_columns_layout" rowstretch="0,20,0">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -39,7 +39,7 @@
        <widget class="QWidget" name="widget_rt_side" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>10</horstretch>
+          <horstretch>5</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
@@ -323,7 +323,10 @@
                  </font>
                 </property>
                 <property name="text">
-                 <string>valgus / varus</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Valgus / Varus&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="textFormat">
+                 <enum>Qt::RichText</enum>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -541,7 +544,10 @@
                  </font>
                 </property>
                 <property name="text">
-                 <string>dorsi/plantar flexion</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Dorsi/Plantar flexion&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="textFormat">
+                 <enum>Qt::RichText</enum>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -576,7 +582,7 @@
                  </font>
                 </property>
                 <property name="text">
-                 <string>inversion/eversion</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Inversion/Eversion&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="textFormat">
                  <enum>Qt::RichText</enum>
@@ -807,18 +813,18 @@ QSlider::handle:horizontal {
         </layout>
        </widget>
       </item>
-      <item row="0" column="2" alignment="Qt::AlignHCenter">
+      <item row="0" column="1" alignment="Qt::AlignHCenter">
        <widget class="QLabel" name="label_study">
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kinematics&lt;/span&gt; (% Stride deg) / &lt;span style=&quot; font-weight:600;&quot;&gt;Moments&lt;/span&gt; (Nm/kg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="3" rowspan="3">
+      <item row="0" column="2" rowspan="3">
        <widget class="QWidget" name="widget_lt_side" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>10</horstretch>
+          <horstretch>5</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
@@ -1114,7 +1120,7 @@ QSlider::handle:horizontal {
                  </font>
                 </property>
                 <property name="text">
-                 <string>valgus / varus</string>
+                 <string>Valgus / Varus</string>
                 </property>
                 <property name="textFormat">
                  <enum>Qt::RichText</enum>
@@ -1338,7 +1344,7 @@ QSlider::handle:horizontal {
                  </font>
                 </property>
                 <property name="text">
-                 <string>dorsi/plantar flexion</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Dorsi/Plantar flexion&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="textFormat">
                  <enum>Qt::RichText</enum>
@@ -1376,10 +1382,10 @@ QSlider::handle:horizontal {
                  </font>
                 </property>
                 <property name="text">
-                 <string>inversion/eversion</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Inversion/Eversion&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="textFormat">
-                 <enum>Qt::AutoText</enum>
+                 <enum>Qt::RichText</enum>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -1491,7 +1497,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>1</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas22L"/>
                 <widget class="MplCanvas" name="spm1dcanvas22L"/>
@@ -1608,13 +1614,19 @@ QSlider::handle:horizontal {
         </layout>
        </widget>
       </item>
-      <item row="1" column="2">
+      <item row="1" column="1">
        <widget class="QLabel" name="skeletonlabel">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>1</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>0</height>
+         </size>
         </property>
         <property name="pixmap">
          <pixmap resource="../../../resources.qrc">:/images/res/RTLT_legSelected.png</pixmap>
@@ -1639,7 +1651,7 @@ QSlider::handle:horizontal {
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <layout class="QGridLayout" name="gridLayout" rowstretch="9,5,6,4" columnminimumwidth="100,100">
+          <layout class="QGridLayout" name="gridLayout" rowstretch="9,5,6,4" columnstretch="11,1,1,11" columnminimumwidth="55,5,5,55">
            <property name="leftMargin">
             <number>0</number>
            </property>
@@ -1655,8 +1667,83 @@ QSlider::handle:horizontal {
            <property name="spacing">
             <number>0</number>
            </property>
+           <item row="1" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
+            <widget class="RoundCirclePushButton" name="pushButton_0R">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>100</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3" alignment="Qt::AlignLeft|Qt::AlignVCenter">
+            <widget class="RoundCirclePushButton" name="pushButton_0L">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>100</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
            <item row="2" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
             <widget class="RoundCirclePushButton" name="pushButton_1R">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>100</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3" alignment="Qt::AlignLeft|Qt::AlignVCenter">
+            <widget class="RoundCirclePushButton" name="pushButton_1L">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1705,83 +1792,8 @@ QSlider::handle:horizontal {
              </property>
             </widget>
            </item>
-           <item row="3" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
+           <item row="3" column="3" alignment="Qt::AlignLeft|Qt::AlignVCenter">
             <widget class="RoundCirclePushButton" name="pushButton_2L">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>100</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_1L">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>100</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_0R">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>100</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1" alignment="Qt::AlignLeft|Qt::AlignVCenter">
-            <widget class="RoundCirclePushButton" name="pushButton_0L">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1810,7 +1822,7 @@ QSlider::handle:horizontal {
         </layout>
        </widget>
       </item>
-      <item row="2" column="2">
+      <item row="2" column="1">
        <widget class="QLabel" name="label_image_src">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
