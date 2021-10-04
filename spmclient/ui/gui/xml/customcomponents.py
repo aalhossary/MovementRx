@@ -76,6 +76,9 @@ class Scaler:
     def scale(self, index_in_cycle: int) -> Optional[int]:
         raise NotImplementedError()
 
+    def reverse_scale(self, value_on_screen: int) -> Optional[int]:
+        raise NotImplementedError()
+
 
 class MomentsScaler(Scaler):
     """A [0, 60] to [0, 100] scale adaptor."""
@@ -85,12 +88,26 @@ class MomentsScaler(Scaler):
         else:
             return None
 
+    def reverse_scale(self, value_on_screen: int) -> Optional[int]:
+        if value_on_screen <= 0:
+            return 0
+        elif value_on_screen >= 100:
+            return 60
+        else:
+            return int(value_on_screen * 60 / 100)
+
 
 class KinematicsScaler(Scaler):
     """A [0, 100] to [0, 100] scale adaptor."""
     def scale(self, index_in_cycle: int) -> Optional[int]:
         if 0 <= index_in_cycle <= 100:
             return index_in_cycle
+        else:
+            return None
+
+    def reverse_scale(self, value_on_screen: int) -> Optional[int]:
+        if 0 <= value_on_screen <= 100:
+            return value_on_screen
         else:
             return None
 
