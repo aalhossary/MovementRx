@@ -19,8 +19,8 @@ def load_file(file: Path) -> np.ndarray:
     return data
 
 
-def load_full_folder(root_path: Union[Path, str], scale=False) -> Dict:
-    """Return the data in the order (Measurement, subject (person), side, joint, dimension"""
+def load_full_folder(root_path: Union[Path, str], scale=False) -> Dict:  # TODO Change the order to (subject (person), Measurement, side, joint, dimension)
+    """Return the data in the order (Measurement, subject (person), side, joint, dimension)"""
     # print('starting to load full folder')
     ret_dict = dict()
     if isinstance(root_path, str):
