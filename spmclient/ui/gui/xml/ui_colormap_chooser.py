@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\gui\xml\ui_colormap_chooser.ui'
+# Form implementation generated from reading ui file 'spmclient\ui\gui\xml\ui_colormap_chooser.ui'
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
@@ -55,14 +55,15 @@ class Ui_colorMapChooser(object):
         self.label_9.setObjectName("label_9")
         self.formLayout.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.label_9)
         self.threecomp_min_value_spinbox = QtWidgets.QSpinBox(colorMapChooser)
-        self.threecomp_min_value_spinbox.setProperty("value", 1)
+        self.threecomp_min_value_spinbox.setProperty("value", 20)
         self.threecomp_min_value_spinbox.setObjectName("threecomp_min_value_spinbox")
         self.formLayout.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.threecomp_min_value_spinbox)
         self.label_10 = QtWidgets.QLabel(colorMapChooser)
         self.label_10.setObjectName("label_10")
         self.formLayout.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.label_10)
         self.threecomp_max_value_spinbox = QtWidgets.QSpinBox(colorMapChooser)
-        self.threecomp_max_value_spinbox.setProperty("value", 11)
+        self.threecomp_max_value_spinbox.setMaximum(10000)
+        self.threecomp_max_value_spinbox.setProperty("value", 300)
         self.threecomp_max_value_spinbox.setObjectName("threecomp_max_value_spinbox")
         self.formLayout.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.threecomp_max_value_spinbox)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -79,7 +80,7 @@ class Ui_colorMapChooser(object):
         self.individ_num_levels_spinBox = QtWidgets.QSpinBox(colorMapChooser)
         self.individ_num_levels_spinBox.setMinimum(3)
         self.individ_num_levels_spinBox.setMaximum(20)
-        self.individ_num_levels_spinBox.setProperty("value", 8)
+        self.individ_num_levels_spinBox.setProperty("value", 4)
         self.individ_num_levels_spinBox.setObjectName("individ_num_levels_spinBox")
         self.formLayout.setWidget(9, QtWidgets.QFormLayout.FieldRole, self.individ_num_levels_spinBox)
         self.label_2 = QtWidgets.QLabel(colorMapChooser)
@@ -116,7 +117,7 @@ class Ui_colorMapChooser(object):
         self.threecomp_num_levels_spinBox.setEnabled(False)
         self.threecomp_num_levels_spinBox.setMinimum(3)
         self.threecomp_num_levels_spinBox.setMaximum(20)
-        self.threecomp_num_levels_spinBox.setProperty("value", 8)
+        self.threecomp_num_levels_spinBox.setProperty("value", 4)
         self.threecomp_num_levels_spinBox.setObjectName("threecomp_num_levels_spinBox")
         self.formLayout.setWidget(14, QtWidgets.QFormLayout.FieldRole, self.threecomp_num_levels_spinBox)
         self.threecomp_colormap_name_comboBox = QtWidgets.QComboBox(colorMapChooser)

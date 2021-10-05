@@ -247,7 +247,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         if axes_image1:
             cmap1 = cmc.cmap1
             norm1 = cmc.norm1
-            labels = ['Mild', 'Mod', 'severe', 'X-treme']
+            labels = ['Mild', 'Mod', 'Severe', 'Xtreme']
             for j, lab in enumerate(labels):
                 ax1.text(0.9, norm1.vmin + ((2 * j + 1) / (2 * len(labels)) * (norm1.vmax - norm1.vmin)),
                          lab, ha='right', va='center_baseline')

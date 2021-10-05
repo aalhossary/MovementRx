@@ -121,7 +121,7 @@
        <item row="5" column="1">
         <widget class="QSpinBox" name="threecomp_min_value_spinbox">
          <property name="value">
-          <number>1</number>
+          <number>20</number>
          </property>
         </widget>
        </item>
@@ -137,8 +137,11 @@
        </item>
        <item row="6" column="1">
         <widget class="QSpinBox" name="threecomp_max_value_spinbox">
+         <property name="maximum">
+          <number>10000</number>
+         </property>
          <property name="value">
-          <number>11</number>
+          <number>300</number>
          </property>
         </widget>
        </item>
@@ -197,7 +200,7 @@
           <number>20</number>
          </property>
          <property name="value">
-          <number>8</number>
+          <number>4</number>
          </property>
         </widget>
        </item>
@@ -311,7 +314,7 @@
           <number>20</number>
          </property>
          <property name="value">
-          <number>8</number>
+          <number>4</number>
          </property>
         </widget>
        </item>

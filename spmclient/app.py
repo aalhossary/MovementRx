@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QApplication
 
 import numpy as np
 import spm1d
+from spm1d.stats._spm import SPM_T
 from spmclient import consts
 import spmclient
 from spmclient.controls.controller import Controller
@@ -18,8 +19,10 @@ from spmclient.ui.gui.DisplayFormat import DisplayFormat
 
 
 TTEST_2 = 'ttest2'
+TTEST = 'ttest'
 TTEST_PAIRED = 'ttest_paired'
 HOTELLINGS_2 = 'hotellings2'
+HOTELLINGS = 'hotellings'
 HOTELLINGS_PAIRED = 'hotellings_paired'
 
 
@@ -46,20 +49,20 @@ class App(Controller):
         # The test names are a list of the form [2D test, 3D test]
         if analysis == consts.PRE_VS_REF:
             test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4)]
-            test_names = [TTEST_2, HOTELLINGS_2]
+            test_names = [TTEST_2, HOTELLINGS]
         elif analysis == consts.POST_VS_REF:
             test_params = [(consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
-            test_names = [TTEST_2, HOTELLINGS_2]
+            test_names = [TTEST_2, HOTELLINGS]
         elif analysis == consts.PRE_AND_POST_VS_REF:
             test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4),
                            (consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
-            test_names = [TTEST_2, HOTELLINGS_2]
+            test_names = [TTEST_2, HOTELLINGS]
         elif analysis == consts.PRE_VS_POST_PAIRED:
             test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
             test_names = [TTEST_PAIRED, HOTELLINGS_PAIRED]
         elif analysis == consts.PRE_VS_POST_TWO_SAMPLE:
             test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
-            test_names = [TTEST_2, HOTELLINGS_2]
+            test_names = [TTEST_2, HOTELLINGS]
         else:
             raise RuntimeError(f'Unknown analysis type ({analysis})!')
 
@@ -278,14 +281,23 @@ class App(Controller):
         #     spm_t = spm1d.stats.hotellings2(ya, yb)
         # else:
         #     raise RuntimeError(f'I do not know how to deal with array dimensions ({ya.shape}), ({yb.shape})')
+
         test = eval('spm1d.stats.' + test_name)
-        spm_t = test(ya, yb, roi=roi)
+        spm_t: Optional[SPM_T] = None
+        if test_name in (HOTELLINGS_2, TTEST_2):
+            spm_t = test(ya, yb, roi=roi)
+        elif test_name in (HOTELLINGS, TTEST):
+            spm_t = test(ya, mu=yb.mean(axis=0), roi=roi)
+
         return spm_t
 
     @staticmethod
-    def infer_z(spm_t, alpha) -> Tuple[spm1d.stats._spm.SPMi_T, np.array]:
+    def infer_z(spm_t, alpha, old_scheme=False) -> Tuple[spm1d.stats._spm.SPMi_T, np.array]: #  TODO Review
         spmi_t = spm_t.inference(alpha)
-        return spmi_t, (spmi_t.z / spmi_t.zstar)
+        if old_scheme:
+            return spmi_t, (spmi_t.z / spmi_t.zstar)
+        else:
+            return spmi_t, (spmi_t.z)
 
 
 if __name__ == '__main__':
