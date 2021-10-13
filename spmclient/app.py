@@ -49,20 +49,20 @@ class App(Controller):
         # The test names are a list of the form [2D test, 3D test]
         if analysis == consts.PRE_VS_REF:
             test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4)]
-            test_names = [TTEST_2, HOTELLINGS]
+            test_names = [TTEST, HOTELLINGS]
         elif analysis == consts.POST_VS_REF:
             test_params = [(consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
-            test_names = [TTEST_2, HOTELLINGS]
+            test_names = [TTEST, HOTELLINGS]
         elif analysis == consts.PRE_AND_POST_VS_REF:
             test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4),
                            (consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
-            test_names = [TTEST_2, HOTELLINGS]
+            test_names = [TTEST, HOTELLINGS]
         elif analysis == consts.PRE_VS_POST_PAIRED:
             test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
             test_names = [TTEST_PAIRED, HOTELLINGS_PAIRED]
         elif analysis == consts.PRE_VS_POST_TWO_SAMPLE:
             test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
-            test_names = [TTEST_2, HOTELLINGS]
+            test_names = [TTEST, HOTELLINGS]
         else:
             raise RuntimeError(f'Unknown analysis type ({analysis})!')
 
@@ -287,12 +287,12 @@ class App(Controller):
         if test_name in (HOTELLINGS_2, TTEST_2):
             spm_t = test(ya, yb, roi=roi)
         elif test_name in (HOTELLINGS, TTEST):
-            spm_t = test(ya, mu=yb.mean(axis=0), roi=roi)
+            spm_t = test(ya, yb.mean(axis=0), roi=roi)
 
         return spm_t
 
     @staticmethod
-    def infer_z(spm_t, alpha, old_scheme=False) -> Tuple[spm1d.stats._spm.SPMi_T, np.array]: #  TODO Review
+    def infer_z(spm_t, alpha, old_scheme=False) -> Tuple[spm1d.stats._spm.SPMi_T, np.array]:  # TODO Review
         spmi_t = spm_t.inference(alpha)
         if old_scheme:
             return spmi_t, (spmi_t.z / spmi_t.zstar)

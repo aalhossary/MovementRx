@@ -419,7 +419,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
     def show_rmse(self, task_yb, rmse):
         pass
     
-    def show_analysis_result(self, ankle_x_only=False):
+    def show_analysis_result(self, ankle_x_only: bool = False):
         analysis_legend_image1 = None
         analysis_legend_image2 = None
 
