@@ -284,7 +284,7 @@ class App(Controller):
 
         test = eval('spm1d.stats.' + test_name)
         spm_t: Optional[SPM_T] = None
-        if test_name in (HOTELLINGS_2, TTEST_2):
+        if test_name in (HOTELLINGS_2, TTEST_2, TTEST_PAIRED, HOTELLINGS_PAIRED):
             spm_t = test(ya, yb, roi=roi)
         elif test_name in (HOTELLINGS, TTEST):
             spm_t = test(ya, yb.mean(axis=0), roi=roi)
