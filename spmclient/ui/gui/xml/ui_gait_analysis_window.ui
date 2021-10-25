@@ -1497,7 +1497,7 @@ QSlider::handle:horizontal {
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="MplCanvas" name="mosecanvas22L"/>
                 <widget class="MplCanvas" name="spm1dcanvas22L"/>

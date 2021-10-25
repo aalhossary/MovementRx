@@ -1196,7 +1196,7 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.stackedWidget12L.setCurrentIndex(0)
         self.stackedWidget20L.setCurrentIndex(0)
         self.stackedWidget21L.setCurrentIndex(0)
-        self.stackedWidget22L.setCurrentIndex(1)
+        self.stackedWidget22L.setCurrentIndex(0)
         self.actionLeft_Side.toggled['bool'].connect(self.widget_lt_side.setVisible)
         self.actionRight_Side.toggled['bool'].connect(self.widget_rt_side.setVisible)
         self.action_view_legend.toggled['bool'].connect(self.legend_dock_widget.setVisible)
