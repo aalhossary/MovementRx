@@ -1887,6 +1887,7 @@ QSlider::handle:horizontal {
     <addaction name="actionPost_vs_Ref"/>
     <addaction name="actionPre_and_Post_Vs_Ref"/>
     <addaction name="separator"/>
+    <addaction name="action_save_analysis"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -2243,6 +2244,11 @@ QSlider::handle:horizontal {
    </property>
    <property name="toolTip">
     <string>Animate Gait</string>
+   </property>
+  </action>
+  <action name="action_save_analysis">
+   <property name="text">
+    <string>&amp;Save analysis</string>
    </property>
   </action>
  </widget>

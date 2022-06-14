@@ -7,7 +7,7 @@ from PyQt5 import QtGui
 # from PyQt5.Qt import QRegExp
 from PyQt5.QtCore import QObject, QTimer, QFile, QIODevice, QTextStream, QRegExp
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, QActionGroup, \
-    QButtonGroup, QAbstractButton, QWidget, QDialog, QComboBox, QWidgetAction
+    QButtonGroup, QAbstractButton, QWidget, QDialog, QComboBox, QWidgetAction, QMessageBox
 from matplotlib import cm
 from matplotlib.axes import Axes
 from matplotlib.colors import Normalize
@@ -55,6 +55,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.analyse_action_group.addAction(self.actionPaired)
         self.analyse_action_group.addAction(self.actionTwo_Sample)
         self.analyse_action_group.triggered[QAction].connect(self.analyse)
+        self.action_save_analysis.triggered.connect(self.save_analysis)
 
         self.measurement_action_group = QActionGroup(self)
         self.measurement_action_group.addAction(self.actionKinematics)
@@ -74,7 +75,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.sides_action_group.triggered[QAction].connect(self.visible_sides_changed)
 
         self.show_hide_joint_button_group = QButtonGroup(self)
-        self.show_hide_joint_button_group.setExclusive(False) #  Must be set before adding any buttons
+        self.show_hide_joint_button_group.setExclusive(False)  # Must be set before adding any buttons
         self.show_hide_joint_button_group.addButton(self.pushButton_0R)
         self.show_hide_joint_button_group.addButton(self.pushButton_1R)
         self.show_hide_joint_button_group.addButton(self.pushButton_2R)
@@ -204,27 +205,28 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         # d = Path(__file__).parents[2] / 'res/refDataScaled'
         d = Path(__file__).parents[1] / 'res/refData'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select reference data root folder", directory=str(d))
-        loaded_data = load_full_folder(dir_name)
-        self.controller.set_data(loaded_data, consts.SUBJECT_REF)
-        self.update_actions_enabled()
+        if dir_name:
+            self.controller.load_data(dir_name, consts.SUBJECT_REF)
+            self.update_actions_enabled()
 
     def load_before_intervention(self):
         file_dialog = QFileDialog(self)
         # d = Path(__file__).parents[2] / 'res/cases/subj1_preResampled'
         d = Path(__file__).parents[1] / 'res/cases/subj1_pre'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of preintervension data", directory=str(d))
-        loaded_data = load_full_folder(dir_name, scale=True)
-        self.controller.set_data(loaded_data, consts.SUBJECT_B4)
-        self.update_actions_enabled()
+        if dir_name:
+            self.controller.load_data(dir_name, consts.SUBJECT_B4)
+            self.update_actions_enabled()
 
+    # TODO Shouldn't we evacuate it and move its contents to App?
     def load_after_intervention(self):
         file_dialog = QFileDialog(self)
         # d = Path(__file__).parents[2] / 'res/cases/subj1_postResampled'
         d = Path(__file__).parents[1] / 'res/cases/subj1_post'
         dir_name = file_dialog.getExistingDirectory(self, caption="Select folder of postintervension data", directory=str(d))
-        loaded_data = load_full_folder(dir_name, scale=True)
-        self.controller.set_data(loaded_data, consts.SUBJECT_AFTER)
-        self.update_actions_enabled()
+        if dir_name:
+            self.controller.load_data(dir_name, consts.SUBJECT_AFTER)
+            self.update_actions_enabled()
 
     def data_loaded(self, data: Dict):
         # TODO tell that on status bar
@@ -362,13 +364,26 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             analysis = consts.PRE_VS_POST_TWO_SAMPLE
 
         ankle_x_only = not DataManager().is_all_ankle_dim_data_available()
-        self.controller.analyse(analysis, self.alpha, ankle_x_only)
+        self.controller.analyse_all(analysis, self.alpha, ankle_x_only)
 
         self.label_analysis.analysis_name = action.toolTip()
+
+    def save_analysis(self):
+        file_dialog = QFileDialog(self)
+        # d = Path(__file__).parents[1] / 'res/refData'
+        dir_name = file_dialog.getExistingDirectory(self,
+                        caption="Select folder to save analysis") #, directory=str(d))
+        if dir_name:
+            self.controller.save_analysis(self.current_action.objectName(), dir_name)
 
     def analysis_done(self):
         # TODO show that on status bar, and remove any waiting signs
         self.set_analysis_visible(True, ankle_x_only=not DataManager().is_all_ankle_dim_data_available())
+        self.update_actions_enabled()
+
+    def save_analysis_done(self):
+        # TODO show that on status bar, and remove any waiting signs
+        QMessageBox.information(self, "Saved", "analysis data saved successfully")
 
     def trigger_animation(self, triggered: bool):
         if triggered and self.action_show_animation.isChecked():
@@ -416,9 +431,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
         license_dlg.exec()
 
-    def show_rmse(self, task_yb, rmse):
-        pass
-    
+    # def show_rmse(self, task_yb, rmse):
+    #     pass
+
     def show_analysis_result(self, ankle_x_only: bool = False):
         analysis_legend_image1 = None
         analysis_legend_image2 = None
@@ -651,6 +666,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         if not (ref_available or pre_available or post_available):
             self.action_animate.setChecked(False)
         self.action_animate.setEnabled(self.action_show_animation.isChecked() and (ref_available or pre_available or post_available))
+
+        self.action_save_analysis.setEnabled(DataManager.is_analysis_available(None))
 
 
 def draw_mean_std(current_data, ax: Axes, display_format: DisplayFormat):

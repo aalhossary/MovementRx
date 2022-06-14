@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'spmclient\ui\gui\xml\ui_gait_analysis_window.ui'
+# Form implementation generated from reading ui file 'ui_gait_analysis_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -1132,6 +1132,8 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.action_animate.setCheckable(True)
         self.action_animate.setEnabled(False)
         self.action_animate.setObjectName("action_animate")
+        self.action_save_analysis = QtWidgets.QAction(ui_GaitAnalysisWindow)
+        self.action_save_analysis.setObjectName("action_save_analysis")
         self.menu_File.addAction(self.action_specify_normal_standard)
         self.menu_File.addSeparator()
         self.menu_File.addAction(self.action_open_before_intervention_data)
@@ -1145,6 +1147,7 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.menuAnalysis.addAction(self.actionPost_vs_Ref)
         self.menuAnalysis.addAction(self.actionPre_and_Post_Vs_Ref)
         self.menuAnalysis.addSeparator()
+        self.menuAnalysis.addAction(self.action_save_analysis)
         self.menuClear.addAction(self.action_clear_all)
         self.menuClear.addAction(self.action_clear_analysis)
         self.menuA_nimation.addAction(self.action_show_animation)
@@ -1284,6 +1287,7 @@ class Ui_ui_GaitAnalysisWindow(object):
         self.action_show_animation.setToolTip(_translate("ui_GaitAnalysisWindow", "Show Animated gait"))
         self.action_animate.setText(_translate("ui_GaitAnalysisWindow", "A&nimate"))
         self.action_animate.setToolTip(_translate("ui_GaitAnalysisWindow", "Animate Gait"))
+        self.action_save_analysis.setText(_translate("ui_GaitAnalysisWindow", "&Save analysis"))
 from spmclient.ui.gui.xml.customcomponents import AnalysisLabel, HeatMapMplCanvas, MplCanvas, MyQSlider, RoundCirclePushButton
 from spmclient import resources_rc
 

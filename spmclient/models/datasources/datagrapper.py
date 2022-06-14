@@ -65,3 +65,20 @@ def load_full_folder(root_path: Union[Path, str], scale=False) -> Dict:  # TODO 
                 joint_dict[dim] = temp_data
 
     return ret_dict
+
+
+def save_data_file(data: np.ndarray, file: Path) -> bool:
+    np.savetxt(file, data, dtype=float, delimiter=',')
+    return True
+
+
+def save_analysis(data: Dict, folder: Path, task: Dict) -> bool:
+    if not folder.exists():
+        folder.mkdir(parents=True)
+        print(f'created folder [{folder.absolute()}]')
+    # filename = f'{task[consts.SUBJECT]}_{task[consts.MEASUREMENT]}_{task[consts.SIDE]}_{task[consts.JOINT]}_{task[consts.DIMENSION] if task[consts.DIMENSION] else "all"}.csv'
+    filename = f'{task[consts.MEASUREMENT]}_{task[consts.SIDE]}_{task[consts.JOINT]}_{task[consts.DIMENSION] if consts.DIMENSION in task else "all"}.csv'
+    file = folder/ filename
+    data = data[0].z
+    np.savetxt(file, data, fmt='%.6f', delimiter=',')
+    return True

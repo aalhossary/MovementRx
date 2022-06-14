@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from builtins import staticmethod
 import sys
 from typing import Dict, Tuple, Optional
@@ -8,12 +10,12 @@ from PyQt5.QtWidgets import QApplication
 
 import numpy as np
 import spm1d
-from spm1d.stats._spm import SPM_T
+from spm1d.stats._spm import SPM_T, SPMi_T
 from spmclient import consts
-import spmclient
 from spmclient.controls.controller import Controller
 from spmclient.controls.gait_analysis_window import GaitAnalysisWindow
 from spmclient.models.data_manager import DataManager
+from spmclient.models.datasources import datagrapper
 from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
 
@@ -28,7 +30,7 @@ HOTELLINGS_PAIRED = 'hotellings_paired'
 
 class App(Controller):
 
-    _instance: spmclient.app.App = None
+    _instance: App = None
     _display_manager: DisplayManager = None
 
     def __new__(cls, *args, **kwargs):
@@ -43,7 +45,7 @@ class App(Controller):
         self._display_manager.data_loaded(data)
         self._display_manager.show_raw_data()
 
-    def analyse(self, analysis: str, alpha: float, ankle_x_only=False):
+    def analyse_all(self, analysis: str, alpha: float, ankle_x_only=False):
         # switch on the test type
         # The test_params are a list of triplets in the form of [(ya, yb, format)]
         # The test names are a list of the form [2D test, 3D test]
@@ -83,40 +85,17 @@ class App(Controller):
                         # dimension_detailed_dict = joint_detailed_dict.setdefault(d, dict())
                         temp_display_data_list = []
                         temp_display_fmat_list = []
-                        temp_rmse_list = []
+
                         for current_round in test_params:
                             subject_a, subject_b, display_subject = current_round
-                            task_ya: Dict = {
-                                consts.MEASUREMENT: meas,
-                                consts.SUBJECT: subject_a,
-                                consts.SIDE: s,
-                                consts.JOINT: j,
-                                consts.DIMENSION: d
-                            }
-                            data_ya = DataManager.get_multiples_from_data(path=task_ya)
-                            task_yb: Dict = {
-                                consts.MEASUREMENT: meas,
-                                consts.SUBJECT: subject_b,
-                                consts.SIDE: s,
-                                consts.JOINT: j,
-                                consts.DIMENSION: d
-                            }
-                            data_yb = DataManager.get_multiples_from_data(path=task_yb)
-                            if data_ya is not None and data_yb is not None:
-                                data_ya, data_yb, roi, _offset, tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
-
-                                if tail:
-                                    rmse = DataManager.rmse(data_yb, data_ya)
-                                    #  TODO manage the case of more than one RMSE value. use DataManager, etc.
-                                    self._display_manager.show_rmse(task_yb, rmse)
-
-                                spm_t = App.do_spm_test(data_ya, data_yb, test_names[0], roi=roi)
-                                spmi_t, _ = App.infer_z(spm_t, alpha)
+                            spmi_t = self.analyse(alpha, d, j, meas, s, subject_a, subject_b, test_names[0])
+                            if spmi_t is not None:
                                 temp_display_data_list.append(spmi_t)
                                 temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
+
                         # set the results in the DataManager, along with its DisplayFormat
                         joint_detailed_dict[d] = (temp_display_data_list, temp_display_fmat_list)
-        DataManager.set_analysis_data(detailed_analysis_data)
+        DataManager.set_analysis_data(detailed_analysis_data, analysis)
 
         # do the compact test
         compact_analysis_data: Dict[str, Dict] = dict()
@@ -132,53 +111,117 @@ class App(Controller):
                     # joint_compact_dict = side_compact_dict.setdefault(j, dict())
                     temp_display_data_list = []
                     temp_display_fmat_list = []
+
                     for current_round in test_params:
-                        subject_a, subject_b, display_subject = current_round[0], current_round[1], current_round[2]
-                        # get the data of X,Y,Z and consider them as ya then yb respectively
-                        data_ya, data_yb = None, None
-                        for i_d, d in enumerate(consts.dim):
-                            task_ya: Dict = {
-                                consts.MEASUREMENT: meas,
-                                consts.SUBJECT: subject_a,
-                                consts.SIDE: s,
-                                consts.JOINT: j,
-                                consts.DIMENSION: d
-                            }
-                            temp_joint_dimension_multiple = DataManager.get_multiples_from_data(path=task_ya)
-                            if temp_joint_dimension_multiple is None:
-                                continue
-                            if i_d == 0:
-                                data_ya = np.ndarray(shape=(*temp_joint_dimension_multiple.shape, 3))
-                            data_ya[:, :, i_d] = temp_joint_dimension_multiple
-
-                            task_yb: Dict = {
-                                consts.MEASUREMENT: meas,
-                                consts.SUBJECT: subject_b,
-                                consts.SIDE: s,
-                                consts.JOINT: j,
-                                consts.DIMENSION: d
-                            }
-                            temp_joint_dimension_multiple = DataManager.get_multiples_from_data(path=task_yb)
-                            if temp_joint_dimension_multiple is None:
-                                continue
-                            if i_d == 0:
-                                data_yb = np.ndarray(shape=(*temp_joint_dimension_multiple.shape, 3))
-                            data_yb[:, :, i_d] = temp_joint_dimension_multiple
-
-                        if data_ya is not None and data_yb is not None:
-                            data_ya, data_yb, roi, _offset, _tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
-
-                            spm_t = App.do_spm_test(data_ya, data_yb, test_names[1], roi=roi)
-                            spmi_t, _ = App.infer_z(spm_t, alpha)
+                        subject_a, subject_b, display_subject = current_round
+                        spmi_t = self.analyse(alpha, None, j, meas, s, subject_a, subject_b, test_names[1])
+                        if spmi_t is not None:
                             temp_display_data_list.append(spmi_t)
                             temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
+
                     # set the results in the DataManager, along with its DisplayFormat
                     side_compact_dict[j] = (temp_display_data_list, temp_display_fmat_list)
 
-        DataManager.set_analysis_data_compact(compact_analysis_data)
+        DataManager.set_analysis_data_compact(compact_analysis_data, analysis)
         self._display_manager.analysis_done()
 
         self._display_manager.show_analysis_result(ankle_x_only=ankle_x_only)
+
+    def analyse(self, alpha, d, j, meas, s, subject_a, subject_b, test_name) -> Optional[SPMi_T]:
+        data_ya, data_yb = None, None
+        if d is not None:
+            task_ya: Dict = {
+                consts.MEASUREMENT: meas,
+                consts.SUBJECT: subject_a,
+                consts.SIDE: s,
+                consts.JOINT: j,
+                consts.DIMENSION: d
+            }
+            data_ya = DataManager.get_multiples_from_data(path=task_ya)
+            task_yb: Dict = {
+                consts.MEASUREMENT: meas,
+                consts.SUBJECT: subject_b,
+                consts.SIDE: s,
+                consts.JOINT: j,
+                consts.DIMENSION: d
+            }
+            data_yb = DataManager.get_multiples_from_data(path=task_yb)
+        else:
+            for i_d, d in enumerate(consts.dim):
+                task_ya: Dict = {
+                    consts.MEASUREMENT: meas,
+                    consts.SUBJECT: subject_a,
+                    consts.SIDE: s,
+                    consts.JOINT: j,
+                    consts.DIMENSION: d
+                }
+                temp_joint_dimension_multiple = DataManager.get_multiples_from_data(path=task_ya)
+                if temp_joint_dimension_multiple is None:
+                    continue
+                if i_d == 0:
+                    data_ya = np.ndarray(shape=(*temp_joint_dimension_multiple.shape, 3))
+                data_ya[:, :, i_d] = temp_joint_dimension_multiple
+
+                task_yb: Dict = {
+                    consts.MEASUREMENT: meas,
+                    consts.SUBJECT: subject_b,
+                    consts.SIDE: s,
+                    consts.JOINT: j,
+                    consts.DIMENSION: d
+                }
+                temp_joint_dimension_multiple = DataManager.get_multiples_from_data(path=task_yb)
+                if temp_joint_dimension_multiple is None:
+                    continue
+                if i_d == 0:
+                    data_yb = np.ndarray(shape=(*temp_joint_dimension_multiple.shape, 3))
+                data_yb[:, :, i_d] = temp_joint_dimension_multiple
+
+        if data_ya is not None and data_yb is not None:
+            data_ya, data_yb, roi, _offset, tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
+
+            # if tail:
+            #     rmse = DataManager.rmse(data_yb, data_ya)
+            #     #  TODO manage the case of more than one RMSE value. use DataManager, etc.
+            #     self._display_manager.show_rmse(task_yb, rmse)
+
+            spm_t = App.do_spm_test(data_ya, data_yb, test_name, roi=roi)
+            spmi_t, _ = App.infer_z(spm_t, alpha, scale_to_zstar=False)  # TODO add an option to scale or not
+            return spmi_t
+        return None
+
+    def load_data(self, dir_name:str, subject_name):
+        loaded_data = datagrapper.load_full_folder(dir_name, scale=True)
+        self.set_data(loaded_data, subject_name)
+        # TODO add something is DisplayManager to call update_actions_enabled()
+
+    def save_analysis(self, analysis_name: str, dir_name: str):
+        for meas in consts.measurement_folder:
+            for s in consts.side:
+                for i_j, j in enumerate(consts.joint):
+                    task: Dict = {
+                        consts.MEASUREMENT: meas,
+                        consts.SIDE: s,
+                        consts.JOINT: j,
+                    }
+                    # save analysis collective vector
+                    stored_data = DataManager.get_multiples_from_analysis_data_compact(path=task)
+                    if stored_data:
+                        temp_display_data_list, temp_display_fmat_list = stored_data
+                        datagrapper.save_analysis(data=temp_display_data_list, folder=Path(dir_name), task=task)
+                    # Then save every dimension separately
+                    for i_d, d in enumerate(consts.dim):
+                        task[consts.DIMENSION] = d
+                        dimension = DataManager.get_multiples_from_analysis_data(path=task)
+                        if dimension:
+                            temp_display_data_list, temp_display_fmat_list = dimension
+                            #Note that they are two LISTS not two ITEMS
+                            # draw each of the data / format pair on the canvas
+                            # for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
+                            #     pass
+
+                            # DataManager.save_analysis(analysis_name)
+                            datagrapper.save_analysis(data=temp_display_data_list, folder=Path(dir_name), task=task)
+        self._display_manager.save_analysis_done()
 
     @staticmethod
     def _adjust_array_lengths(subject_a: str, meas: str, data_ya: np.ndarray, data_yb: np.ndarray) \
@@ -292,9 +335,9 @@ class App(Controller):
         return spm_t
 
     @staticmethod
-    def infer_z(spm_t, alpha, old_scheme=False) -> Tuple[spm1d.stats._spm.SPMi_T, np.array]:  # TODO Review
+    def infer_z(spm_t, alpha, scale_to_zstar=False) -> Tuple[spm1d.stats._spm.SPMi_T, np.array]:  # TODO Review
         spmi_t = spm_t.inference(alpha)
-        if old_scheme:
+        if scale_to_zstar:
             return spmi_t, (spmi_t.z / spmi_t.zstar)
         else:
             return spmi_t, (spmi_t.z)

@@ -13,6 +13,7 @@ class DataManager:
     # empty_dict = dict()
     _raw_data = dict()
     _data_available_flags: Dict[str, bool] = dict()
+    _analysis_available_flags: Dict[str, bool] = dict()
     _analysis_data = dict()
     _analysis_data_compact = dict()
 
@@ -56,17 +57,27 @@ class DataManager:
         return cls._data_available_flags.get('ALL_ANKLE_DIM', True)
 
     @classmethod
-    def set_analysis_data(cls, analysis_data):
+    def set_analysis_data(cls, analysis_data, analysis_name: str):
         cls._analysis_data = analysis_data
+        cls._analysis_available_flags[analysis_name] = True
 
     @classmethod
-    def set_analysis_data_compact(cls, analysis_data_compact):
+    def set_analysis_data_compact(cls, analysis_data_compact, analysis_name: str):
         cls._analysis_data_compact = analysis_data_compact
+        cls._analysis_available_flags[analysis_name] = True
 
     @classmethod
     def is_data_available(cls, subject: str) -> bool:
         """Check availability of data (and Handle errors)."""
         return cls._data_available_flags.get(subject, False)
+
+    @classmethod
+    def is_analysis_available(cls, subject: Optional[str] = None) -> bool:
+        """Check availability of analysis (and Handle errors)."""
+        if subject:  # check the availability of that specific subject
+            return cls._analysis_available_flags.get(subject, False)
+        else:  # is the analysis of any subject available
+            return len(cls._analysis_available_flags) > 0
 
     @classmethod
     def get_average(cls, data: Dict, path: Dict = None) -> np.ndarray:
@@ -86,16 +97,16 @@ class DataManager:
     def get_multiples_from_data(cls, path: Dict = None, satisfy_missing_path_with_any: bool = False) \
             -> Optional[np.ndarray]:
         return cls._get_multiples(cls._raw_data, path, satisfy_missing_path_with_any)
-    
+
     @classmethod
     def get_multiples_from_analysis_data(cls, path: Dict = None) \
             -> Optional[np.ndarray]:
         return cls._get_multiples(cls._analysis_data, path, has_subject=False)
-    
+
     @classmethod
     def get_multiples_from_analysis_data_compact(cls, path: Dict = None) -> Optional[np.ndarray]:
         return cls._get_multiples(cls._analysis_data_compact, path, has_subject=False, has_dimension=False)
-    
+
     @classmethod
     def _get_multiples(cls, data: Dict = None, path: Dict = None, satisfy_missing_path_with_any: bool = False,
                        has_subject=True, has_dimension=True) -> Optional[np.ndarray]:
@@ -153,7 +164,7 @@ class DataManager:
             if len(subjects_dict) > 1:
                 raise RuntimeError("I don't know how to handle data with more than one subject (person)\n"
                                    f"measurement = {measurement}, subjects = {list(subjects_dict.keys())}")
-            new_subject_dict = data_renamed_subject[measurement] = dict()            
+            new_subject_dict = data_renamed_subject[measurement] = dict()
             new_subject_dict[subject_new_name] = next(iter(subjects_dict.values()))
         return data_renamed_subject
 
@@ -166,14 +177,15 @@ class DataManager:
     def clear_analysis_results(cls):
         cls._analysis_data.clear()
         cls._analysis_data_compact.clear()
+        cls._analysis_available_flags.clear()
 
-    @staticmethod
-    def rmse(predictions: np.ndarray, targets: np.ndarray) -> np.ndarray:
-        #  return np.sqrt(((predictions - targets) ** 2).mean())
-        if predictions.ndim > 1:
-            predictions = np.average(predictions, axis=0)
-        if targets.ndim > 1:
-            targets = np.average(targets, axis=0)
-        n = len(predictions)
-        rmse = np.linalg.norm(predictions - targets) / np.sqrt(n)
-        return rmse
+    # @staticmethod
+    # def rmse(predictions: np.ndarray, targets: np.ndarray) -> np.ndarray:
+    #     #  return np.sqrt(((predictions - targets) ** 2).mean())
+    #     if predictions.ndim > 1:
+    #         predictions = np.average(predictions, axis=0)
+    #     if targets.ndim > 1:
+    #         targets = np.average(targets, axis=0)
+    #     n = len(predictions)
+    #     rmse = np.linalg.norm(predictions - targets) / np.sqrt(n)
+    #     return rmse
