@@ -303,6 +303,18 @@ class App(Controller):
         return params
 
     def main(self):
+
+        svi = sys.version_info
+        if (svi.major, svi.minor) < (3, 8):
+            print("\n"
+                  "=======\n"
+                  "Warning\n"
+                  "=======\n"
+                  "This paython version is less than 3.8!\n"
+                  "Not all functions will run as expected. continue on your own responsibility.\n"
+                  "Press ENTER to continue.")
+            input()
+
         app = QApplication(sys.argv)
         # analysis_type_dialogue = AnalysisTypeQDialogue()
         # analysis_type_dialogue.setModal(True)
