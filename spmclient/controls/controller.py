@@ -5,7 +5,7 @@ from PyQt5.QtCore import QObject
 
 
 class Controller(QObject):  # (metaclass=ABCMeta):
-    def set_data(self, data: Dict, subject: str):
+    def set_data(self, data: Dict, subject: str):  # TODO this method could be safely removed for the sake of load_data
         raise NotImplementedError()
 
     def update_graphs(self, data: Dict = None, tasks: Dict = None):
@@ -21,7 +21,7 @@ class Controller(QObject):  # (metaclass=ABCMeta):
             ref_vs_mean: determines whether the whole sample will be compared to the reference or only its mean would
             be. This parameter is ignored if the user is doing PRE_VS_POST_PAIRED analysis.
             ankle_x_only: Whether the Ankle has data in the X axis only. This parameter should be removed in later
-            versions when we use new reference data.
+            versions when we use new data.
         """
         raise NotImplementedError()
 

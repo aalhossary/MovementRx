@@ -15,7 +15,8 @@ from spmclient import consts
 from spmclient.controls.controller import Controller
 from spmclient.controls.gait_analysis_window import GaitAnalysisWindow
 from spmclient.models.data_manager import DataManager
-from spmclient.models.datasources import datagrapper
+# you can implement different dataIO modules using the same name
+from spmclient.models.datasources import csvdataio as dataio
 from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
 
@@ -184,7 +185,7 @@ class App(Controller):
         return None
 
     def load_data(self, dir_name:str, subject_name):
-        loaded_data = datagrapper.load_full_folder(dir_name, scale=True)
+        loaded_data = dataio.load_full_folder(dir_name, scale=True)
         self.set_data(loaded_data, subject_name)
         # TODO add something in DisplayManager to call update_actions_enabled()
 
@@ -201,7 +202,7 @@ class App(Controller):
                     stored_data = DataManager.get_multiples_from_analysis_data_compact(path=task)
                     if stored_data:
                         temp_display_data_list, temp_display_fmat_list = stored_data
-                        datagrapper.save_analysis(data=temp_display_data_list, folder=Path(dir_name), task=task)
+                        dataio.save_analysis(data=temp_display_data_list, folder=Path(dir_name), task=task)
                     # Then save every dimension separately
                     for i_d, d in enumerate(consts.dim):
                         task[consts.DIMENSION] = d
@@ -214,7 +215,7 @@ class App(Controller):
                             #     pass
 
                             # DataManager.save_analysis(analysis_name)
-                            datagrapper.save_analysis(data=temp_display_data_list, folder=Path(dir_name), task=task)
+                            dataio.save_analysis(data=temp_display_data_list, folder=Path(dir_name), task=task)
         self._display_manager.save_analysis_done()
 
     @staticmethod

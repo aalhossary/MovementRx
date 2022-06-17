@@ -25,7 +25,6 @@ from spmclient import consts
 from spmclient.controls.colormap_chooser import ColorMapChooser
 from spmclient.controls.controller import Controller
 from spmclient.models.data_manager import DataManager
-from spmclient.models.datasources.datagrapper import load_full_folder
 from spmclient.ui.displaymanager import DisplayManager
 from spmclient.ui.gui.DisplayFormat import DisplayFormat
 from spmclient.ui.gui.xml.customcomponents import MplCanvas, KinematicsScaler, \

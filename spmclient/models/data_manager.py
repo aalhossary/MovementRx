@@ -15,10 +15,10 @@ class DataManager:
     _instance: DataManager = None
     # empty_dict = dict()
     _raw_data = dict()
-    _data_available_flags: Dict[str, bool] = dict()
-    _analysis_available_flags: Dict[str, bool] = dict()
     _analysis_data = dict()
     _analysis_data_compact = dict()
+    _data_available_flags: Dict[str, bool] = dict()
+    _analysis_available_flags: Dict[str, bool] = dict()
 
     def __new__(cls, *args, **kwargs):
         """Implement the Singleton design pattern."""
