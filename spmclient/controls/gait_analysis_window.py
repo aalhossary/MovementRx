@@ -66,6 +66,15 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.measurement_action_group.triggered[QAction].connect(self.display_options_changed)
         self.set_scaler()
 
+        self.sample_analysis_action_group = QActionGroup(self)
+        self.sample_analysis_action_group.addAction(self.action_ref_vs_sample)
+        self.sample_analysis_action_group.addAction(self.action_ref_vs_mean)
+        self.sample_analysis_action_group.setExclusive(True)
+        # self.action_ref_vs_mean.setChecked(True)
+        # use the next 2 lines if you want to save and load the preferences
+        # self.action_ref_vs_mean.setChecked(params.get(consts.REF_VS_MEAN_CHECKED, False))
+        # self.action_ref_vs_sample.setChecked(params.get(consts.REF_VS_SAMPLE_CHECKED, False))
+
         self.sides_action_group = QActionGroup(self)
         self.sides_action_group.addAction(self.actionRight_Side)
         self.sides_action_group.addAction(self.actionLeft_Side)
@@ -364,9 +373,16 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             analysis = consts.PRE_VS_POST_TWO_SAMPLE
 
         ankle_x_only = not DataManager().is_all_ankle_dim_data_available()
-        self.controller.analyse_all(analysis, self.alpha, ankle_x_only)
+
+        self._set_analysis_options_enabled(False)
+        self.controller.analyse_all(analysis, self.alpha, self.action_ref_vs_mean.isChecked(), ankle_x_only)
+        self._set_analysis_options_enabled(True)
 
         self.label_analysis.analysis_name = action.toolTip()
+
+    def _set_analysis_options_enabled(self, enabled: bool):
+        self.action_ref_vs_sample.setEnabled(enabled)
+        self.action_ref_vs_mean.setEnabled(enabled)
 
     def save_analysis(self):
         file_dialog = QFileDialog(self)

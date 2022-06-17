@@ -45,28 +45,27 @@ class App(Controller):
         self._display_manager.data_loaded(data)
         self._display_manager.show_raw_data()
 
-    def analyse_all(self, analysis: str, alpha: float, ankle_x_only=False):
+    def analyse_all(self, analysis: str, alpha: float, ref_vs_mean: bool, ankle_x_only: bool = False) -> None:
         # switch on the test type
         # The test_params are a list of triplets in the form of [(ya, yb, format)]
         # The test names are a list of the form [2D test, 3D test]
-        if analysis == consts.PRE_VS_REF:
-            test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4)]
-            test_names = [TTEST, HOTELLINGS]
-        elif analysis == consts.POST_VS_REF:
-            test_params = [(consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
-            test_names = [TTEST, HOTELLINGS]
-        elif analysis == consts.PRE_AND_POST_VS_REF:
-            test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4),
-                           (consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
-            test_names = [TTEST, HOTELLINGS]
-        elif analysis == consts.PRE_VS_POST_PAIRED:
+        if analysis == consts.PRE_VS_POST_PAIRED:
             test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
             test_names = [TTEST_PAIRED, HOTELLINGS_PAIRED]
-        elif analysis == consts.PRE_VS_POST_TWO_SAMPLE:
-            test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
-            test_names = [TTEST, HOTELLINGS]
         else:
-            raise RuntimeError(f'Unknown analysis type ({analysis})!')
+            test_names = [TTEST, HOTELLINGS] if ref_vs_mean else [TTEST_2, HOTELLINGS_2]
+
+            if analysis == consts.PRE_VS_REF:
+                test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4)]
+            elif analysis == consts.POST_VS_REF:
+                test_params = [(consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
+            elif analysis == consts.PRE_AND_POST_VS_REF:
+                test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4),
+                               (consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
+            elif analysis == consts.PRE_VS_POST_TWO_SAMPLE:
+                test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
+            else:
+                raise RuntimeError(f'Unknown analysis type ({analysis})!')
 
         # self._display_manager.analysis_started()
         detailed_analysis_data = dict()
@@ -88,7 +87,7 @@ class App(Controller):
 
                         for current_round in test_params:
                             subject_a, subject_b, display_subject = current_round
-                            spmi_t = self.analyse(alpha, d, j, meas, s, subject_a, subject_b, test_names[0])
+                            spmi_t = self.analyse(alpha, d, j, meas, s, subject_a, subject_b, test_names[0], ref_vs_mean)
                             if spmi_t is not None:
                                 temp_display_data_list.append(spmi_t)
                                 temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
@@ -114,7 +113,7 @@ class App(Controller):
 
                     for current_round in test_params:
                         subject_a, subject_b, display_subject = current_round
-                        spmi_t = self.analyse(alpha, None, j, meas, s, subject_a, subject_b, test_names[1])
+                        spmi_t = self.analyse(alpha, None, j, meas, s, subject_a, subject_b, test_names[1], ref_vs_mean)
                         if spmi_t is not None:
                             temp_display_data_list.append(spmi_t)
                             temp_display_fmat_list.append(DisplayFormat(subject=display_subject, side=s))
@@ -127,7 +126,7 @@ class App(Controller):
 
         self._display_manager.show_analysis_result(ankle_x_only=ankle_x_only)
 
-    def analyse(self, alpha, d, j, meas, s, subject_a, subject_b, test_name) -> Optional[SPMi_T]:
+    def analyse(self, alpha, d, j, meas, s, subject_a, subject_b, test_name, ref_vs_mean) -> Optional[SPMi_T]:
         data_ya, data_yb = None, None
         if d is not None:
             task_ya: Dict = {
@@ -184,7 +183,7 @@ class App(Controller):
             #     #  TODO manage the case of more than one RMSE value. use DataManager, etc.
             #     self._display_manager.show_rmse(task_yb, rmse)
 
-            spm_t = App.do_spm_test(data_ya, data_yb, test_name, roi=roi)
+            spm_t = App.do_spm_test(data_ya, data_yb, test_name, roi=roi, ref_vs_mean=ref_vs_mean)
             spmi_t, _ = App.infer_z(spm_t, alpha, scale_to_zstar=False)  # TODO add an option to scale or not
             return spmi_t
         return None
@@ -192,7 +191,7 @@ class App(Controller):
     def load_data(self, dir_name:str, subject_name):
         loaded_data = datagrapper.load_full_folder(dir_name, scale=True)
         self.set_data(loaded_data, subject_name)
-        # TODO add something is DisplayManager to call update_actions_enabled()
+        # TODO add something in DisplayManager to call update_actions_enabled()
 
     def save_analysis(self, analysis_name: str, dir_name: str):
         for meas in consts.measurement_folder:
@@ -329,7 +328,8 @@ class App(Controller):
         sys.exit(app.exec())
 
     @staticmethod
-    def do_spm_test(ya: np.ndarray, yb: np.ndarray, test_name: str, roi: np.ndarray) -> spm1d.stats._spm.SPM_T:
+    def do_spm_test(ya: np.ndarray, yb: np.ndarray, test_name: str, roi: np.ndarray, ref_vs_mean: bool) \
+            -> spm1d.stats._spm.SPM_T:
         # if ya.ndim == 2 and yb.ndim == 2:
         #     spm_t = spm1d.stats.ttest2(ya, yb)
         # elif ya.ndim == 3 and yb.ndim == 3:
@@ -339,10 +339,14 @@ class App(Controller):
 
         test = eval('spm1d.stats.' + test_name)
         spm_t: Optional[SPM_T] = None
-        if test_name in (HOTELLINGS_2, TTEST_2, TTEST_PAIRED, HOTELLINGS_PAIRED):
+        if test_name in (HOTELLINGS_PAIRED, TTEST_PAIRED):
             spm_t = test(ya, yb, roi=roi)
-        elif test_name in (HOTELLINGS, TTEST):
-            spm_t = test(ya, yb.mean(axis=0), roi=roi)
+        else:
+            if ref_vs_mean:
+                spm_t = test(ya, yb.mean(axis=0), roi=roi)
+            else:
+                spm_t = test(ya, yb, roi=roi)
+
 
         return spm_t
 

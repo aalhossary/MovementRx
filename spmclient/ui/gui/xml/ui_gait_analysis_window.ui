@@ -1935,9 +1935,18 @@ QSlider::handle:horizontal {
       <string>Alpha</string>
      </property>
     </widget>
+    <widget class="QMenu" name="menu_analysis_options">
+     <property name="title">
+      <string>analysis</string>
+     </property>
+     <addaction name="action_ref_vs_sample"/>
+     <addaction name="action_ref_vs_mean"/>
+    </widget>
     <addaction name="menu_analysis_type"/>
     <addaction name="menu_alpha"/>
     <addaction name="action_color_Scale"/>
+    <addaction name="separator"/>
+    <addaction name="menu_analysis_options"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -2249,6 +2258,25 @@ QSlider::handle:horizontal {
   <action name="action_save_analysis">
    <property name="text">
     <string>&amp;Save analysis</string>
+   </property>
+  </action>
+  <action name="action_ref_vs_sample">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Reference vs. Sample</string>
+   </property>
+  </action>
+  <action name="action_ref_vs_mean">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Reference vs. Mean</string>
    </property>
   </action>
  </widget>
