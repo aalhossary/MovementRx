@@ -447,9 +447,6 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
         license_dlg.exec()
 
-    # def show_rmse(self, task_yb, rmse):
-    #     pass
-
     def show_analysis_result(self, ankle_x_only: bool = False):
         analysis_legend_image1 = None
         analysis_legend_image2 = None
@@ -500,8 +497,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             temp_display_data = []
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
                                 cast(spm1d.stats._spm.SPMi_T, t2i)
-                                z_values = t2i.z / t2i.zstar
-                                temp_display_data.append(z_values)
+                                temp_display_data.append(t2i.z)
 
                             analysis_legend_image1 = draw_heatmap(mose_canvas, temp_display_data, norm=norm1, cmap=cmap1)
                             spm_canvas.moving_line = None
@@ -545,8 +541,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                         temp_display_data = []
                         for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
                             cast(spm1d.stats._spm.SPMi_T, t2i)
-                            z_values = t2i.z / t2i.zstar
-                            temp_display_data.append(z_values)
+                            temp_display_data.append(t2i.z)
                         analysis_legend_image2 = draw_heatmap(joint_canvas, temp_display_data, norm=norm2, cmap=cmap2)
                         # Add vertical line
                         if self.actionKinematics.isChecked():
@@ -606,7 +601,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         else:
             self.label_study.setText('<html><head/><body><p><span style=" font-weight:600;">Moments</span> (% Stance Nm/kg)</p></body></html>')
 
-    def display_options_changed(self, action: QAction):
+    def display_options_changed(self):
         # TODO This method needs redesign, checks, and maybe moved to controller
         print("Full Redraw requested")
         self.show_raw_data()

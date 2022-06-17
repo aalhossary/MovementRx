@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 from builtins import classmethod
-from typing import Dict, cast, Optional
+from typing import Dict, cast, Optional, Tuple
 
 import numpy as np
+
+from spm1d.stats._spm import SPMi_T
 from spmclient import consts
+from spmclient.ui.gui.DisplayFormat import DisplayFormat
 
 
 class DataManager:
@@ -99,12 +102,11 @@ class DataManager:
         return cls._get_multiples(cls._raw_data, path, satisfy_missing_path_with_any)
 
     @classmethod
-    def get_multiples_from_analysis_data(cls, path: Dict = None) \
-            -> Optional[np.ndarray]:
+    def get_multiples_from_analysis_data(cls, path: Dict) -> Optional[Tuple[SPMi_T, DisplayFormat]]:  # -> Optional[np.ndarray]:
         return cls._get_multiples(cls._analysis_data, path, has_subject=False)
 
     @classmethod
-    def get_multiples_from_analysis_data_compact(cls, path: Dict = None) -> Optional[np.ndarray]:
+    def get_multiples_from_analysis_data_compact(cls, path: Dict) -> Optional[Tuple[SPMi_T, DisplayFormat]]:
         return cls._get_multiples(cls._analysis_data_compact, path, has_subject=False, has_dimension=False)
 
     @classmethod
@@ -178,14 +180,3 @@ class DataManager:
         cls._analysis_data.clear()
         cls._analysis_data_compact.clear()
         cls._analysis_available_flags.clear()
-
-    # @staticmethod
-    # def rmse(predictions: np.ndarray, targets: np.ndarray) -> np.ndarray:
-    #     #  return np.sqrt(((predictions - targets) ** 2).mean())
-    #     if predictions.ndim > 1:
-    #         predictions = np.average(predictions, axis=0)
-    #     if targets.ndim > 1:
-    #         targets = np.average(targets, axis=0)
-    #     n = len(predictions)
-    #     rmse = np.linalg.norm(predictions - targets) / np.sqrt(n)
-    #     return rmse

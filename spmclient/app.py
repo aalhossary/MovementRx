@@ -178,13 +178,8 @@ class App(Controller):
         if data_ya is not None and data_yb is not None:
             data_ya, data_yb, roi, _offset, tail = self._adjust_array_lengths(subject_a, meas, data_ya, data_yb)
 
-            # if tail:
-            #     rmse = DataManager.rmse(data_yb, data_ya)
-            #     #  TODO manage the case of more than one RMSE value. use DataManager, etc.
-            #     self._display_manager.show_rmse(task_yb, rmse)
-
             spm_t = App.do_spm_test(data_ya, data_yb, test_name, roi=roi, ref_vs_mean=ref_vs_mean)
-            spmi_t, _ = App.infer_z(spm_t, alpha, scale_to_zstar=False)  # TODO add an option to scale or not
+            spmi_t = spm_t.inference(alpha)
             return spmi_t
         return None
 
@@ -349,14 +344,6 @@ class App(Controller):
 
 
         return spm_t
-
-    @staticmethod
-    def infer_z(spm_t, alpha, scale_to_zstar=False) -> Tuple[spm1d.stats._spm.SPMi_T, np.array]:  # TODO Review
-        spmi_t = spm_t.inference(alpha)
-        if scale_to_zstar:
-            return spmi_t, (spmi_t.z / spmi_t.zstar)
-        else:
-            return spmi_t, (spmi_t.z)
 
 
 if __name__ == '__main__':
