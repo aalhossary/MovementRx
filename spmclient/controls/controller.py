@@ -13,15 +13,19 @@ class Controller(QObject):  # (metaclass=ABCMeta):
 
     def analyse_all(self, analysis: str, alpha: float, ref_vs_mean: bool, ankle_x_only) -> None:
         """
-        Analyse all panels (individual and compound)
-
+        initiates analysis of both available studies (kinematics and moments) on all available joints and joint
+        dimensions.
         Args:
             analysis: Analysis name
-            alpha: Alpha value
+            alpha: The alpha value (e.g. 0.05)
             ref_vs_mean: determines whether the whole sample will be compared to the reference or only its mean would
-            be. This parameter is ignored if the user is doing PRE_VS_POST_PAIRED analysis.
+                be. This parameter is ignored if the user is doing PRE_VS_POST_PAIRED analysis, because in this case,
+                the test is performed as REFERENCE VERSUS ALL SAMPLE by default.
             ankle_x_only: Whether the Ankle has data in the X axis only. This parameter should be removed in later
             versions when we use new data.
+
+        Returns:
+            None
         """
         raise NotImplementedError()
 

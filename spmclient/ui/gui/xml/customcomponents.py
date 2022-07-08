@@ -16,6 +16,7 @@ from matplotlib.lines import Line2D
 
 class Singleton(type):
     _instances = {}
+
     def __call__(self, *args, **kwargs):  # self here is actually cls ;-)
         if self not in self._instances:
             self._instances[self] = super(Singleton, self).__call__(*args, **kwargs)
@@ -118,7 +119,7 @@ class MplCanvas(QWidget):  # FigureCanvasQTAgg):
         self.setLayout(layout)
         self.moving_line: Optional[Line2D] = None
 
-    def animate_line(self, scaler: Scaler, index_in_cycle:int, color: str):
+    def animate_line(self, scaler: Scaler, index_in_cycle: int, color: str):
         scaled = scaler.scale(index_in_cycle)
         if scaled is None:
             if self.moving_line:

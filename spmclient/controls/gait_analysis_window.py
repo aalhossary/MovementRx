@@ -37,6 +37,12 @@ from spmclient.ui.gui.xml.ui_license_dialog import Ui_license_dialog
 class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
     def __init__(self, params: Dict, controller: Controller):
+        """
+        Initialize the Gait analysis window using the passed-in parameters
+        Args:
+            params:
+            controller:
+        """
         QMainWindow.__init__(self)
         Ui_ui_GaitAnalysisWindow.__init__(self)
         # print("finished calling Ui_ui_GaitAnalysisWindow init")
@@ -195,11 +201,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         for widget in qlist:
             widget = cast(QStackedWidget, widget)
             widget.setVisible(not widget.isVisible())
+        widget = cast(QWidget, vector_widget)
         if qlist[0].isVisible():
-            widget = cast(QWidget, vector_widget)
             widget.setToolTip("Click to collapse")
         else:
-            widget = cast(QWidget, vector_widget)
             widget.setToolTip("Click to expand")
 
     def rt_side_checked(self):

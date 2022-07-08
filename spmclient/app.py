@@ -48,23 +48,23 @@ class App(Controller):
 
     def analyse_all(self, analysis: str, alpha: float, ref_vs_mean: bool, ankle_x_only: bool = False) -> None:
         # switch on the test type
-        # The test_params are a list of triplets in the form of [(ya, yb, format)]
+        # The test_subjects are a list of triplets in the form of [(ya, yb, format)]
         # The test names are a list of the form [2D test, 3D test]
         if analysis == consts.PRE_VS_POST_PAIRED:
-            test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
+            test_subjects = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
             test_names = [TTEST_PAIRED, HOTELLINGS_PAIRED]
         else:
             test_names = [TTEST, HOTELLINGS] if ref_vs_mean else [TTEST_2, HOTELLINGS_2]
 
             if analysis == consts.PRE_VS_REF:
-                test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4)]
+                test_subjects = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4)]
             elif analysis == consts.POST_VS_REF:
-                test_params = [(consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
+                test_subjects = [(consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
             elif analysis == consts.PRE_AND_POST_VS_REF:
-                test_params = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4),
+                test_subjects = [(consts.SUBJECT_REF, consts.SUBJECT_B4, consts.SUBJECT_B4),
                                (consts.SUBJECT_REF, consts.SUBJECT_AFTER, consts.SUBJECT_AFTER)]
             elif analysis == consts.PRE_VS_POST_TWO_SAMPLE:
-                test_params = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
+                test_subjects = [(consts.SUBJECT_B4, consts.SUBJECT_AFTER, consts.SUBJECT_REF)]
             else:
                 raise RuntimeError(f'Unknown analysis type ({analysis})!')
 
@@ -86,7 +86,7 @@ class App(Controller):
                         temp_display_data_list = []
                         temp_display_fmat_list = []
 
-                        for current_round in test_params:
+                        for current_round in test_subjects:
                             subject_a, subject_b, display_subject = current_round
                             spmi_t = self.analyse(alpha, d, j, meas, s, subject_a, subject_b, test_names[0], ref_vs_mean)
                             if spmi_t is not None:
@@ -99,9 +99,9 @@ class App(Controller):
 
         # do the compact test
         compact_analysis_data: Dict[str, Dict] = dict()
-        for _, meas in enumerate(consts.measurement_folder):
+        for meas in consts.measurement_folder:
             measurement_compact_dict = compact_analysis_data.setdefault(meas, dict())
-            for _, s in enumerate(consts.side):
+            for s in consts.side:
                 side_compact_dict = measurement_compact_dict.setdefault(s, dict())
                 for i_j, j in enumerate(consts.joint):
 
@@ -112,7 +112,7 @@ class App(Controller):
                     temp_display_data_list = []
                     temp_display_fmat_list = []
 
-                    for current_round in test_params:
+                    for current_round in test_subjects:
                         subject_a, subject_b, display_subject = current_round
                         spmi_t = self.analyse(alpha, None, j, meas, s, subject_a, subject_b, test_names[1], ref_vs_mean)
                         if spmi_t is not None:
