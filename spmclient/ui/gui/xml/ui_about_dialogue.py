@@ -46,7 +46,7 @@ class Ui_About(object):
     def retranslateUi(self, About):
         _translate = QtCore.QCoreApplication.translate
         About.setWindowTitle(_translate("About", "Dialog"))
-        self.label.setText(_translate("About", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt; font-weight:600;\">MovementRx 0.4.0</span></p><p align=\"center\"><span style=\" font-size:10pt;\">Developped in </span><a href=\"http://rris.ntu.edu.sg/\"><span style=\" font-size:10pt; text-decoration: underline; color:#0000ff;\">Rehabilitation Research Institute of Singapore (RRIS)</span></a></p><p align=\"center\"><span style=\" font-size:10pt;\">Application credit goes to</span></p></body></html>"))
+        self.label.setText(_translate("About", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt; font-weight:600;\">MovementRx 0.4.1</span></p><p align=\"center\"><span style=\" font-size:10pt;\">Developped in </span><a href=\"http://rris.ntu.edu.sg/\"><span style=\" font-size:10pt; text-decoration: underline; color:#0000ff;\">Rehabilitation Research Institute of Singapore (RRIS)</span></a></p><p align=\"center\"><span style=\" font-size:10pt;\">Application credit goes to</span></p></body></html>"))
 
 from spmclient import resources_rc
 
