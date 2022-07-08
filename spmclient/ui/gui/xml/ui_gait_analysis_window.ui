@@ -252,9 +252,9 @@
                </widget>
               </item>
               <item row="3" column="1" colspan="2">
-               <widget class="HeatMapMplCanvas" name="joint0R" native="true">
+               <widget class="QStackedWidget" name="stackedWidget0R">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
                   <verstretch>1</verstretch>
                  </sizepolicy>
@@ -268,6 +268,11 @@
                 <property name="toolTip">
                  <string>Click to expand</string>
                 </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="MplCanvas" name="mosejointcanvas0R"/>
+                <widget class="MplCanvas" name="spm1djointcanvas0R"/>
                </widget>
               </item>
              </layout>
@@ -489,7 +494,7 @@
                </widget>
               </item>
               <item row="3" column="1" colspan="2">
-               <widget class="HeatMapMplCanvas" name="joint1R" native="true">
+               <widget class="QStackedWidget" name="stackedWidget1R">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -505,6 +510,11 @@
                 <property name="toolTip">
                  <string>Click to expand</string>
                 </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="MplCanvas" name="mosejointcanvas1R"/>
+                <widget class="MplCanvas" name="spm1djointcanvas1R"/>
                </widget>
               </item>
              </layout>
@@ -732,7 +742,7 @@
                </widget>
               </item>
               <item row="3" column="1" colspan="2">
-               <widget class="HeatMapMplCanvas" name="joint2R" native="true">
+               <widget class="QStackedWidget" name="stackedWidget2R">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -748,6 +758,11 @@
                 <property name="toolTip">
                  <string>Click to expand</string>
                 </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="MplCanvas" name="mosejointcanvas2R"/>
+                <widget class="MplCanvas" name="spm1djointcanvas2R"/>
                </widget>
               </item>
              </layout>
@@ -1018,7 +1033,7 @@ QSlider::handle:horizontal {
                </widget>
               </item>
               <item row="3" column="0" colspan="2">
-               <widget class="HeatMapMplCanvas" name="joint0L" native="true">
+               <widget class="QStackedWidget" name="stackedWidget0L">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -1027,13 +1042,18 @@ QSlider::handle:horizontal {
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>200</width>
+                  <width>130</width>
                   <height>30</height>
                  </size>
                 </property>
                 <property name="toolTip">
                  <string>Click to expand</string>
                 </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="MplCanvas" name="mosejointcanvas0L"/>
+                <widget class="MplCanvas" name="spm1djointcanvas0L"/>
                </widget>
               </item>
               <item row="3" column="2">
@@ -1261,7 +1281,7 @@ QSlider::handle:horizontal {
                </widget>
               </item>
               <item row="3" column="0" colspan="2">
-               <widget class="HeatMapMplCanvas" name="joint1L" native="true">
+               <widget class="QStackedWidget" name="stackedWidget1L">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -1270,13 +1290,18 @@ QSlider::handle:horizontal {
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>200</width>
+                  <width>130</width>
                   <height>30</height>
                  </size>
                 </property>
                 <property name="toolTip">
                  <string>Click to expand</string>
                 </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="MplCanvas" name="mosejointcanvas1L"/>
+                <widget class="MplCanvas" name="spm1djointcanvas1L"/>
                </widget>
               </item>
               <item row="3" column="2">
@@ -1504,7 +1529,7 @@ QSlider::handle:horizontal {
                </widget>
               </item>
               <item row="3" column="0" colspan="2">
-               <widget class="HeatMapMplCanvas" name="joint2L" native="true">
+               <widget class="QStackedWidget" name="stackedWidget2L">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -1513,13 +1538,18 @@ QSlider::handle:horizontal {
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>200</width>
+                  <width>130</width>
                   <height>30</height>
                  </size>
                 </property>
                 <property name="toolTip">
                  <string>Click to expand</string>
                 </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="MplCanvas" name="mosejointcanvas2L"/>
+                <widget class="MplCanvas" name="spm1djointcanvas2L"/>
                </widget>
               </item>
               <item row="3" column="2">
@@ -2300,12 +2330,6 @@ QSlider::handle:horizontal {
     <slot>set_analysis_name(QString)</slot>
     <slot>set_selected_widget_name(QString)</slot>
    </slots>
-  </customwidget>
-  <customwidget>
-   <class>HeatMapMplCanvas</class>
-   <extends>QWidget</extends>
-   <header location="global">spmclient.ui.gui.xml.customcomponents.h</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>MyQSlider</class>

@@ -135,9 +135,10 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
         for j in range(3):
             for s in consts.side:
-                joint_canvas = self.get_target_canvas('joint', j, None, side=s)
-                # Notice that the canvas is NOT a Widget
-                joint_canvas.canvas.mpl_connect('button_press_event', self.vector_canvas_clicked)
+                for name in ['mose', 'spm1d']:
+                    joint_canvas = self.get_target_canvas(name, j, None, side=s)
+                    # N.B. Notice that the canvas is NOT a Widget
+                    joint_canvas.canvas.mpl_connect('button_press_event', self.vector_canvas_clicked)
 
         for s in consts.side:
             for j in range(3):
@@ -155,8 +156,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
             self.action_animate.setChecked(False)
 
     def set_analysis_visible(self, show: bool, ankle_x_only: bool = False):
-        re = QRegExp('joint[012][RL]')
-        qlist: List[QObject] = self.findChildren(MplCanvas, re)
+        re = QRegExp('stackedWidget[012][RL]')
+        qlist: List[QObject] = self.findChildren(QStackedWidget, re)
         for widget in qlist:
             # print('set', widget.objectName(), 'visibility to', show)
             if show:
@@ -458,10 +459,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         cmap2 = cmc.cmap2
         norm2 = cmc.norm2
 
-        # first show the detailed analysis
         for s in consts.side:
             for i_j, j in enumerate(consts.joint):
-                for i_d, d in enumerate(consts.dim):
+                for i_d, d in [* enumerate(consts.dim), (None, None)]:  # that means all 3 dimensions + whole joint
 
                     if ankle_x_only and i_j == 2 and i_d:  # > 0:
                         continue
@@ -472,6 +472,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                     # clear them first
                     spm_canvas.ax.clear()
                     mose_canvas.ax.clear()
+                    spm_canvas.moving_line = None
+                    mose_canvas.moving_line = None
 
                     for meas in consts.measurement_folder:
                         # filter
@@ -485,7 +487,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             consts.JOINT: j,
                             consts.DIMENSION: d
                         }
-                        dimension = DataManager.get_multiples_from_analysis_data(path=current_task)
+
+                        if d is not None:
+                            dimension = DataManager.get_multiples_from_analysis_data(path=current_task)
+                        else:
+                            dimension = DataManager.get_multiples_from_analysis_data_compact(path=current_task)
+
                         if dimension:
                             temp_display_data_list, temp_display_fmat_list = dimension
 
@@ -495,12 +502,9 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
                             temp_display_data = []
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
-                                cast(spm1d.stats._spm.SPMi_T, t2i)
                                 temp_display_data.append(t2i.z)
 
                             analysis_legend_image1 = draw_heatmap(mose_canvas, temp_display_data, norm=norm1, cmap=cmap1)
-                            spm_canvas.moving_line = None
-                            mose_canvas.moving_line = None
 
                             # Add vertical line
                             if self.actionKinematics.isChecked():
@@ -508,44 +512,6 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                                 mose_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
                         spm_canvas.canvas.draw()
                         mose_canvas.canvas.draw()
-
-        # Then show the compact analysis
-        for s in consts.side:
-            for i_j, j in enumerate(consts.joint):
-
-                if ankle_x_only and i_j == 2:
-                    continue
-
-                # get the canvas
-                joint_canvas = self.get_target_canvas('joint', i_j, None, side=s)
-                # clear it first
-                joint_canvas.ax.clear()
-                joint_canvas.moving_line = None
-
-                for meas in consts.measurement_folder:
-                    # filter
-                    if meas == consts.MEASUREMENT_KINEMATICS and not self.actionKinematics.isChecked():
-                        continue
-                    if meas == consts.MEASUREMENT_MOMENTS and not self.actionMoments.isChecked():
-                        continue
-                    current_task: Dict = {
-                        consts.MEASUREMENT: meas,
-                        consts.SIDE: s,
-                        consts.JOINT: j,
-                    }
-                    dimension = DataManager.get_multiples_from_analysis_data_compact(path=current_task)
-                    if dimension:
-                        temp_display_data_list, temp_display_fmat_list = dimension
-                        # draw each of the data / format pair on the canvas
-                        temp_display_data = []
-                        for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
-                            cast(spm1d.stats._spm.SPMi_T, t2i)
-                            temp_display_data.append(t2i.z)
-                        analysis_legend_image2 = draw_heatmap(joint_canvas, temp_display_data, norm=norm2, cmap=cmap2)
-                        # Add vertical line
-                        if self.actionKinematics.isChecked():
-                            joint_canvas.ax.axvline(x=60, linewidth=4, color='k', ls='--', lw=1.5)
-                joint_canvas.canvas.draw()
 
         self.update_legend_selected_panel_name()
         self.add_colorbar_to_legend(analysis_legend_image1, analysis_legend_image2)
@@ -583,7 +549,8 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                 x = next_value_r
             for i_j, _ in enumerate(consts.joint):
                 # joint canvas
-                self.advance_animation_line(None, i_j, s, x, c, 'joint')
+                self.advance_animation_line(None, i_j, s, x, c, 'spm1d')
+                self.advance_animation_line(None, i_j, s, x, c, 'mose')
 
                 for i_d, _ in enumerate(consts.dim):
                     self.advance_animation_line(i_d, i_j, s, x, c, 'data')
@@ -627,7 +594,7 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
         self.pushButton_2L.setVisible(self.lt_side_checked())
 
     def show_next_view(self):
-        reg = QRegExp('stackedWidget[012][012][RL]')
+        reg = QRegExp('stackedWidget[012][012]?[RL]')
         qlist: List[QObject] = self.findChildren(QStackedWidget, reg)
         for widget in qlist:
             widget = cast(QStackedWidget, widget)
@@ -641,12 +608,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
     def get_target_canvas(self, canvas_type: str, i_j: int, i_d: Optional[int], side: str) -> MplCanvas:
         if i_d is None:
-            mose_canvas = self.findChild(MplCanvas, name=f'{canvas_type}{i_j}{side}')
+            canvas = self.findChild(MplCanvas, name=f'{canvas_type}jointcanvas{i_j}{side}')
         else:
             # names are datacanvas00R, mosecanvas01R and spm1dcavcas01R
-            mose_canvas = self.findChild(MplCanvas, name=f'{canvas_type}canvas{i_j}{i_d}{side}')
-        mose_canvas = cast(MplCanvas, mose_canvas)
-        return mose_canvas
+            canvas = self.findChild(MplCanvas, name=f'{canvas_type}canvas{i_j}{i_d}{side}')
+        canvas = cast(MplCanvas, canvas)
+        return canvas
 
     def clear_analysis(self):
         print('clear_analysis')
