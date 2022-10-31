@@ -1,16 +1,20 @@
 import sys
+from typing import cast
 
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QDialog, QApplication
 from matplotlib import cm
+from matplotlib.axes import Axes
 from matplotlib.colors import Normalize
+from matplotlib.figure import Figure
 
 from spmclient.ui.gui.xml.ui_colormap_chooser import Ui_colorMapChooser
-from spmclient.ui.gui.xml.customcomponents import Singleton
+from spmclient.ui.gui.xml.customcomponents import Singleton, LegendMplCanvas
 
 
 class ColorMapChooserMeta(Singleton, QDialog.__class__, Ui_colorMapChooser.__class__):
     pass
+
 
 class ColorMapChooser(QDialog, Ui_colorMapChooser, metaclass = ColorMapChooserMeta):
     
@@ -26,25 +30,27 @@ class ColorMapChooser(QDialog, Ui_colorMapChooser, metaclass = ColorMapChooserMe
     def setupUi(self, colorMapChooser: Ui_colorMapChooser):
         super().setupUi(colorMapChooser)
 
+    @staticmethod
+    def prepare_figure(colormap_legend: LegendMplCanvas):
+        figure = colormap_legend.figure
+        ax = colormap_legend.ax
+        if ax.get_subplotspec().get_geometry() == (1, 1, 0, 0):
+            figure = cast(Figure, ax.figure)
+            figure.clear()
+            axs = figure.subplots(1, 3)
+            for i in [0, 2]:
+                axi = cast(Axes, axs[i])
+                axi.set_visible(False)
+            ax = cast(Axes, axs[1])
+            figure.ax = ax
+        ax.clear()
+        return figure, ax
+
     @QtCore.pyqtSlot()
     def update_legend(self):
         print('update called')
-        ax1 = self.individual_colormap_legend.ax
-        if ax1.get_geometry() == (1, 1, 1):
-            ax1.change_geometry(1, 3, 2)
-        ax1.clear()
-        ax2 = self.three_components_colormap_legend.ax
-        if ax2.get_geometry() == (1, 1, 1):
-            ax2.change_geometry(1, 3, 2)
-        ax2.clear()
-
-        figure1 = self.individual_colormap_legend.figure
-#         figure1.gca().set_axis_off()
-        figure2 = self.three_components_colormap_legend.figure
-#         figure2.gca().set_axis_off()
-
-#         if ax1 is not figure1.gca():
-#             print('=======', ax1, figure1.gca())
+        figure1, ax1 = ColorMapChooser.prepare_figure(self.individual_colormap_legend)
+        figure2, ax2 = ColorMapChooser.prepare_figure(self.three_components_colormap_legend)
 
         num_levels1 = self.individ_num_levels_spinBox.value()
         num_levels2 = self.threecomp_num_levels_spinBox.value()
@@ -59,12 +65,15 @@ class ColorMapChooser(QDialog, Ui_colorMapChooser, metaclass = ColorMapChooserMe
         self.norm1 = Normalize(vmin=self.individ_min_value_spinbox.value(), vmax=self.individ_max_value_spinbox.value())
         self.norm2 = Normalize(vmin=self.threecomp_min_value_spinbox.value(), vmax=self.threecomp_max_value_spinbox.value())
 
-        colorbar1 = figure1.colorbar(cm.ScalarMappable(norm=self.norm1, cmap=self.cmap1), cax=ax1, orientation="vertical",
-                                   use_gridspec=True, fraction=1.0, shrink=1.0, extend='both',
-                                   )
-        colorbar2 = figure2.colorbar(cm.ScalarMappable(norm=self.norm2, cmap=self.cmap2), cax=ax2, orientation="vertical",
-                                   use_gridspec=True, fraction=1.0, shrink=1.0, extend='both',
-                                   )
+        # print(ax1.get_subplotspec(), figure1.bbox, ax1.get_subplotspec().get_position(figure=figure1))
+        colorbar1 = figure1.colorbar(cm.ScalarMappable(norm=self.norm1, cmap=self.cmap1),
+                                     cax=ax1, orientation="vertical",
+                                     fraction=1.0, shrink=1.0,
+                                     extend='both', extendfrac='auto',pad=0.0)
+        colorbar2 = figure2.colorbar(cm.ScalarMappable(norm=self.norm2, cmap=self.cmap2),
+                                     cax=ax2, orientation="vertical",
+                                     fraction=1.0, shrink=1.0,
+                                     extend='both', extendfrac='auto',pad=0.0)
         self.individual_colormap_legend.canvas.draw()
         self.three_components_colormap_legend.canvas.draw()
 
