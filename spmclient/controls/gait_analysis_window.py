@@ -509,7 +509,12 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             for t2i, fmt in zip(temp_display_data_list, temp_display_fmat_list):
                                 temp_display_data.append(t2i.z)
 
-                            analysis_legend_image1 = draw_heatmap(mose_canvas, temp_display_data, norm=norm1, cmap=cmap1)
+                            if d is None:
+                                analysis_legend_image2 = draw_heatmap(mose_canvas, temp_display_data, norm=norm2, cmap=cmap2)
+                            else:
+                                if i_d > 0:
+                                    continue
+                                analysis_legend_image1 = draw_heatmap(mose_canvas, temp_display_data, norm=norm1, cmap=cmap1)
 
                             # Add vertical line
                             if self.actionKinematics.isChecked():
