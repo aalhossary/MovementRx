@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import QMainWindow, QFileDialog, QStackedWidget, QAction, Q
 from matplotlib import cm
 from matplotlib.axes import Axes
 from matplotlib.colors import Normalize
+from matplotlib.gridspec import GridSpec
 from matplotlib.image import AxesImage
 from matplotlib.lines import Line2D
 # print("going to import matplotlib.pyplot as plt")
@@ -255,45 +256,40 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
 
         cmc = ColorMapChooser()
         figure = self.legend_heatmap_panel.figure
-        ax1 = self.legend_heatmap_panel.ax
+        figure.clear()
 
-        ax1.change_geometry(1, 5, 2)
+        # ax1.set_subplotspec(GridSpec(1, 5, figure=ax1.figure)[1])  # change_geometry(1, 5, 2)
+        axs = figure.subplots(1, 5)
+        for i in [0, 2, 4]:
+            axi = cast(Axes, axs[i])
+            axi.set_visible(False)
+        ax1 = self.legend_heatmap_panel.ax = cast(Axes, axs[1])
+        ax2 = axs[3]
         ax1.clear()
+        ax2.clear()
 
         if axes_image1:
             cmap1 = cmc.cmap1
             norm1 = cmc.norm1
             labels = ['Mild', 'Mod', 'Severe', 'Xtreme']
             for j, lab in enumerate(labels):
-                ax1.text(0.9, norm1.vmin + ((2 * j + 1) / (2 * len(labels)) * (norm1.vmax - norm1.vmin)),
+                ax1.text(0.0, norm1.vmin + ((2 * j + 1) / (2 * len(labels)) * (norm1.vmax - norm1.vmin)),
                          lab, ha='right', va='center_baseline')
 
             figure.colorbar(cm.ScalarMappable(norm=norm1, cmap=cmap1), orientation="vertical",
-                            cax=ax1, use_gridspec=True, fraction=1.0, shrink=1.0, extend='both',
-                            ticks=np.arange(norm1.vmax + 1),
-                            # anchor = (0.0, 0.5), panchor = (0.0, 0.5), drawedges=True, pad=0.2
+                            cax=ax1, use_gridspec=True, fraction=1.0, shrink=1.0, extend='both', extendfrac='auto',
+                            ticks=np.arange(norm1.vmax + 1)
                             )
         else:
             ax1.axis("off")
 
         cmap2 = cmc.cmap2
         norm2 = cmc.norm2
-        # figure = self.legend_heatmap_panel.figure
 
-        for ax in figure.get_axes():
-            if 'ax2' == ax.get_label():
-                ax2 = ax
-                break
-        else:  # Loop else (no_break)
-            ax2 = figure.add_subplot(1, 5, 4, label='ax2')  # Remember having a unique label.
-
-        ax2.clear()
-        #         ax.change_geometry(1, 5, 4)
-        # figure.gca().set_axis_off()
         if axes_image2:
             figure.colorbar(cm.ScalarMappable(norm=norm2, cmap=cmap2), orientation="vertical",
-                            cax=ax2, use_gridspec=True, fraction=1.0, shrink=1.0, extend='both',
-                            ticks=np.arange(norm2.vmax + 1),
+                            cax=ax2, use_gridspec=True, fraction=1.0, shrink=1.0, extend='both', extendfrac='auto',
+                            ticks=np.arange(norm2.vmax + 1)
                             )
         else:
             ax2.axis("off")
@@ -512,8 +508,6 @@ class GaitAnalysisWindow(QMainWindow, Ui_ui_GaitAnalysisWindow, DisplayManager):
                             if d is None:
                                 analysis_legend_image2 = draw_heatmap(mose_canvas, temp_display_data, norm=norm2, cmap=cmap2)
                             else:
-                                if i_d > 0:
-                                    continue
                                 analysis_legend_image1 = draw_heatmap(mose_canvas, temp_display_data, norm=norm1, cmap=cmap1)
 
                             # Add vertical line
